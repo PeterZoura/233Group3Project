@@ -66,6 +66,9 @@ public class Deck
     }
 
 
+/*Didn't make a constructor class for Deck because I assume you'll need to
+add cards separately, to Hand, discard Pile...
+*/
 
 /*
   public String toString()
