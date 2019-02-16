@@ -6,6 +6,33 @@ public class Deck
   private ArrayList<Card> drawPile = new ArrayList<Card>();
   private ArrayList<Card> hand = new ArrayList<Card>();
 
+  // Getter methods for size
+  public int getDeckSize()
+    {
+	return this.deck.size();
+    }
+
+  public int getDrawPileSize()
+    {
+	return this.drawPile.size();
+    }
+	
+  public int getDiscardPileSize()
+    {
+	return this.discardPile.size();
+    }
+	
+  // Getter method for Deck,discardPile and drawPile
+  public ArrayList<Card> getPile(ArrayList<Card> cardSource)
+  {
+	  ArrayList<Card> tempDeck = new ArrayList<Card>();
+	  for (Card temp : cardSource)
+	  {
+		  tempDeck.add(temp);
+	  }
+	  return tempDeck;
+  }
+
 
   // Add ONE card Methods
   public void addToDeck(Card aCard)
