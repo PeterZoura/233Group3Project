@@ -13,7 +13,7 @@ public class Card{
 		this.name = name;
 		this.description = description;
 	}
-	
+
 	public Card(int heal, int damage, int block, String name)
 	{
 		this.heal = heal;
@@ -21,28 +21,33 @@ public class Card{
 		this.block = block;
 		this.name = name;
 		this.description = "";
-		
+
 		if (heal>0)
 		{
 			description = description + String.format("Heal %d health to yourself. ", this.heal);
 		}
-		
+
 		if (damage>0)
 		{
 			description = description + String.format("Deal %d damage to an enemy. ", this.damage);
 		}
-		
+
 		if (block>0)
 		{
 			description = description + String.format("Block %d damage for the next turn. ", this.block);
 		}
-		
+
 		if (description.equals(""))
 		{
 			description = "This card does nothing";
 		}
 	}
-	
+
+	public Card(Card aCard)
+	{
+		this(aCard.heal, aCard.damage, aCard.block, aCard.name, aCard.description);
+	}
+
 	public String getName()
 	{
 		return this.name;
@@ -51,6 +56,7 @@ public class Card{
 	{
 		return this.description;
 	}
+	/*
 	public void use(Player player, Monster enemy)
 	{
 		if (this.heal>0)
@@ -66,6 +72,7 @@ public class Card{
 			player.block(this.block);
 		}
 	}
+	*/
 	/*
 	public static void main(String[] Args)
 	{
