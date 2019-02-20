@@ -1,9 +1,9 @@
 public class Entity{
-	String name;
-	int maxHealth;
-	int health;
-	byte armour;
-	byte energy;
+	private String name;
+	private int maxHealth;
+	private int health;
+	private byte armour;
+	private byte energy;
 	
 	public void setName(String name){
 		this.name=name;
@@ -37,3 +37,20 @@ public class Entity{
 		}else{
 			this.energy=0;
 		}
+	}
+	public String getName(){
+		return name;
+	}
+	public int getMax(){
+		return maxHealth;
+	}
+	public int getHealth(){
+		return health;
+	}
+	public byte getArmour(){
+		return armour;
+	}
+	public byte getEnergy(){
+		return energy;
+	}
+}
