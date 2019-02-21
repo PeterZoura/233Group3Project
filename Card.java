@@ -101,16 +101,13 @@ public class Card {
 	 */
 	public boolean use(Entity user, Entity target) {
 		if (user.getEnergy() >= this.cost) {
-			if (this.heal > 0) {
-				user.setHealth(user.getHealth() + this.heal);
-			}
-			if (this.damage > 0) {
-				target.setHealth(user.getHealth() - this.damage);
-			}
-			if (this.block > 0) {
-				user.setArmour(user.getArmour() + this.block);
-			}
-			user.setEnergy(user.getEnergy() - this.cost);
+			if (heal > 0) 
+				user.heal(heal);	
+			if (damage > 0) 
+				target.damage(damage);	
+			if (block > 0) 
+				user.block(block);
+			user.useEnergy(cost);
 			return true;
 		} else {
 			return false;
