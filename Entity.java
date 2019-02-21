@@ -5,6 +5,18 @@ public class Entity{
 	private byte armour;
 	private byte energy;
 	
+	public Entity(String name, int maxHealth, int health, int armour, int energy){
+		this.name = name;
+		this.maxHealth = maxHealth;
+		this.health = health;
+		this.armour = armour;
+		this.energy = energy;
+	}
+	
+	public Entity(Entity anEntity){
+		this(anEntity.getName(), anEntity.getMax(), anEntity.getHealth(), anEntity.getArmour(), anEntity.getEnergy());
+	}
+	
 	public void setName(String name){
 		this.name=name;
 	}
@@ -21,7 +33,7 @@ public class Entity{
 		if (maximumHealth>=1){
 			this.maxHealth=maximumHealth;
 		}else{
-			this.maxhealth=1;
+			this.maxHealth=1;
 		}
 	}
 	public void setArmour(byte armour){
@@ -52,5 +64,17 @@ public class Entity{
 	}
 	public byte getEnergy(){
 		return energy;
+	}
+	
+	public boolean Alive()
+	{
+		if(health>0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
