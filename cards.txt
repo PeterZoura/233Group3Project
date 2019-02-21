@@ -1,0 +1,4 @@
+Iron Wave,0,5,5,1
+Block,0,0,5,1
+Strike,0,5,0,1
+Over Powered,20,15,33,3
