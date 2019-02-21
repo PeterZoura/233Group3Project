@@ -49,6 +49,22 @@ public class Entity {
 	}
 	
 	/**
+	 * @param amount lose this amount of energy.
+	 */
+	public void useEnergy(int amount) {
+		if (amount > 0)
+			setEnergy(energy - amount);
+	}
+	
+	/**
+	 * @param amount gain this amount of energy.
+	 */
+	public void gainEnergy(int amount) {
+		if (amount > 0)
+			setEnergy(energy + amount);
+	}
+	
+	/**
 	 * @param amount add this amount of armour.
 	 */
 	public void block(int amount) {
