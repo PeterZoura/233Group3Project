@@ -1,5 +1,8 @@
-import java.util.*;
-public class Card{
+/**
+ * Each Card object possesses the ability to heal, damage and block, and a cost, name, and description.
+ */
+public class Card {
+	
 	private int heal;
 	private int damage;
 	private int block;
@@ -7,116 +10,118 @@ public class Card{
 	private String name;
 	private String description;
 
-// Constructors
-	public Card(int heal, int damage, int block, String name, String description)
-	{
+	/**
+	 * Creates the Card with the given amount of healing, damage, block and mana cost, as well as a name and description.
+	 */
+	public Card(int heal, int damage, int block, int cost, String name, String description) {
 		this.heal = heal;
 		this.damage = damage;
 		this.block = block;
 		this.name = name;
+		this.cost = cost;
 		this.description = description;
 	}
-	
-	public Card(int heal, int damage, int block, int cost, String name)
-	{
+
+	/**
+	 * Creates the Card with the given amount of healing, damage, block and mana cost, as well as a name. Automatically generates a description based on the given values.
+	 */
+	public Card(int heal, int damage, int block, int cost, String name) {
 		this.heal = heal;
 		this.damage = damage;
 		this.block = block;
 		this.cost = cost;
 		this.name = name;
-		this.description = String.format("Costs %d mana. ", cost);
-		if (heal>0)
-		{
-			description = description + String.format("Heal %d health to yourself. ", this.heal);
-		}
 		
-		if (damage>0)
-		{
-			description = description + String.format("Deal %d damage to an enemy. ", this.damage);
-		}
+		description = String.format("Costs %d mana. ", cost);
+		if (heal > 0)
+			description += String.format("Heal %d health to yourself. ", this.heal);
+
+		if (damage > 0)
+			description += String.format("Deal %d damage to an enemy. ", this.damage);
+
+		if (block > 0)
+			description += String.format("Block %d damage for the next turn. ", this.block);
 		
-		if (block>0)
-		{
-			description = description + String.format("Block %d damage for the next turn. ", this.block);
-		}
-		
-		if (description.equals(""))
-		{
-			description = "This card does nothing";
-		}
 	}
-	
-	public Card(Card aCard)
-	{
+
+	/**
+	 * @param aCard clones this Card object.
+	 */
+	public Card(Card aCard) {
 		this(aCard.getHeal(), aCard.getDamage(), aCard.getBlock(), aCard.getCost(), aCard.getName(), aCard.getDescription());
 	}
 	
-// Getter Methods
-	public String getName()
-	{
+	/**
+	 * @return the Card's name.
+	 */
+	public String getName() {
 		return this.name;
 	}
-	
-	public String getDescription()
-	{
+
+	/**
+	 * @return the Card's description.
+	 */
+	public String getDescription() {
 		return this.description;
 	}
-	
-	public int getDamage()
-	{
+
+	/**
+	 * @return the Card's damage.
+	 */
+	public int getDamage() {
 		return this.damage;
 	}
-	
-	public int getHeal()
-	{
+
+	/**
+	 * @return the Card's healing.
+	 */
+	public int getHeal() {
 		return this.heal;
 	}
-	
-	public int getBlock()
-	{
-		return this.armour;
+
+	/**
+	 * @return the Card's block.
+	 */
+	public int getBlock() {
+		return this.block;
 	}
-	
-	public int getCost()
-	{
+
+	/**
+	 * @return the Card's mana cost.
+	 */
+	public int getCost() {
 		return this.cost;
 	}
-	
-// Utility Methods
-	// Returns true if user has enough energy, returns false if user does not.
-	public boolean use(Entity user, Entity target)
-	{
-		if (user.energy >= this.cost)
-		{
-			if (this.heal>0)
-			{
-				user.setHealth(user.getHealth()+this.heal);
+
+	/**
+	 * Attempts to use the Card on a given user and target. Returns true if the user has enough mana and the use is successful, otherwise returns false.
+	 * @param user the Entity using the card.
+	 * @param target the Entity the user is targeting with the card.
+	 * @return whether or not the user had enough mana for the Card to be used.
+	 */
+	public boolean use(Entity user, Entity target) {
+		if (user.getEnergy() >= this.cost) {
+			if (this.heal > 0) {
+				user.setHealth(user.getHealth() + this.heal);
 			}
-			if (this.damage>0)
-			{
-				target.setHealth(user.getHealth()-this.damage);
+			if (this.damage > 0) {
+				target.setHealth(user.getHealth() - this.damage);
 			}
-			if (this.block>0)
-			{
-				user.setArmour(user.getArmour()+this.block);
+			if (this.block > 0) {
+				user.setArmour(user.getArmour() + this.block);
 			}
-			user.setEnergy(user.getEnergy()-this.cost);
+			user.setEnergy(user.getEnergy() - this.cost);
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
 
 // Test Main Function (not to be used during demo 1
 	/*
-	public static void main(String[] Args)
-	{
-		Card nCard = new Card(1,2,0,"Vampiric Touch");
-		Card card2 = new Card(nCard);
-		System.out.println(card2.getName());
-		System.out.println(card2.getDescription());
-	}
-	*/
+	 * public static void main(String[] Args) { Card nCard = new
+	 * Card(1,2,0,"Vampiric Touch"); Card card2 = new Card(nCard);
+	 * System.out.println(card2.getName());
+	 * System.out.println(card2.getDescription()); }
+	 */
 }
