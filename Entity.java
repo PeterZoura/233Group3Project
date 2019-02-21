@@ -31,6 +31,30 @@ public class Entity {
 	public Entity(Entity anEntity) {
 		this(anEntity.getName(), anEntity.getMaxHealth(), anEntity.getHealth(), anEntity.getArmour(), anEntity.getMaxEnergy(), anEntity.getEnergy(), anEntity.getDeck());
 	}
+	
+	/**
+	 * @param amount damage to deal to the entity. Damages armour first, then health.
+	 */
+	public void damage(int amount) {
+		if (amount > 0)
+			setHealth(health - (amount - armour));
+	}
+	
+	/**
+	 * @param amount heal this amount health (cannot exceed maximum health).
+	 */
+	public void heal(int amount) {
+		if (amount > 0)
+			setHealth(health + amount);
+	}
+	
+	/**
+	 * @param amount add this amount of armour.
+	 */
+	public void block(int amount) {
+		if (amount > 0)
+			setArmour(armour + amount);
+	}
 
 	/**
 	 * Sets the Entity's name.
