@@ -1,79 +1,157 @@
-public class Entity{
+/**
+ * Contains basic behavior and traits to be used by both the Player and Monster Classes.
+ */
+public class Entity {
+	
 	private String name;
 	private int maxHealth;
 	private int health;
-	private byte armour;
-	private byte energy;
-	
-	public Entity(String name, int maxHealth, int health, int armour, int energy){
+	private int armour;
+	private int maxEnergy;
+	private int energy;
+	private Deck deck;
+
+	/**
+	 * Creates an Entity with a given name, maximum health, health, armour, and energy.
+	 */
+	public Entity(String name, int maxHealth, int health, int armour, int maxEnergy, int energy, Deck deck) {
 		this.name = name;
 		this.maxHealth = maxHealth;
 		this.health = health;
 		this.armour = armour;
+		this.maxEnergy = maxEnergy;
 		this.energy = energy;
+		this.deck = new Deck(deck);
+	}
+
+	/**
+	 * Clones a given Entity.
+	 * @param anEntity The Entity to clone.
+	 */
+	public Entity(Entity anEntity) {
+		this(anEntity.getName(), anEntity.getMaxHealth(), anEntity.getHealth(), anEntity.getArmour(), anEntity.getMaxEnergy(), anEntity.getEnergy(), anEntity.getDeck());
+	}
+
+	/**
+	 * Sets the Entity's name.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Sets the Entity's health; if the given value is below 0, health is set to 0, and if it is above the Entity's maximum health, it is set to the Entity's maximum health.
+	 */
+	public void setHealth(int health) {
+		if (health >= maxHealth) {
+			this.health = maxHealth;
+		} else if (health <= 0) {
+			this.health = 0;
+		} else {
+			this.health = health;
+		}
+	}
+
+	/**
+	 * Sets the Entity's maximum health. If the given value is less than 1, defaults to 1.
+	 */
+	public void setMaxHealth(int maximumHealth) {
+		if (maximumHealth >= 1) {
+			this.maxHealth = maximumHealth;
+		} else {
+			this.maxHealth = 1;
+		}
+	}
+
+	/**
+	 * Sets the Entity's armour. If the given value is less than 0, defaults to 0.
+	 */
+	public void setArmour(int armour) {
+		if (armour >= 0) {
+			this.armour = armour;
+		} else {
+			this.armour = 0;
+		}
 	}
 	
-	public Entity(Entity anEntity){
-		this(anEntity.getName(), anEntity.getMax(), anEntity.getHealth(), anEntity.getArmour(), anEntity.getEnergy());
+	/**
+	 * Sets the Entity's energy. If the given value is less than 0, defaults to 0.
+	 */
+	public void setEnergy(int energy) {
+		if (energy >= 0) {
+			this.energy = energy;
+		} else {
+			this.energy = 0;
+		}
 	}
 	
-	public void setName(String name){
-		this.name=name;
-	}
-	public void setHealth(int health){
-		if (health>=maxHealth){
-			this.health=maxHealth;
-		}else if(health<=0){
-			this.health=0;
-		}else{
-			this.health=health;
+	/**
+	 * Sets the Entity's maximum energy. If the given value is less than 0, defaults to 0.
+	 */
+	public void setMaxEnergy(int maxEnergy) {
+		if (maxEnergy >= 0) {
+			this.maxEnergy = maxEnergy;
+		} else {
+			this.maxEnergy = 0;
 		}
 	}
-	public void setMax(int maximumHealth){
-		if (maximumHealth>=1){
-			this.maxHealth=maximumHealth;
-		}else{
-			this.maxHealth=1;
-		}
-	}
-	public void setArmour(byte armour){
-		if (armour>=0){
-			this.armour=armour;
-		}else{
-			this.armour=0;
-		}
-	}
-	public void setEnergy(byte energy){
-		if (energy>=0){
-			this.energy=energy;
-		}else{
-			this.energy=0;
-		}
-	}
-	public String getName(){
+
+	/**
+	 * @return the Entity's name.
+	 */
+	public String getName() {
 		return name;
 	}
-	public int getMax(){
+
+	/**
+	 * @return the Entity's maximum health.
+	 */
+	public int getMaxHealth() {
 		return maxHealth;
 	}
-	public int getHealth(){
+
+	/**
+	 * @return the Entity's health.
+	 */
+	public int getHealth() {
 		return health;
 	}
-	public byte getArmour(){
+
+	/**
+	 * @return the Entity's armour.
+	 */
+	public int getArmour() {
 		return armour;
 	}
-	public byte getEnergy(){
+
+	/**
+	 * @return the Entity's energy.
+	 */
+	public int getEnergy() {
 		return energy;
 	}
+
+	/**
+	 * @return the Entity's maximum energy.
+	 */
+	public int getMaxEnergy() {
+		return maxEnergy;
+	}
 	
-	public boolean Alive()
-	{
-		if(health>0)
-		{
+	/**
+	 * @return the Entity's Deck.
+	 */
+	public Deck getDeck() {
+		return new Deck(deck);
+	}
+
+	/**
+	 * @return whether or not the Entity's health is above 0.
+	 */
+	public boolean Alive() {
+		if (health > 0) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
