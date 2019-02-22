@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,6 +42,58 @@ public class Deck {
 		for (Card c: cardList)
 			newList.add(new Card(c));
 		return newList;
+	}
+	
+	/**
+	 * @return a numbered list showing each card in the hand.
+	 */
+	public String handToString() {
+		String s = "";
+		for (int i = 0; i < hand.size(); i ++) {
+			s += "\n" + i + ": " + hand.get(i).getName();
+		}
+		return s;
+	}
+	
+	/**
+	 * Fills the draw pile with all cards present in the deck.
+	 */
+	public void startCombat() {
+		drawPile = clone(deck);
+		Collections.shuffle(drawPile);
+	}
+	
+	/**
+	 * Clears the draw pile, discard pile, and hand.
+	 */
+	public void endCombat() {
+		drawPile.clear();
+		hand.clear();
+		discardPile.clear();
+	}
+	
+	/**
+	 * If less than 5 cards remain in the draw pile, shuffles the discard pile and moves it to the draw pile. Moves 5 cards from the draw pile to the hand. 
+	 */
+	public void startTurn() {
+		if (drawPile.size() < 5) {
+			Collections.shuffle(discardPile);
+			drawPile = clone(discardPile);
+			discardPile.clear();
+		}
+		
+		for (int i = 0; i < 5; i ++) {
+			hand.add(new Card(drawPile.get(0)));
+			drawPile.remove(0);
+		}
+	}
+	
+	/**
+	 * Moves the hand to the discard pile.
+	 */
+	public void endTurn() {
+		discardPile.addAll(clone(hand));
+		hand.clear();
 	}
 
 	/**
