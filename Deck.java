@@ -176,7 +176,6 @@ public class Deck {
 	 */
 	public Card drawFromDeck(int cardIndex) {
 		Card aCard = new Card(deck.get(cardIndex));
-		deck.remove(cardIndex);
 		return aCard;
 	}
 
