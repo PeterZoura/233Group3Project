@@ -8,7 +8,7 @@ public class Game {
 		Scanner in = new Scanner(System.in);
 		System.out.println("What would you like to name your character?");
 		String name = in.nextLine();
-		Player player = new Player(name, 80, Cards.get("Strike"), Cards.get("Strike"), Cards.get("Strike"), Cards.get("Block"), Cards.get("Block"));
+		Player player = new Player(name, 80, Cards.get("Strike"), Cards.get("Strike"), Cards.get("Strike"), Cards.get("Block"), Cards.get("Block"), Cards.get("Block"), Cards.get("Block"));
 		
 		while (player.alive()) {
 			
@@ -31,6 +31,8 @@ public class Game {
 				printStats(player, monster);
 				
 				monster.getMove().use(monster, player);
+				monster.setArmour(0);
+				player.setArmour(0);
 				
 			}
 			
@@ -42,7 +44,7 @@ public class Game {
 	}
 	
 	public static void printStats(Entity player, Entity monster) {
-		System.out.println("\nHealth: " + player.getHealth() + "/" + player.getMaxHealth() + 
+		System.out.println("\n\n\n\n\n\nHealth: " + player.getHealth() + "/" + player.getMaxHealth() + 
 				"      Energy: " + player.getEnergy() + "/" + player.getMaxEnergy()      + 
 				"      Armour: " + player.getArmour() + 
 				"\nMonster health: " + monster.getHealth() + "/" + monster.getMaxHealth() + 
