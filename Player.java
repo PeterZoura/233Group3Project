@@ -80,4 +80,11 @@ public class Player extends Entity {
 		deck.endCombat();
 	}
 	
+	/**
+	 * @param c add this card to the player's deck.
+	 */
+	public void addCard(Card c) {
+		deck.addToDeck(c);
+	}
+	
 }
