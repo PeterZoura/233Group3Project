@@ -145,15 +145,6 @@ public class Deck {
 		return this.discardPile.size();
 	}
 
-	// Getter method for Deck,discardPile and drawPile
-	public ArrayList<Card> getPile(ArrayList<Card> cardSource) { //Not sure what the purpose of this method is.
-		ArrayList<Card> tempDeck = new ArrayList<Card>();
-		for (Card temp : cardSource) {
-			tempDeck.add(temp);
-		}
-		return tempDeck;
-	}
-
 	/**
 	 * @param aCard add this card to the deck.
 	 */
@@ -231,55 +222,5 @@ public class Deck {
 		Card aCard = new Card(deck.get(cardIndex));
 		return aCard;
 	}
-
-	/*
-	 * Didn't make a constructor class for Deck because I assume you'll need to add
-	 * cards separately, to Hand, discard Pile...
-	 */
-	
-	/*
-
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("____Deck");
-		for (Card aCard : deck) {
-			builder.append("\n");
-			builder.append(aCard.getName());
-		}
-		builder.append("\n");
-		builder.append("____DiscardPile");
-		for (Card aCard : discardPile) {
-			builder.append("\n");
-			builder.append(aCard.getName());
-		}
-		builder.append("\n");
-		builder.append("____Hand");
-		for (Card aCard : hand) {
-			builder.append("\n");
-			builder.append(aCard.getName());
-		}
-		builder.append("\n");
-		return builder.toString();
-	}
-
-	public static void main(String[] Args) {
-		Card nCard = new Card(1, 2, 0, "Vampiric Touch");
-		Card bCard = new Card(0, 0, 0, "Splash");
-		Card cCard = new Card(0, 1, 0, "Poke");
-		Card dCard = new Card(5, 5, 5, "Divine Slap", "Wow such holiness");
-		Card zCard = new Card(6, 6, 6, "Summoning");
-		System.out.println(nCard.getName());
-		System.out.println(nCard.getDescription());
-		Deck aDeck = new Deck();
-		List<Card> stack = Arrays.asList(nCard, bCard, cCard, dCard, zCard);
-		aDeck.addToDeck(stack);
-		aDeck.addToHand(stack);
-		Card takenFromHand = new Card(aDeck.drawFromHand(1));
-		Card takenFromDeck = new Card(aDeck.drawFromDeck(3));
-		System.out.println(aDeck.toString());
-
-	}
-	
-	*/
 
 }
