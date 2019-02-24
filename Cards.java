@@ -50,7 +50,7 @@ public class Cards {
 	 */
 	public static Card randomP () {
 		Card c;
-		while ((c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Player"));
+		while ((c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Monster"));
 		return c;
 	}
 	
