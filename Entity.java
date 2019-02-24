@@ -35,7 +35,7 @@ public class Entity {
 	 */
 	public void damage(int amount) {
 		if (amount > 0) {
-			setHealth(health - (amount - armour));
+			setHealth(health - Math.max(amount - armour, 0));
 			setArmour(armour - amount);
 		}
 	}
