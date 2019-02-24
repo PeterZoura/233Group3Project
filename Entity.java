@@ -34,8 +34,10 @@ public class Entity {
 	 * @param amount damage to deal to the entity. Damages armour first, then health.
 	 */
 	public void damage(int amount) {
-		if (amount > 0)
+		if (amount > 0) {
 			setHealth(health - (amount - armour));
+			setArmour(armour - amount);
+		}
 	}
 	
 	/**
