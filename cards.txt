@@ -1,5 +1,4 @@
 Iron Wave,0,5,5,1
-Block,0,0,5,1
 Strike,0,5,0,1
 Bash,0,8,0,2
 Defend,0,0,5,1
