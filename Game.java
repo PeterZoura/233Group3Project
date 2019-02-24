@@ -13,18 +13,23 @@ public class Game {
 		
 		Cards.load();
 		
+		Monster[] monsters = {new Monster("Slime", 19, Cards.get("Monster Attack"), Cards.get("Monster Block")),
+							  new Monster("Jaw Worm", 44, Cards.get("Monster Attack"), Cards.get("Monster Block"), Cards.get("Monster BlAttack")),
+							  new Monster("Louse", 16, Cards.get("Monster WkAttack"), Cards.get("Monster BlAttack"), Cards.get("Monster StBlock"), Cards.get("Monster Block")),
+							  new Monster("Gremlin Nob", 82, Cards.get("Monster Attack"), Cards.get("Monster StAttack"), Cards.get("Monster StAttack"))};
+		
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("Please enter your name:");
 		String name = in.nextLine();
-		Player player = new Player(name, 10, Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP());
+		Player player = new Player(name, 50, Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP());
 		
 		pressEnter(in, "Welcome, " + name + ", to Slay the Spire! In this brief demo, you will be challenged by enemies until you are defeated."
 				+ " Use your cards to attack and defend against the monsters!");
 		
 		while (player.alive()) {
 			
-			Monster monster = new Monster("Slime", 19, Cards.get("Monster Attack"), Cards.get("Monster Block"), Cards.get("Monster BlAttack"));
+			Monster monster = getNextMonster(monsters);
 			
 			System.out.println("An opponent has arrived: " + monster.getName());
 			
@@ -71,6 +76,12 @@ public class Game {
 		}	
 		
 		in.close();
+	}
+	
+	public static Monster getNextMonster(Monster[] monsters) {
+		Monster m = monsters[(int) (Math.random() * monsters.length)];
+		m.heal(m.getMaxHealth());
+		return m;
 	}
 	
 	/**
