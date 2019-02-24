@@ -78,6 +78,11 @@ public class Game {
 		in.close();
 	}
 	
+	/**
+	 * Returns a random monster from a given array, with full health.
+	 * @param monsters the monsters to choose from.
+	 * @return a random monster, with restored health.
+	 */
 	public static Monster getNextMonster(Monster[] monsters) {
 		Monster m = monsters[(int) (Math.random() * monsters.length)];
 		m.heal(m.getMaxHealth());
