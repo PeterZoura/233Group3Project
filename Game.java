@@ -16,7 +16,7 @@ public class Game {
 		Monster[] monsters = {new Monster("Slime", 19, Cards.get("Monster Attack"), Cards.get("Monster Block")),
 							  new Monster("Jaw Worm", 44, Cards.get("Monster Attack"), Cards.get("Monster Block"), Cards.get("Monster BlAttack")),
 							  new Monster("Louse", 16, Cards.get("Monster WkAttack"), Cards.get("Monster BlAttack"), Cards.get("Monster StBlock"), Cards.get("Monster Block")),
-							  new Monster("Gremlin Nob", 82, Cards.get("Monster Attack"), Cards.get("Monster StAttack"), Cards.get("Monster StAttack"))};
+							  new Monster("Gremlin Nob", 82, Cards.get("Monster Attack"), Cards.get("Monster StAttack"), Cards.get("Monster HvAttack"))};
 		
 		Scanner in = new Scanner(System.in);
 		
