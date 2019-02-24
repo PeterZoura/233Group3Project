@@ -78,7 +78,7 @@ public class Deck {
 	public void startTurn() {
 		if (drawPile.size() < 5) {
 			Collections.shuffle(discardPile);
-			drawPile = clone(discardPile);
+			drawPile.addAll(clone(discardPile));
 			discardPile.clear();
 		}
 		
