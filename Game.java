@@ -22,7 +22,7 @@ public class Game {
 		
 		System.out.println("Please enter your name:");
 		String name = in.nextLine();
-		Player player = new Player(name, 50, Cards.get("Strike"), Cards.get("Strike"), Cards.get("Strike"), Cards.get("Block"), Cards.randomP(), Cards.randomP(), Cards.randomP());
+		Player player = new Player(name, 50, Cards.get("Strike"), Cards.get("Strike"), Cards.get("Strike"), Cards.get("Defend"), Cards.randomP(), Cards.randomP(), Cards.randomP());
 		
 		pressEnter(in, "Welcome, " + name + ", to Slay the Spire! In this brief demo, you will be challenged by enemies until you are defeated."
 				+ " Use your cards to attack and defend against the monsters!");
