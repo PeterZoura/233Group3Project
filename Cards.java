@@ -15,20 +15,15 @@ public class Cards {
 	 */
 	public static void load () {
 		cards = new ArrayList<Card>();
-		//I have to catch errors(or throw the error) when working with files because java says so.
 		try {
-			//Similar to reading user input, this Scanner reads from a file.
 			Scanner read = new Scanner(new File("cards.txt"));
-			//Loops until the end of the file is reached.
 			while (read.hasNextLine()) {
 				String[] traits = read.nextLine().split(",");
 				cards.add(new Card(Integer.parseInt(traits[1]), Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), traits[0]));
 			}
-			//Leaving the Scanner open can cause the file to remain in use and become inaccessible.
 			read.close();
 			
 		} catch (IOException e) {
-			//Prints the source of error if the 'try' section of the try-catch encountered any.
 			e.printStackTrace();
 		}
 	}
@@ -61,14 +56,6 @@ public class Cards {
 		Card c;
 		while (!(c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Monster"));
 		return c;
-	}
-	
-	
-	
-	public static void main(String[] args) {
-		load();
-		System.out.println(randomP().getDescription());
-		System.out.println(get("Block").getDescription());
 	}
 
 }
