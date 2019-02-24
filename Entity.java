@@ -9,19 +9,17 @@ public class Entity {
 	private int armour;
 	private int maxEnergy;
 	private int energy;
-	private Deck deck;
 
 	/**
 	 * Creates an Entity with a given name, maximum health, health, armour, and energy.
 	 */
-	public Entity(String name, int maxHealth, int health, int armour, int maxEnergy, int energy, Deck deck) {
+	public Entity(String name, int maxHealth, int health, int armour, int maxEnergy, int energy) {
 		this.name = name;
 		this.maxHealth = maxHealth;
 		this.health = health;
 		this.armour = armour;
 		this.maxEnergy = maxEnergy;
 		this.energy = energy;
-		this.deck = new Deck(deck);
 	}
 
 	/**
@@ -29,15 +27,17 @@ public class Entity {
 	 * @param anEntity The Entity to clone.
 	 */
 	public Entity(Entity anEntity) {
-		this(anEntity.getName(), anEntity.getMaxHealth(), anEntity.getHealth(), anEntity.getArmour(), anEntity.getMaxEnergy(), anEntity.getEnergy(), anEntity.getDeck());
+		this(anEntity.getName(), anEntity.getMaxHealth(), anEntity.getHealth(), anEntity.getArmour(), anEntity.getMaxEnergy(), anEntity.getEnergy());
 	}
 	
 	/**
 	 * @param amount damage to deal to the entity. Damages armour first, then health.
 	 */
 	public void damage(int amount) {
-		if (amount > 0)
-			setHealth(health - (amount - armour));
+		if (amount > 0) {
+			setHealth(health - Math.max(amount - armour, 0));
+			setArmour(armour - amount);
+		}
 	}
 	
 	/**
@@ -177,18 +177,11 @@ public class Entity {
 	public int getMaxEnergy() {
 		return maxEnergy;
 	}
-	
-	/**
-	 * @return the Entity's Deck.
-	 */
-	public Deck getDeck() {
-		return new Deck(deck);
-	}
 
 	/**
 	 * @return whether or not the Entity's health is above 0.
 	 */
-	public boolean Alive() {
+	public boolean alive() {
 		if (health > 0) {
 			return true;
 		} else {

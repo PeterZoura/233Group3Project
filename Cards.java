@@ -46,18 +46,28 @@ public class Cards {
 	}
 	
 	/**
-	 * @return a random Card object.
+	 * @return a random Card object (for use by the player).
 	 */
-	public static Card getRandom () {
-		//See: https://dzone.com/articles/random-number-generation-in-java
-		return cards.get((int) (Math.random() * cards.size()));
+	public static Card randomP () {
+		Card c;
+		while ((c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Monster"));
+		return c;
+	}
+	
+	/**
+	 * @return a random Card object (for use by the monsters).
+	 */
+	public static Card randomM () {
+		Card c;
+		while (!(c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Monster"));
+		return c;
 	}
 	
 	
 	
 	public static void main(String[] args) {
 		load();
-		System.out.println(getRandom().getDescription());
+		System.out.println(randomP().getDescription());
 		System.out.println(get("Block").getDescription());
 	}
 
