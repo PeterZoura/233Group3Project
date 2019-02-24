@@ -70,12 +70,25 @@ public class Game {
 			
 			if (!player.alive())
 				System.out.println("DEFEAT!");
-			else
+			else {
 				pressEnter(in, monster.getName() + " has been slain!");
+				Card reward = newCard();
+				pressEnter(in, "Your reward: " + reward.getName() + "\n" + reward.getDescription());
+				player.addCard(reward);
+			}
 			
 		}	
 		
 		in.close();
+	}
+	
+	/**
+	 * @return a random player card, cannot be Strike.
+	 */
+	public static Card newCard() {
+		Card c;
+		while((c = Cards.randomP()).getName().equals("Strike"));
+		return c;
 	}
 	
 	/**
