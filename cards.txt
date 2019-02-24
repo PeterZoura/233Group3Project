@@ -1,6 +1,11 @@
 Iron Wave,0,5,5,1
 Block,0,0,5,1
 Strike,0,5,0,1
+Monster WkAttack,0,4,0,0
 Monster Attack,0,7,0,0
+Monster StAttack,0,16,0,0
+Monster StAttack+,0,24,0,0
+Monster WkBlock,0,0,4,0
 Monster Block,0,0,8,0
+Monster StBlock,0,0,18,0
 Monster BlAttack,0,5,7,0
