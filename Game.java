@@ -17,7 +17,7 @@ public class Game {
 		
 		System.out.println("Please enter your name:");
 		String name = in.nextLine();
-		Player player = new Player(name, 10, Cards.getRandom(), Cards.getRandom(), Cards.getRandom(), Cards.getRandom(), Cards.getRandom(), Cards.getRandom(), Cards.getRandom());
+		Player player = new Player(name, 10, Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP(), Cards.randomP());
 		
 		pressEnter(in, "Welcome, " + name + ", to Slay the Spire! In this brief demo, you will be challenged by enemies until you are defeated."
 				+ " Use your cards to attack and defend against the monsters!");
