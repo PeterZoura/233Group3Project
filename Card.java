@@ -33,6 +33,8 @@ public class Card {
 		this.name = name;
 		
 		description = String.format("Costs %d mana. ", cost);
+		if (heal < 0)
+			description += "Take " + -1*this.heal + " damage to yourself. ";
 		if (heal > 0)
 			description += String.format("Heal %d health to yourself. ", this.heal);
 
@@ -113,12 +115,3 @@ public class Card {
 			return false;
 		}
 	}
-
-// Test Main Function (not to be used during demo 1
-	/*
-	 * public static void main(String[] Args) { Card nCard = new
-	 * Card(1,2,0,"Vampiric Touch"); Card card2 = new Card(nCard);
-	 * System.out.println(card2.getName());
-	 * System.out.println(card2.getDescription()); }
-	 */
-}
