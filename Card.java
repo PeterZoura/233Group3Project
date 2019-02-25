@@ -103,7 +103,7 @@ public class Card {
 	 */
 	public boolean use(Entity user, Entity target) {
 		if (user.getEnergy() >= this.cost) {
-			if (heal > 0) 
+			if (heal != 0) 
 				user.heal(heal);	
 			if (damage > 0) 
 				target.damage(damage);	
@@ -115,4 +115,5 @@ public class Card {
 			return false;
 		}
 	}
+	
 }
