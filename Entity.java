@@ -44,8 +44,7 @@ public class Entity {
 	 * @param amount heal this amount health (cannot exceed maximum health).
 	 */
 	public void heal(int amount) {
-		if (amount > 0)
-			setHealth(health + amount);
+		setHealth(health + amount);
 	}
 	
 	/**
