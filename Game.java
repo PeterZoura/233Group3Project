@@ -11,21 +11,21 @@ public class Game {
 	 */
 	public static void main(String[] args) {
 		
-		Cards.load();
+		CardsUtil.load();
 		
-		Monster[] monsters = {new Monster("Slime", 19, Cards.get("Monster Attack"), Cards.get("Monster Block")),
-							  new Monster("Jaw Worm", 44, Cards.get("Monster Attack"), Cards.get("Monster Block"), Cards.get("Monster BlAttack")),
-							  new Monster("Louse", 16, Cards.get("Monster WkAttack"), Cards.get("Monster BlAttack"), Cards.get("Monster StBlock"), Cards.get("Monster Block")),
-							  new Monster("Gremlin Nob", 82, Cards.get("Monster Attack"), Cards.get("Monster StAttack"), Cards.get("Monster HvAttack"))};
+		Monster[] monsters = {new Monster("Slime", 19, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block")),
+							  new Monster("Jaw Worm", 44, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster BlAttack")),
+							  new Monster("Louse", 16, CardsUtil.get("Monster WkAttack"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster StBlock"), CardsUtil.get("Monster Block")),
+							  new Monster("Gremlin Nob", 82, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster StAttack"), CardsUtil.get("Monster HvAttack"))};
 		
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("Please enter your name:");
 		String name = in.nextLine();
-		Player player = new Player(name, 50, Cards.get("Strike"), Cards.get("Strike"), Cards.get("Strike"), Cards.get("Defend"), Cards.randomP(), Cards.randomP(), Cards.randomP());
+		Player player = new Player(name, 50, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"), CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		
 		pressEnter(in, "Welcome, " + name + ", to Slay the Spire! In this brief demo, you will be challenged by enemies until you are defeated."
-				+ " Use your cards to attack and defend against the monsters!");
+				+ " Use your CardsUtil to attack and defend against the monsters!");
 		
 		while (player.alive()) {
 			
@@ -40,7 +40,6 @@ public class Game {
 				monster.setMove();
 				System.out.println(monster.intentions());
 				
-				player.setArmour(0);
 				player.startTurn();
 				printStats(player, monster);
 				
@@ -55,7 +54,6 @@ public class Game {
 					pressEnter(in, player.getName() + "'s turn is over!");
 					
 					System.out.println(monster.getName() + "'s turn!");
-					monster.setArmour(0);
 					printStats(player, monster);
 					
 					monster.getMove().use(monster, player);
@@ -87,7 +85,7 @@ public class Game {
 	 */
 	public static Card newCard() {
 		Card c;
-		while((c = Cards.randomP()).getName().equals("Strike"));
+		while((c = CardsUtil.randomP()).getName().equals("Strike"));
 		return c;
 	}
 	
@@ -108,9 +106,9 @@ public class Game {
 	public static void printStats(Entity player, Entity monster) {
 		System.out.println("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() + 
 				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy()     + 
-				"      Armour: " + player.getArmour() + "\n" + 
+				"      Armour: " + player.getArmour().getCurrentVal() + "\n" + 
 				monster.getName() + ":    health: " + monster.getHealth() + "/" + monster.getMaxHealth() + 
-				"      Armour: " + monster.getArmour() + "\n");
+				"      Armour: " + monster.getArmour().getCurrentVal() + "\n");
 	}
 	
 	/**
