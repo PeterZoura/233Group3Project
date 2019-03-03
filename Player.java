@@ -51,26 +51,28 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Fills the Player's hand and resets the Player's energy.
+	 * Updates the Player's attributes, fills the Player's hand and resets the Player's energy.
 	 */
 	public void startTurn() {
+		super.startTurn();
 		deck.startTurn();
 		setEnergy(getMaxEnergy());
 	}
 	
 	/**
-	 * Empties the Player's hand into the discard pile.
+	 * Updates the Player's attributes, and empties the Player's hand into the discard pile.
 	 */
 	public void endTurn() {
+		super.endTurn();
 		deck.endTurn();
 	}
 	
 	/**
-	 * Fills the Player's draw pile and fills the Player's energy.
+	 * Resets the Player's attributes, and fills the Player's draw pile.
 	 */
 	public void startCombat() {
+		super.startCombat();
 		deck.startCombat();
-		setEnergy(getMaxEnergy());
 	}
 	
 	/**
