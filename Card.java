@@ -97,6 +97,7 @@ public class Card {
 
 	/**
 	 * Attempts to use the Card on a given user and target. Returns true if the user has enough mana and the use is successful, otherwise returns false.
+	 * Applies additional modifiers on the card's effects based on the user's values for strength, weak, dexterity, and frail.
 	 * @param user the Entity using the card.
 	 * @param target the Entity the user is targeting with the card.
 	 * @return whether or not the user had enough mana for the Card to be used.
@@ -105,10 +106,10 @@ public class Card {
 		if (user.getEnergy() >= this.cost) {
 			if (heal != 0) 
 				user.heal(heal);	
-			if (damage > 0) 
-				target.damage(damage);	
+			if (damage > 0)
+				target.damage((int) ((damage + user.getStrength().getCurrentVal()) * (user.getWeak().equals(0) ? 1 : 0.75)));	
 			if (block > 0) 
-				user.block(block);
+				user.block((int) ((block + user.getDexterity().getCurrentVal()) * (user.getFrail().equals(0) ? 1 : 0.75)));
 			user.useEnergy(cost);
 			return true;
 		} else {
