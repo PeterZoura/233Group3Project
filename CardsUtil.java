@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * Holds and allows access to all Card objects. the load method must be called exactly once for this classes' other methods to be used without error.
  */
-public class Cards {
+public class CardsUtil {
 
 	private static ArrayList<Card> cards;
 	
@@ -23,7 +23,7 @@ public class Cards {
 			}
 			read.close();
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
