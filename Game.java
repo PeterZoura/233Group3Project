@@ -12,9 +12,9 @@ public class Game {
 	public static void main(String[] args) {
 		CardsUtil.load();		
 		Monster slime = new Monster("Slime", 19, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block")),
-			  jawWorm = new Monster("Jaw Worm", 44, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster BlAttack")),
+				jawWorm = new Monster("Jaw Worm", 44, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster BlAttack")),
 			    louse = new Monster("Louse", 16, CardsUtil.get("Monster WkAttack"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster StBlock"), CardsUtil.get("Monster Block")),
-		   gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster StAttack"), CardsUtil.get("Monster HvAttack"));
+			    gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster StAttack"), CardsUtil.get("Monster HvAttack"));
 		
 		Monster[] monsters = new Monster[] {slime, jawWorm, louse, gremlinNob};
 		
@@ -27,7 +27,7 @@ public class Game {
 			player.startCombat();
 			
 			while (monster.alive() && player.alive()) {
-				playerTurn(in, player, monster);
+				playerTurn(player, monster);
 				player.endTurn();
 				endTurn(in, player, monster);
 			}
@@ -45,14 +45,14 @@ public class Game {
 	 */
 	public static String intro(Scanner in) {
 		System.out.println("Please enter your name:");
-		String name = in.next();
+		String name = in.nextLine();
 		pressEnter(in, "Welcome, " + name + ", to Slay the Spire! In this brief demo, you will be challenged by enemies until you are defeated."
 				+ " Use your CardsUtil to attack and defend against the monsters!");
 		return name;
 	}
 	
 	/**
-	 * Runs the player's turn, and runs until the player end their turn.
+	 * Runs the player's turn, and loops until the player ends their turn.
 	 * @param player
 	 * @param monster
 	 */
@@ -70,6 +70,12 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Prints out end turn messages and prompts the user to hit enter.
+	 * @param in this Scanner will be used to take the player's input.
+	 * @param player
+	 * @param monster
+	 */
 	public static void endTurn(Scanner in, Player player, Monster monster) {
 		if (monster.alive() && player.alive()) {
 			pressEnter(in, player.getName() + "'s turn is over!");
@@ -84,6 +90,12 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Prints if the monster or player won. Adds a random card to the player's deck if they won.
+	 * @param in this Scanner will be used to prompt the user to hit enter.
+	 * @param player
+	 * @param monster
+	 */
 	public static void endCombat(Scanner in, Player player, Monster monster) {
 		if (!player.alive())
 			System.out.println("DEFEAT!");
