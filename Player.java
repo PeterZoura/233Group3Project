@@ -33,12 +33,20 @@ public class Player extends Entity {
 			System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.");
 			
 			if (in.nextLine().equals("")) {
-				
-				if (card.use(this, target)) {
-					deck.drawFromHand(whichCard);
+				if (card instanceof Skill){
+					card = (Skill)card;
+					if (card.use(this, target)) {
+						deck.drawFromHand(whichCard);
+					} else {
+						System.out.println("You don't have enough energy.");
+					}
 				} else {
-					System.out.println("You don't have enough energy.");
-				}
+					if (card.use(this, target)) {
+						deck.drawFromHand(whichCard);
+					} else {
+						System.out.println("You don't have enough energy.");
+					}
+				}					
 				
 			} else {
 				System.out.println("Card cancelled");

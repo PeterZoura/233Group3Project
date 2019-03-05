@@ -56,19 +56,19 @@ public class Entity {
 	 * Applies the Entity's regeneration and poison. Updates the Entity's attributes.
 	 */
 	public void startTurn() {
-		heal(regeneration.getCurrentVal());
-		damage(poison.getCurrentVal());
 		for (Attribute a : new Attribute[] {strength, dexterity, weak, vulnerable, regeneration, poison, constricted, armour})
 			a.startTurn();
+		heal(regeneration.getCurrentVal());
+		damage(poison.getCurrentVal());
 	}
 	
 	/**
 	 * Applies damage from the Entity's constricted attribute. Updates the Entity's attributes.
 	 */
 	public void endTurn() {
-		damage(constricted.getCurrentVal());
 		for (Attribute a : new Attribute[] {strength, dexterity, weak, vulnerable, regeneration, poison, constricted, armour})
 			a.endTurn();
+		damage(constricted.getCurrentVal());
 	}
 	
 	/**
@@ -275,6 +275,7 @@ public class Entity {
 	public Attribute getArmour() {
 		return armour;
 	}
+		
 
 	/**
 	 * @return whether or not the Entity's health is above 0.

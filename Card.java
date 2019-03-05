@@ -42,8 +42,7 @@ public class Card {
 			description += String.format("Deal %d damage to an enemy. ", this.damage);
 
 		if (block > 0)
-			description += String.format("Block %d damage for the next turn. ", this.block);
-		
+			description += String.format("Block %d damage for the next turn. ", this.block);	
 	}
 
 	/**
@@ -94,6 +93,15 @@ public class Card {
 	public int getCost() {
 		return this.cost;
 	}
+	
+	/**
+	* Set a card's description
+	* @param description the string that the card's description will be changed to
+	*/
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 
 	/**
 	 * Attempts to use the Card on a given user and target. Returns true if the user has enough mana and the use is successful, otherwise returns false.

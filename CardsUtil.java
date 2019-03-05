@@ -12,6 +12,9 @@ public class CardsUtil {
 	
 	/**
 	 * Initializes all Card objects as found in cards.txt. This method must be run once before other methods in Cards are used.
+	 * basic cards are cards that only do damage,heal and/or block.
+	 * skill cards are cards that only change the attributes of the user or the target.
+	 * skillAction cards are cards that do basic card functions (damage,heal,block) AND change the attributes of the user or target.
 	 */
 	public static void load () {
 		cards = new ArrayList<Card>();
@@ -19,7 +22,19 @@ public class CardsUtil {
 			Scanner read = new Scanner(new File("cards.txt"));
 			while (read.hasNextLine()) {
 				String[] traits = read.nextLine().split(",");
-				cards.add(new Card(Integer.parseInt(traits[1]), Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), traits[0]));
+				
+				if (traits[0].equals("basic")) {
+					cards.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), traits[1]));
+				}
+				else if (traits[0].equals("skill")){
+					cards.add(new Skill(traits[2], Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]),
+						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), traits[1]));				
+				}
+				else if (traits[0].equals("skillAction")){
+					cards.add(new Skill(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]),
+						traits[5], Integer.parseInt(traits[6]), Integer.parseInt(traits[7]), Integer.parseInt(traits[8]),
+							Integer.parseInt(traits[9]),Integer.parseInt(traits[10]), traits[1]));
+				}
 			}
 			read.close();
 			
@@ -32,7 +47,7 @@ public class CardsUtil {
 	 * @param name name of the card to find.
 	 * @return a Card object with the given name, or null if no such card exists.
 	 */
-	public static Card get (String name) {
+	public static Card get(String name) {
 		for (Card c : cards) {
 			if (c.getName().equals(name))
 				return c;

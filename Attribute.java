@@ -58,7 +58,6 @@ public class Attribute {
 		startModifiers = a.getStartModifiers();
 		endModifiers = a.getEndModifiers();
 	}
-	
 	/**
 	 * @return The smallest possible value of currentVal.
 	 */
