@@ -131,15 +131,35 @@ public class Game {
 	}
 
 	/**
-	 * Prints the health and armour of the given player and monster, as well as the energy of the player.
+	 * Prints the health, armour and various non-zero attributes of the given player and monster, as well as the energy of the player.
 	 */
 	public static void printStats(Entity player, Entity monster) {
-		System.out.println("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() +
-				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy()     +
-				"      Armour: " + player.getArmour().getCurrentVal() + "\n" +
-				monster.getName() + ":    health: " + monster.getHealth() + "/" + monster.getMaxHealth() +
-				"      Armour: " + monster.getArmour().getCurrentVal() + "\n");
+		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Vulnerable", "Regeneration", "Poison", "Constricted", "Armour"));
+		
+		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() + 
+				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy());
+		int i = 0;
+		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(), player.getVulnerable(), player.getRegeneration(), 
+		player.getPoison(), player.getConstricted(), player.getArmour()}){
+			if (a.getCurrentVal()!= 0){
+				playerStatus += String.format("      %s: %d", attributeList.get(i), a.getCurrentVal());
+			}
+			i++;
+		}
+		
+		String monsterStatus = (monster.getName() + ":    health: " + monster.getHealth() + "/" + monster.getMaxHealth());
+		int j = 0;
+		for (Attribute a : new Attribute[] {monster.getStrength(), monster.getDexterity(), monster.getWeak(), monster.getVulnerable(), monster.getRegeneration(), 
+		monster.getPoison(), monster.getConstricted(), monster.getArmour()}){
+			if (a.getCurrentVal()!= 0){
+				monsterStatus += String.format("      %s: %d", attributeList.get(j), a.getCurrentVal());
+			}
+			j++;
+		}
+		System.out.println(playerStatus);
+		System.out.println(monsterStatus);
 	}
+	
 
 	/**
 	 * Prompts the user to press enter, accompanied by a given message.
