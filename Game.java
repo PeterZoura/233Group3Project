@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -23,7 +25,7 @@ public class Game {
 
 		while (player.alive()) {
 			Monster monster = getNextMonster(monsters);
-			monster.setStrategy("0.8,Monster Special,2/0.2,Monster Special,2");
+		//	monster.setStrategy("0.8,Monster Special,2/0.2,Monster Special,2");
 		//	monster.setStrategy("1,Monster Special,3/0.9,Monster SpecialTwo,2");
 
 			System.out.println("An opponent has arrived: " + monster.getName());
@@ -135,21 +137,21 @@ public class Game {
 	 */
 	public static void printStats(Entity player, Entity monster) {
 		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Vulnerable", "Regeneration", "Poison", "Constricted", "Armour"));
-		
-		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() + 
+
+		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() +
 				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy());
 		int i = 0;
-		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(), player.getVulnerable(), player.getRegeneration(), 
+		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(), player.getVulnerable(), player.getRegeneration(),
 		player.getPoison(), player.getConstricted(), player.getArmour()}){
 			if (a.getCurrentVal()!= 0){
 				playerStatus += String.format("      %s: %d", attributeList.get(i), a.getCurrentVal());
 			}
 			i++;
 		}
-		
+
 		String monsterStatus = (monster.getName() + ":    health: " + monster.getHealth() + "/" + monster.getMaxHealth());
 		int j = 0;
-		for (Attribute a : new Attribute[] {monster.getStrength(), monster.getDexterity(), monster.getWeak(), monster.getVulnerable(), monster.getRegeneration(), 
+		for (Attribute a : new Attribute[] {monster.getStrength(), monster.getDexterity(), monster.getWeak(), monster.getVulnerable(), monster.getRegeneration(),
 		monster.getPoison(), monster.getConstricted(), monster.getArmour()}){
 			if (a.getCurrentVal()!= 0){
 				monsterStatus += String.format("      %s: %d", attributeList.get(j), a.getCurrentVal());
@@ -159,7 +161,7 @@ public class Game {
 		System.out.println(playerStatus);
 		System.out.println(monsterStatus);
 	}
-	
+
 
 	/**
 	 * Prompts the user to press enter, accompanied by a given message.
