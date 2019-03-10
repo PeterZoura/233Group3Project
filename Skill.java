@@ -229,11 +229,12 @@ public class Skill extends Card {
 			case "poison":
 				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target,"poison"));
 				break;
-			case "constricited":
+			case "constricted":
 				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target,"constricted"));
 				break;
 			case "armour":
 				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,user.getArmour());
+				break;
 				
 		}
 		return playable;

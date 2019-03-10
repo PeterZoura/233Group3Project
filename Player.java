@@ -53,7 +53,7 @@ public class Player extends Entity {
 			Card card = deck.getHand().get(whichCard);
 			
 			if (!card.requiresTarget()) {
-				System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.");
+				System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.1");
 			
 				if (in.nextLine().equals("")) {
 					attemptCardUse(card, whichCard, target);
@@ -61,7 +61,7 @@ public class Player extends Entity {
 					System.out.println("Card cancelled");
 				}
 			} else {
-				System.out.println(card.getDescription() + "\nEnter the number corresponding to your target, or anything else to go back.");
+				System.out.println(card.getDescription() + "\nEnter the number corresponding to your target, or anything else to go back.2");
 				printTargets(target);
 				try {
 					attemptCardUse(card, whichCard, target[Integer.parseInt(in.nextLine()) - 1]);

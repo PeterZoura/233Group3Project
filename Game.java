@@ -192,12 +192,12 @@ public class Game {
 	 * Prints the health, armour and various non-zero attributes of the given player and monster, as well as the energy of the player.
 	 */
 	public static void printStats(Entity player, Monster[] monster) {
-		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Vulnerable", "Regeneration", "Poison", "Constricted", "Armour"));
+		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Frail", "Vulnerable", "Regeneration", "Poison", "Constricted", "Armour"));
 
 		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() +
 				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy());
 		int i = 0;
-		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(), player.getVulnerable(), player.getRegeneration(),
+		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(),player.getFrail(), player.getVulnerable(), player.getRegeneration(),
 		player.getPoison(), player.getConstricted(), player.getArmour()}){
 			if (a.getCurrentVal()!= 0){
 				playerStatus += String.format("      %s: %d", attributeList.get(i), a.getCurrentVal());
@@ -211,7 +211,7 @@ public class Game {
 			if (m.alive()) {
 				monsterStatus += ("\n" + m.getName() + ":    health: " + m.getHealth() + "/" + m.getMaxHealth());
 				int j = 0;
-				for (Attribute a : new Attribute[] {m.getStrength(), m.getDexterity(), m.getWeak(), m.getVulnerable(), m.getRegeneration(),
+				for (Attribute a : new Attribute[] {m.getStrength(), m.getDexterity(), m.getWeak(),m.getFrail(), m.getVulnerable(), m.getRegeneration(),
 				m.getPoison(), m.getConstricted(), m.getArmour()}){
 					if (a.getCurrentVal()!= 0){
 						monsterStatus += String.format("      %s: %d", attributeList.get(j), a.getCurrentVal());

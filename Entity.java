@@ -58,7 +58,7 @@ public class Entity {
 	public void startTurn() {
 		heal(regeneration.getCurrentVal());
 		poisonDamage(poison.getCurrentVal());
-		for (Attribute a : new Attribute[] {strength, dexterity, weak, vulnerable, regeneration, poison, constricted, armour})
+		for (Attribute a : new Attribute[] {strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour})
 			a.startTurn();
 	}
 	
@@ -67,7 +67,7 @@ public class Entity {
 	 */
 	public void endTurn() {
 		damage(constricted.getCurrentVal());
-		for (Attribute a : new Attribute[] {strength, dexterity, weak, vulnerable, regeneration, poison, constricted, armour})
+		for (Attribute a : new Attribute[] {strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour})
 			a.endTurn();
 	}
 	
@@ -75,7 +75,7 @@ public class Entity {
 	 * Clears all modifiers from each attribute.
 	 */
 	public void startCombat() {
-		for (Attribute a : new Attribute[] {strength, dexterity, weak, vulnerable, regeneration, poison, constricted, armour})
+		for (Attribute a : new Attribute[] {strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour})
 			a.startCombat();
 	}
 
