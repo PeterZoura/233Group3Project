@@ -7,6 +7,48 @@ import java.util.Arrays;
  * Uses a main method to run the primary game loop.
  */
 public class Game {
+	
+	/**
+	 * @param monsters
+	 * @return if one or more of the Monsters in the given array are alive.
+	 */
+	private static boolean monstersAlive(Monster[] monsters) {
+		for (Monster m : monsters) {
+			if (m.alive())
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Prints the intentions of each Monster in the given array.
+	 * @param monsters
+	 */
+	private static void printMonstersIntentions(Monster[] monsters) {
+		for (Monster m : monsters)
+			System.out.println(m.intentions() + "\n");
+	}
+	
+	/**
+	 * Removes dead Monsters from the given array.
+	 * @param monsters
+	 * @return the original Monster array with any/all dead Monsters removed.
+	 */
+	private static Monster[] removeDead(Monster[] monsters) {
+		for (int i = monsters.length - 1; i >= 0; i --) {
+			if (!monsters[i].alive()) {
+				Monster[] newMonsters = new Monster[monsters.length - 1];
+				for (int j = 0; j < monsters.length; j ++) {
+					if (j == i)
+						continue;
+					newMonsters[(j < i) ? j : j - 1] = monsters[j];
+				}
+				monsters = newMonsters;
+			}
+		}
+		
+		return monsters;
+	}
 
 	/**
 	 * Main game loop.
@@ -24,17 +66,17 @@ public class Game {
 		Player player = new Player(intro(in), 50, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"), CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 
 		while (player.alive()) {
-			Monster monster = getNextMonster(monsters);
+			Monster[] monster = new Monster[] {new Monster(slime), new Monster(slime), new Monster(slime)};
 		//	monster.setStrategy("0.8,Monster Special,2/0.2,Monster Special,2");
 		//	monster.setStrategy("1,Monster Special,3/0.9,Monster SpecialTwo,2");
-
-			System.out.println("An opponent has arrived: " + monster.getName());
 			player.startCombat();
 
-			while (monster.alive() && player.alive()) {
+			while (monstersAlive(monster) && player.alive()) {
 				playerTurn(player, monster);
 				player.endTurn();
+				monster = removeDead(monster);
 				endTurn(in, player, monster);
+				
 			}
 			player.endCombat();
 			endCombat(in, player, monster);
@@ -52,7 +94,7 @@ public class Game {
 		System.out.println("Please enter your name:");
 		String name = in.nextLine();
 		pressEnter(in, "Welcome, " + name + ", to Slay the Spire! In this brief demo, you will be challenged by enemies until you are defeated."
-				+ " Use your CardsUtil to attack and defend against the monsters!");
+				+ " Use your Cards to attack and defend against the monsters!");
 		return name;
 	}
 
@@ -61,16 +103,18 @@ public class Game {
 	 * @param player
 	 * @param monster
 	 */
-	public static void playerTurn(Player player, Monster monster) {
-		System.out.println(player.getName() + "'s turn!");
-		monster.setMove();
-		System.out.println(monster.intentions());
+	public static void playerTurn(Player player, Monster[] monster) {
+		System.out.println(player.getName() + "'s turn!\n");
+		for (Monster m : monster)
+			m.setMove();
+		printMonstersIntentions(monster);
 
 		player.startTurn();
 		printStats(player, monster);
 
-		while (player.nextCard(monster) && monster.alive()) {
-			System.out.println(monster.intentions());
+		while (player.nextCard(monster) && monstersAlive(monster)) {
+			monster = removeDead(monster);
+			printMonstersIntentions(monster);
 			printStats(player, monster);
 		}
 	}
@@ -81,15 +125,17 @@ public class Game {
 	 * @param player
 	 * @param monster
 	 */
-	public static void endTurn(Scanner in, Player player, Monster monster) {
-		if (monster.alive() && player.alive()) {
+	public static void endTurn(Scanner in, Player player, Monster[] monster) {
+		if (monstersAlive(monster) && player.alive()) {
 			pressEnter(in, player.getName() + "'s turn is over!");
 
-			System.out.println(monster.getName() + "'s turn!");
+			System.out.println("Monsters' turn!");
 			printStats(player, monster);
-
-			monster.getMove().use(monster, player);
-			System.out.println(monster.actionReport());
+			
+			for (Monster m : monster ) {
+				m.getMove().use(m, player);
+				System.out.println(m.actionReport());
+			}
 			printStats(player, monster);
 			pressEnter(in, "");
 		}
@@ -101,11 +147,11 @@ public class Game {
 	 * @param player
 	 * @param monster
 	 */
-	public static void endCombat(Scanner in, Player player, Monster monster) {
+	public static void endCombat(Scanner in, Player player, Monster[] monster) {
 		if (!player.alive())
 			System.out.println("DEFEAT!");
 		else {
-			pressEnter(in, monster.getName() + " has been slain!");
+			pressEnter(in, "Victory!");
 			Card reward = newCard();
 			pressEnter(in, "Your reward: " + reward.getName() + "\n" + reward.getDescription());
 			player.addCard(reward);
@@ -115,7 +161,7 @@ public class Game {
 	/**
 	 * @return a random player card, cannot be Strike.
 	 */
-	public static Card newCard() {
+	private static Card newCard() {
 		Card c;
 		while((c = CardsUtil.randomP()).getName().equals("Strike"));
 		return c;
@@ -135,7 +181,7 @@ public class Game {
 	/**
 	 * Prints the health, armour and various non-zero attributes of the given player and monster, as well as the energy of the player.
 	 */
-	public static void printStats(Entity player, Entity monster) {
+	public static void printStats(Entity player, Monster[] monster) {
 		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Vulnerable", "Regeneration", "Poison", "Constricted", "Armour"));
 
 		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() +
@@ -149,16 +195,23 @@ public class Game {
 			i++;
 		}
 
-		String monsterStatus = (monster.getName() + ":    health: " + monster.getHealth() + "/" + monster.getMaxHealth());
-		int j = 0;
-		for (Attribute a : new Attribute[] {monster.getStrength(), monster.getDexterity(), monster.getWeak(), monster.getVulnerable(), monster.getRegeneration(),
-		monster.getPoison(), monster.getConstricted(), monster.getArmour()}){
-			if (a.getCurrentVal()!= 0){
-				monsterStatus += String.format("      %s: %d", attributeList.get(j), a.getCurrentVal());
+		String monsterStatus = "";
+		
+		for (Monster m : monster) {
+			if (m.alive()) {
+				monsterStatus += ("\n" + m.getName() + ":    health: " + m.getHealth() + "/" + m.getMaxHealth());
+				int j = 0;
+				for (Attribute a : new Attribute[] {m.getStrength(), m.getDexterity(), m.getWeak(), m.getVulnerable(), m.getRegeneration(),
+				m.getPoison(), m.getConstricted(), m.getArmour()}){
+					if (a.getCurrentVal()!= 0){
+						monsterStatus += String.format("      %s: %d", attributeList.get(j), a.getCurrentVal());
+					}
+					j++;
+				}
 			}
-			j++;
+		
 		}
-		System.out.println(playerStatus);
+		System.out.println(playerStatus + "\n");
 		System.out.println(monsterStatus);
 	}
 
