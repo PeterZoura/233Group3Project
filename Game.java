@@ -49,37 +49,79 @@ public class Game {
 		
 		return monsters;
 	}
+	
+	/**
+	 * @param tier the tier to access from the given array.
+	 * @param monsters tiered array of all possible encounters.
+	 * @return a random encounter from the given tier.
+	 */
+	private static Monster[] getEncounter(int tier, Monster[][][] encounters) {
+		return encounters[tier][(int) (Math.random() * encounters[tier].length)];
+	}
+	
+	/**
+	 * Initializes all types of Monsters, and creates and returns all possible encounters using said monsters.
+	 * @return all possible encounters, in a tiered array(encounters[0][0] would return the tier 1 encounter {slime, slime, slime}). 
+	 */
+	private static Monster[][][] getEncounters() {
+		Monster slime   = new Monster("Slime", 19, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster Frail"), CardsUtil.get("Monster Vulnerable"), CardsUtil.get("Monster Frail Attack"));
+		
+		Monster jawWorm = new Monster("Jaw Worm", 44, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster Strength"));
+		
+		Monster cultist = new Monster("Cultist", 48, CardsUtil.get("Monster Frail Attack"), CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Strength Power"));
+		
+		Monster louse   = new Monster("Louse", 16, CardsUtil.get("Monster WkAttack"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster StBlock"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster Frail"));
+		
+		Monster sphericGuardian = new Monster("Spheric Guardian", 20, CardsUtil.get("Monster StBlock"), CardsUtil.get("Monster Frail Attack"), CardsUtil.get("Monster Vulnerable Attack"), CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"));
+		sphericGuardian.block(30);
+		sphericGuardian.getDexterity().modifyVal(2);
+		sphericGuardian.getArmour().setModifyRate(0);
+		
+		Monster gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster StAttack"), CardsUtil.get("Monster HvAttack"), CardsUtil.get("Monster Strength Power"));
+		
+		Monster awakenedOne = new Monster("Awakened One", 300, CardsUtil.get("Monster HvAttack"), CardsUtil.get("Monster HvFrail Attack"), CardsUtil.get("Monster Strength"), CardsUtil.get("Monster Awakened Special"));
+		awakenedOne.getStrength().addStartModifier(1, -1);
+		awakenedOne.getRegeneration().setModifyRate(0);
+		awakenedOne.getRegeneration().modifyVal(10);
+
+		Monster[][] tier1 = new Monster[][] {{ new Monster(slime), new Monster(slime), new Monster(slime) }, { new Monster(cultist) }, { new Monster(louse), new Monster(louse) }, { new Monster(slime), new Monster(slime) }};
+		Monster[][] tier2 = new Monster[][] {{ new Monster(sphericGuardian)}, {new Monster(jawWorm), new Monster(jawWorm) }, { new Monster(cultist), new Monster(jawWorm) }, { new Monster(sphericGuardian), new Monster(jawWorm) }};
+		Monster[][] tier3 = new Monster[][] {{ new Monster(gremlinNob) }};
+		Monster[][] tier4 = new Monster[][] {{ new Monster(cultist), new Monster(cultist), new Monster(awakenedOne) }};
+		
+		return new Monster[][][] {tier1, tier2, tier3, tier4};
+		
+	}
+	
 
 	/**
 	 * Main game loop.
 	 */
 	public static void main(String[] args) {
 		CardsUtil.load();
-		Monster slime = new Monster("Slime", 19, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block")),
-				jawWorm = new Monster("Jaw Worm", 44, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster BlAttack")),
-			    louse = new Monster("Louse", 16, CardsUtil.get("Monster WkAttack"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster StBlock"), CardsUtil.get("Monster Block")),
-			    gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster StAttack"), CardsUtil.get("Monster HvAttack"));
-
-		Monster[] monsters = new Monster[] {slime, jawWorm, louse, gremlinNob};
-
+		
+		Monster[][][] encounters = getEncounters();
+		
 		Scanner in = new Scanner(System.in);
-		Player player = new Player(intro(in), 50, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Player player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 
-		while (player.alive()) {
-			Monster[] monster = new Monster[] {new Monster(slime), new Monster(slime), new Monster(slime)};
+		for (int i = 0; i < 4; i ++) {
+			if (!player.alive())
+				break;
+			Monster[] combatMonsters = getEncounter(i, encounters);
 		//	monster.setStrategy("0.8,Monster Special,2/0.2,Monster Special,2");
 		//	monster.setStrategy("1,Monster Special,3/0.9,Monster SpecialTwo,2");
 			player.startCombat();
 
-			while (monstersAlive(monster) && player.alive()) {
-				playerTurn(player, monster);
+			while (monstersAlive(combatMonsters) && player.alive()) {
+				playerTurn(player, combatMonsters);
 				player.endTurn();
-				monster = removeDead(monster);
-				endTurn(in, player, monster);
+				combatMonsters = removeDead(combatMonsters);
+				endTurn(in, player, combatMonsters);
 				
 			}
 			player.endCombat();
-			endCombat(in, player, monster);
+			endCombat(in, player, combatMonsters);
 		}
 
 		in.close();
