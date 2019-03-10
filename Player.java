@@ -15,6 +15,27 @@ public class Player extends Entity {
 		deck = new Deck(cards);
 	}
 	
+	/** Private utility method used to number and print all Entities from an array.
+	 * @param targets print these Entities.
+	 */
+	private void printTargets(Entity[] targets) {
+		for (int i = 0; i < targets.length; i ++)
+			System.out.println((i + 1) + ": " + targets[i].getName());
+	}
+	
+	/** Attempts to use a given card. Prints "You don't have enough energy" when it is unsuccessful. Discards the card if it is successful.
+	 * @param card the card to attempt to use.
+	 * @param cardIndex the index of the given card(used to discard the card if it is successfully used).
+	 * @param targets any number of Entities to target with the card.
+	 */
+	private void attemptCardUse(Card card, int cardIndex, Entity... targets) {
+		if (card.use(this, targets)) {
+			deck.drawFromHand(cardIndex);
+		} else {
+			System.out.println("You don't have enough energy.");
+		}
+	}
+	
 	/**
 	 * Prompts the player to select a Card from their hand, and attempts to use it on the player(as the user) and the given target. If the user enters
 	 * an incorrect index or String value, this will be caught by the try catch block as an IndexOutOfBoundsException or InputMismatchException, and
@@ -23,33 +44,31 @@ public class Player extends Entity {
 	 * @param target the Entity to attempt to use any cards on.
 	 * @return false if the player wishes to end his/her turn, true if they wish to continue.
 	 */
-	public boolean nextCard(Entity target) {
+	public boolean nextCard(Entity... target) {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter the number of the card you wish to use, or anything else to end your turn." + "\n" + deck.handToString());
 		try {
 			int whichCard = Integer.parseInt(in.nextLine());
 			
 			Card card = deck.getHand().get(whichCard);
-			System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.");
 			
-			if (in.nextLine().equals("")) {
-				if (card instanceof Skill){
-					card = (Skill)card;
-					if (card.use(this, target)) {
-						deck.drawFromHand(whichCard);
-					} else {
-						System.out.println("You don't have enough energy.");
-					}
+			if (!card.requiresTarget()) {
+				System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.");
+			
+				if (in.nextLine().equals("")) {
+					attemptCardUse(card, whichCard, target);
 				} else {
-					if (card.use(this, target)) {
-						deck.drawFromHand(whichCard);
-					} else {
-						System.out.println("You don't have enough energy.");
-					}
-				}					
-				
+					System.out.println("Card cancelled");
+				}
 			} else {
-				System.out.println("Card cancelled");
+				System.out.println(card.getDescription() + "\nEnter the number corresponding to your target, or anything else to go back.");
+				printTargets(target);
+				try {
+					attemptCardUse(card, whichCard, target[Integer.parseInt(in.nextLine()) - 1]);
+				} catch(Exception e) {
+					System.out.println("Card Cancelled");
+				}
+				
 			}
 			
 			return true;
