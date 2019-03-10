@@ -7,29 +7,32 @@ public class Card {
 	private int damage;
 	private int block;
 	private int cost;
+	private boolean zone;
 	private String name;
 	private String description;
 
 	/**
 	 * Creates the Card with the given amount of healing, damage, block and mana cost, as well as a name and description.
 	 */
-	public Card(int heal, int damage, int block, int cost, String name, String description) {
+	public Card(int heal, int damage, int block, int cost, boolean zone, String name, String description) {
 		this.heal = heal;
 		this.damage = damage;
 		this.block = block;
-		this.name = name;
 		this.cost = cost;
+		this.zone = zone;
+		this.name = name;
 		this.description = description;
 	}
 
 	/**
 	 * Creates the Card with the given amount of healing, damage, block and mana cost, as well as a name. Automatically generates a description based on the given values.
 	 */
-	public Card(int heal, int damage, int block, int cost, String name) {
+	public Card(int heal, int damage, int block, int cost, boolean zone, String name) {
 		this.heal = heal;
 		this.damage = damage;
 		this.block = block;
 		this.cost = cost;
+		this.zone = zone;
 		this.name = name;
 		
 		description = String.format("Costs %d mana. ", cost);
@@ -39,7 +42,7 @@ public class Card {
 			description += String.format("Heal %d health to yourself. ", this.heal);
 
 		if (damage > 0)
-			description += String.format("Deal %d damage to an enemy. ", this.damage);
+			description += String.format("Deal %d damage to " + (zone ? "all enemies." : "an enemy. "), this.damage);
 
 		if (block > 0)
 			description += String.format("Block %d damage for the next turn. ", this.block);	
@@ -49,7 +52,14 @@ public class Card {
 	 * @param aCard clones this Card object.
 	 */
 	public Card(Card aCard) {
-		this(aCard.getHeal(), aCard.getDamage(), aCard.getBlock(), aCard.getCost(), aCard.getName(), aCard.getDescription());
+		this(aCard.getHeal(), aCard.getDamage(), aCard.getBlock(), aCard.getCost(), aCard.isZone(),  aCard.getName(), aCard.getDescription());
+	}
+	
+	/**
+	 * @return if the card is designed to target all enemies at once(false means a specific enemy will be targeted, or it is a self-buff).
+	 */
+	public boolean isZone() {
+		return zone;
 	}
 	
 	/**
@@ -102,6 +112,13 @@ public class Card {
 		this.description = description;
 	}
 	
+	/**
+	 * @return if the card requires a target to be selected in order to be used.
+	 */
+	public boolean requiresTarget() {
+		return (!zone && damage != 0);
+	}
+	
 
 	/**
 	 * Attempts to use the Card on a given user and target. Returns true if the user has enough mana and the use is successful, otherwise returns false.
@@ -110,14 +127,18 @@ public class Card {
 	 * @param target the Entity the user is targeting with the card.
 	 * @return whether or not the user had enough mana for the Card to be used.
 	 */
-	public boolean use(Entity user, Entity target) {
+	public boolean use(Entity user, Entity... target) {
 		if (user.getEnergy() >= this.cost) {
 			if (heal != 0) 
 				user.heal(heal);	
-			if (damage > 0)
-				target.damage((int) ((damage + user.getStrength().getCurrentVal()) * (user.getWeak().equals(0) ? 1 : 0.75)));	
 			if (block > 0) 
 				user.block((int) ((block + user.getDexterity().getCurrentVal()) * (user.getFrail().equals(0) ? 1 : 0.75)));
+			
+			for (Entity e : target) {
+				if (damage > 0)
+					e.damage((int) ((damage + user.getStrength().getCurrentVal()) * (user.getWeak().equals(0) ? 1 : 0.75)));	
+			}
+			
 			user.useEnergy(cost);
 			return true;
 		} else {
