@@ -63,7 +63,7 @@ public class Game {
 		Monster[] monsters = new Monster[] {slime, jawWorm, louse, gremlinNob};
 
 		Scanner in = new Scanner(System.in);
-		Player player = new Player(intro(in), 50, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"), CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Player player = new Player(intro(in), 50, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 
 		while (player.alive()) {
 			Monster[] monster = new Monster[] {new Monster(slime), new Monster(slime), new Monster(slime)};
@@ -128,14 +128,24 @@ public class Game {
 	public static void endTurn(Scanner in, Player player, Monster[] monster) {
 		if (monstersAlive(monster) && player.alive()) {
 			pressEnter(in, player.getName() + "'s turn is over!");
-
+			
 			System.out.println("Monsters' turn!");
+			for (Monster m : monster) {
+				m.startTurn();
+			}
+			monster = removeDead(monster);
+			printMonstersIntentions(monster);			
 			printStats(player, monster);
 			
 			for (Monster m : monster ) {
 				m.getMove().use(m, player);
 				System.out.println(m.actionReport());
 			}
+			
+			for (Monster m : monster) {
+				m.endTurn();
+			}
+			monster = removeDead(monster);
 			printStats(player, monster);
 			pressEnter(in, "");
 		}
