@@ -15,18 +15,20 @@ public class Skill extends Card {
 	* @param endTurnModify
 	* @param whichAttribute
 	*/
-	private void setAttributes(int currentTurnModify, int startTurnModify, int endTurnModify, int duration, Attribute whichAttribute) {
-		whichAttribute.addStartModifier(startTurnModify, duration);
-		whichAttribute.addEndModifier(endTurnModify, duration);
-		whichAttribute.modifyVal(currentTurnModify);
+	private void setAttributes(int currentTurnModify, int startTurnModify, int endTurnModify, int duration, Attribute... whichAttribute) {
+		for (Attribute a : whichAttribute) {
+			a.addStartModifier(startTurnModify, duration);
+			a.addEndModifier(endTurnModify, duration);
+			a.modifyVal(currentTurnModify);
+		}
 	}
 	
 	/**
 	* Constructor method that creates a power card that ONLY modifies a given attributes start turn modifications and end turn modifications.
 	* Also specifies name and description
 	*/
-	public Skill(String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, String name, String description) {
-		super(0,0,0,cost,name,description);
+	public Skill(String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, boolean zone, String name, String description) {
+		super(0,0,0,cost,zone,name,description);
 		this.whichAttribute = whichAttribute;
 		this.currentTurnModify = currentTurnModify;
 		this.startTurnModify = startTurnModify;
@@ -38,8 +40,8 @@ public class Skill extends Card {
 	* Constructor method that creates a power card that ONLY modifies a given attributes start turn modifications and end turn modifications.
 	* Also specifies name, but auto-generates the description
 	*/
-	public Skill(String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, String name) {
-		super(0,0,0,cost,name);
+	public Skill(String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, boolean zone, String name) {
+		super(0,0,0,cost,zone,name);
 		this.whichAttribute = whichAttribute;
 		this.currentTurnModify = currentTurnModify;
 		this.startTurnModify = startTurnModify;
@@ -69,8 +71,8 @@ public class Skill extends Card {
 	* modifies a given attributes start turn modifications and end turn modifications.
 	* Also specifies name, but auto-generates the description.
 	*/	
-	public Skill(int heal, int damage, int block, String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, String name) {
-		super(heal,damage,block,cost,name);
+	public Skill(int heal, int damage, int block, String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, boolean zone, String name) {
+		super(heal,damage,block,cost,zone,name);
 		this.whichAttribute = whichAttribute;
 		this.currentTurnModify = currentTurnModify;
 		this.startTurnModify = startTurnModify;
@@ -95,7 +97,7 @@ public class Skill extends Card {
 		if (endTurnModify!=0) {
 			skillDescription += String.format("Get/Afflict %d %s at the end of your turn. ", endTurnModify,whichAttribute);
 		}
-		if (duration == -1){
+		if (duration == -1) {
 			skillDescription += "Effect lasts until the end of combat.";
 		}
 		else {
@@ -108,8 +110,8 @@ public class Skill extends Card {
 	* modifies a given attributes start turn modifications and end turn modifications.
 	* Also specifies name and description of the skill card.
 	*/	
-	public Skill(int heal, int damage, int block, String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, String name, String description) {
-		super(heal,damage,block,cost,name,description);
+	public Skill(int heal, int damage, int block, String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, boolean zone, String name, String description) {
+		super(heal,damage,block,cost,zone,name,description);
 		this.whichAttribute = whichAttribute;
 		this.currentTurnModify = currentTurnModify;
 		this.startTurnModify = startTurnModify;
@@ -121,7 +123,7 @@ public class Skill extends Card {
 	*/
 	public Skill(Skill aSkill) {
 		this(aSkill.getHeal(), aSkill.getDamage(), aSkill.getBlock(), aSkill.getAttribute(), aSkill.getCurrentModify(),
-			aSkill.getStartModify(), aSkill.getEndModify(), aSkill.getDuration(), aSkill.getCost(), aSkill.getName(), aSkill.getDescription());
+			aSkill.getStartModify(), aSkill.getEndModify(), aSkill.getDuration(), aSkill.getCost(), aSkill.isZone(), aSkill.getName(), aSkill.getDescription());
 	}
 	
 	/**
@@ -154,15 +156,56 @@ public class Skill extends Card {
 	public int getDuration() {
 		return this.duration;
 	}
+	
+	/**
+	 * Gets a specific type of attribute from every Entity in the given array.
+	 * @param targets Entities to get the attribute from.
+	 * @param whichAttribute a String representing which attribute to get("weak," "poison," etc.).
+	 * @return an array of the given attribute type, one for each Entity in the given array.
+	 */
+	private Attribute[] getTargetAttributes(Entity[] targets, String whichAttribute) {
+		Attribute[] attributes = new Attribute[targets.length];
+		for (int i = 0; i < targets.length; i ++) {
+			
+			switch(whichAttribute) {
+				case "weak":
+					attributes[i] = targets[i].getWeak();
+					break;
+				case "frail":
+					attributes[i] = targets[i].getFrail();
+					break;
+				case "vulnerable":
+					attributes[i] = targets[i].getVulnerable();
+					break;
+				case "poison":
+					attributes[i] = targets[i].getPoison();
+					break;
+				case "constricted":
+					attributes[i] = targets[i].getConstricted();
+			
+			}
+		}
+		
+		return attributes;
+	}
+	
+	/**
+	 * @return if the skill requires a target to be selected in order to be used.
+	 */
+	public boolean requiresTarget() {
+		return (!isZone() && (getDamage() != 0 || "weak vulnerable poison frail".contains(whichAttribute)));
+	}
+	
+	
 	/**
 	 * Attempts to use the Card on a given user and target. Returns true if the user has enough mana and the use is successful, otherwise returns false.
-	 * If the power card has standard card abilities (heal, damage, block), use those first, then apply changes to the specified attribute.
+	 * If the skill card has standard card abilities (heal, damage, block), use those first, then apply changes to the specified attribute.
 	 * @param user the Entity using the card.
 	 * @param target the Entity the user is targeting with the card.
 	 * @return whether or not the user had enough mana for the Card to be used.
 	*/
 	@Override
-	public boolean use(Entity user,Entity target) {
+	public boolean use(Entity user,Entity... target) {
 		boolean playable = super.use(user,target);
 		switch(whichAttribute) {
 			case "strength":
@@ -172,26 +215,26 @@ public class Skill extends Card {
 				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,user.getDexterity());
 				break;
 			case "weak":
-				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,target.getWeak());
+				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target, "weak"));
 				break;
 			case "frail":
-				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,target.getFrail());
+				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target, "frail"));
 				break;
 			case "vulnerable":
-				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,target.getVulnerable());
+				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target, "vulnerable"));
 				break;
 			case "regeneration":
 				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,user.getRegeneration());
 				break;
 			case "poison":
-				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,target.getPoison());
+				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target,"poison"));
 				break;
 			case "constricited":
-				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,target.getConstricted());
+				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,getTargetAttributes(target,"constricted"));
 				break;
 			case "armour":
 				setAttributes(currentTurnModify,startTurnModify,endTurnModify,duration,user.getArmour());
-				break;
+				
 		}
 		return playable;
 	}	
