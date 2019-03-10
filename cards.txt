@@ -11,7 +11,7 @@ basic,combust,0,15,0,2,true
 basic,Sweeping Strike,0,8,0,1,true
 basic,Immolate,-7,32,0,2,true
 skill,Flex,strength,2,0,-2,1,0,false
-skill,Regrow,regeneration,0,2,0,-1,2,false
+skill,Regrow,regeneration,3,0,0,0,2,false
 skill,Seeping,poison,0,2,0,-1,2,false
 skillAction,Venom Bite,0,5,0,poison,2,0,0,2,1,false
 skill,Poison Cloud,poison,4,0,0,4,2,true
