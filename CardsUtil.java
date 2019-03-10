@@ -24,16 +24,16 @@ public class CardsUtil {
 				String[] traits = read.nextLine().split(",");
 				
 				if (traits[0].equals("basic")) {
-					cards.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), traits[1]));
+					cards.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), Boolean.parseBoolean(traits[6]), traits[1]));
 				}
 				else if (traits[0].equals("skill")){
 					cards.add(new Skill(traits[2], Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]),
-						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), traits[1]));				
+						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));				
 				}
 				else if (traits[0].equals("skillAction")){
 					cards.add(new Skill(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]),
 						traits[5], Integer.parseInt(traits[6]), Integer.parseInt(traits[7]), Integer.parseInt(traits[8]),
-							Integer.parseInt(traits[9]),Integer.parseInt(traits[10]), traits[1]));
+							Integer.parseInt(traits[9]),Integer.parseInt(traits[10]), Boolean.parseBoolean(traits[11]), traits[1]));
 				}
 			}
 			read.close();
