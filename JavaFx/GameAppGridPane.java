@@ -50,15 +50,41 @@ import javafx.geometry.Insets;
 
 public class GameAppGridPane extends javafx.application.Application {
 	//Private Instance Variables
-	//private boolean forPlayer; NOT USED
-	//private boolean forMonster; NOT USED
 	private Card cardSelected; 
 	private char cardBtnLetter;
+	private Label notificationLabel;
+	notifcationLabel.setFont(Font.font("Arial", 18));
+	
+	/*
+	 * Checks if the player has enough energy available to play a card in their hand
+	 */
+	public boolean enoughEnergyToPlayCard (Card input, Entity p) {
+		if (input.getEnergy() >= p.getEnergy() )
+			notificationLabel.setText("");
+			return true;
+		else
+			notificationLabel.setText("Not enough energy to use card, please select another");
+			return false;
+	}
+	
+	/*
+	 * Checks if the card is of a skill class, if so, then checks if it is an offensive skill class or defensive skill class 
+	 */
+	public boolean isSkillForMonster(Card card) {
+		if (card.getClass().getSimpleName().equals("Skill") {  //Checks if the card is a skill subclass
+			Skill skill = (Skill)card;
+			if ("weak vulnerable poison frail".contains(skill.getAttribute()) //Checks if it's monster, returns true if monster. Returns false if card is for player.
+				return true;
+			else
+				return false;
+		}
+	}
 	
 	/*
 	 * Boolean method to check if the card is for increasing block or healing the player
 	 * Returns true if card affects the player
 	 * Returns false if it does not affect the player, thus making it a card that affects the monster
+	 * 3 boolean condition groups in place: 
 	 */
 	public boolean isForPlayer(Card input) {
 		if (	(input.getBlock() > 0) || (input.getHeal() > 0)  ) {
@@ -68,16 +94,21 @@ public class GameAppGridPane extends javafx.application.Application {
 			return false; 
 	}
 	
-	
+	/*
+	 * Checks conditions for disabling either monster or player btn, and disables which ever one depending on the conditions. 
+	 */
 	public void disablePlayerOrMonsterButton () {
-		if (this.isForPlayer(cardSelected) == true) {
+		if (	(this.isForPlayer(cardSelected) == true) && (this.isSkillForMonster(cardSelected) == false) ){
 			btnMonsterImage.setDisable(true);
 		}
-		else if (this.isForPlayer(cardSelected) == false) {
+		else if (	(this.isForPlayer(cardSelected) == false) && (this.isSkillForMonster(cardSelected) == true) ) {
 			btnPlayerImage.setDisable(true);
 		}
 	}
-	
+	/*
+	 * Checks the card that was played, based on the letter corresponding to the card.
+	 * Disables the card after usage. 
+	 */
 	public void disableCardAfterUse(char inputLetter) {
 		if (inputLetter = 'A')
 			cardA.setDisable(true);
@@ -91,11 +122,15 @@ public class GameAppGridPane extends javafx.application.Application {
 			cardE.setDisable(true);
 	}
 	
+/////////////////////////////////////////////////////////////////////////
+//	MAIN START 													////////
+////////////////////////////////////////////////////////////////////////	
 	@Override
 	public void start(Stage primaryStage) {
 		//Creating GridPane layout
 		GridPane root = new GridPane();
 		root.setMinSize(1270, 720);
+		root.add(notificationLabel, 635, 360);
 		
 // PLAYER --------------------------------------------------------------------		
 		VBox playerStack = new VBox();
@@ -113,7 +148,7 @@ public class GameAppGridPane extends javafx.application.Application {
 		Label playerHPBar = new Label (Player.getHealth() + "/" + Player.getMaxHealth());
 		playerStack.getChildren().add(playerHPBar);
 //Add playerStack to GridPane
-		root.add(playerStack, 190.5, 240);		
+		root.add(playerStack, 191, 240);		
 		
 	//Player Energy Counter [Display]
 		Label playerEnergyBar = new Label (Player.getEnergy() + "/" + Player.getMaxEnergy());
@@ -128,7 +163,9 @@ public class GameAppGridPane extends javafx.application.Application {
 		
 // CARDS --------------------------------------------------------------------
 		HBox cardStack = new HBox();		
-		//Card Buttons [Button]
+		/* Card Buttons [Button]
+		 * Adds the card buttons to the scene in a HBox layout
+		 */
 		Button cardA = new Button ("Card A");
 		cardStack.getChildren().add(cardA);
 		Button cardB = new Button ("Card B");
@@ -184,57 +221,74 @@ public class GameAppGridPane extends javafx.application.Application {
 		
 		//Pressing Monster Image Area
 		btnMonsterImage.setOnAction(new EventHandler<ActionEvent>(){
-		
+			@Override
+			public void handle(ActionEvent event) {
+				this.cardSelected.use(player, monster);
+				disableCardAfterUse(cardBtnLetter);
+			}
 		}
-		
-
 		
 		//Pressing Card
 		cardA.setOnAction(new EventHandler<ActionEvent(){
 			@Override
 			public void handle(ActionEvent event) {
 				cardSelected = player.getDeck().getHand().get(0);
-				this.disablePlayerOrMonsterButton();
-				cardBtnLetter = 'A';
-				
+				if (enoughEnergyToPlayCard(cardSelected, player) == true)
+					this.disablePlayerOrMonsterButton();
+					cardBtnLetter = 'A';
+				else
+					return ("Invalid selection, please select another card");
 			}
 		}
 		cardB.setOnAction(new EventHandler<ActionEvent(){
 			@Override
 			public void handle(ActionEvent event) {
 				cardSelected = player.getDeck().getHand().get(1);
-				this.disablePlayerOrMonsterButton();
-				cardBtnLetter = 'B';
+				if (enoughEnergyToPlayCard(cardSelected, player) == true)
+					this.disablePlayerOrMonsterButton();
+					cardBtnLetter = 'B';
+				else
+					return ("Invalid selection, please select another card");
 			}
 		}		 
 		cardC.setOnAction(new EventHandler<ActionEvent(){
 			@Override
 			public void handle(ActionEvent event) {
 				cardSelected = player.getDeck().getHand().get(2);
-				this.disablePlayerOrMonsterButton();
-				cardBtnLetter = 'C';
+				if (enoughEnergyToPlayCard(cardSelected, player) == true)
+					this.disablePlayerOrMonsterButton();
+					cardBtnLetter = 'C';
+				else
+					return ("Invalid selection, please select another card");
 			}
 		}	
 		cardD.setOnAction(new EventHandler<ActionEvent(){
 			@Override
 			public void handle(ActionEvent event) {
 				cardSelected = player.getDeck().getHand().get(3);
-				this.disablePlayerOrMonsterButton();
-				cardBtnLetter = 'D';
+				if (enoughEnergyToPlayCard(cardSelected, player) == true)
+					this.disablePlayerOrMonsterButton();
+					cardBtnLetter = 'D';
+				else
+					return ("Invalid selection, please select another card");
 			}
 		}	
 		cardE.setOnAction(new EventHandler<ActionEvent(){
 			@Override
 			public void handle(ActionEvent event) {
 				cardSelected = player.getDeck().getHand().get(4);
-				this.disablePlayerOrMonsterButton();
-				cardBtnLetter = 'E';
+				if (enoughEnergyToPlayCard(cardSelected, player) == true)
+					this.disablePlayerOrMonsterButton();
+					cardBtnLetter = 'E';
+				else
+					return ("Invalid selection, please select another card");
 			}
 		}	
 		
 		//Pressing btnEndTurn
 		btnEndTurn.setOnAction(new EventHandler<ActionEvent>(){
-		
+			player.setEnergy(0);
+			player.endTurn();
 		}		
 		
 		//Making Scene as root
