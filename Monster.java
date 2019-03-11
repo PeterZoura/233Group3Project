@@ -9,8 +9,8 @@ public class Monster extends Entity {
 	private ArrayList<Card> moves = new ArrayList<Card>();
 	private Card move;
 
- private String Strategy;
- private ArrayList<String[]> movesList = new ArrayList<String[]>();
+	private String Strategy;
+	private ArrayList<String[]> movesList = new ArrayList<String[]>();
 
 	/**
 	 * Creates a Monster with a given name, maximum health, and any number of Cards, which will be randomly accessed as the Monster's moves.
@@ -34,8 +34,9 @@ public class Monster extends Entity {
 	 * @param moves ArrayList of moves(Cards) to give the Monster.
 	 */
 	private void fillMoves(ArrayList<Card> moves) {
-		for (Card c : moves)
-			this.moves.add(new Card(c));
+		for (Card c : moves) {
+			this.moves.add(CardsUtil.checkTypeAndCopy(c));
+		}
 	}
 
 	/**
@@ -44,7 +45,7 @@ public class Monster extends Entity {
 	public ArrayList<Card> getMoves() {
 		ArrayList<Card> newList = new ArrayList<Card>();
 		for (Card c: moves)
-			newList.add(new Card(c));
+			newList.add(CardsUtil.checkTypeAndCopy(c));
 		return newList;
 	}
 
@@ -92,7 +93,7 @@ public class Monster extends Entity {
 	 * @return the Monster's next move.
 	 */
 	public Card getMove() {
-		return new Card(move);
+		return CardsUtil.checkTypeAndCopy(move);
 	}
 
 
