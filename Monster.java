@@ -69,13 +69,13 @@ public class Monster extends Entity {
 		if (move.getHeal() > 0)
 			intentions += "Heal. ";
 		if (move.getClass().getSimpleName().equals("Skill")) {
-			
+
 			Skill skill = (Skill)move;
 			if ("weak vulnerable poison frail".contains(skill.getAttribute()))
 				intentions += "Use a negative effect on you. ";
 			else
 				intentions += "Use a buff. ";
-			
+
 		}
 
 		if (intentions.equals(""))
@@ -95,7 +95,7 @@ public class Monster extends Entity {
 			report += getName() + " blocked with " + (move.getBlock() + getDexterity().getCurrentVal()) + " armour! ";
 		if (move.getHeal() > 0)
 			report += getName() + " restored " + move.getHeal() + " health! ";
-		
+
 		if (move.getClass().getSimpleName().equals("Skill")) {
 			Skill skill = (Skill)move;
 			if (skill.getCurrentModify() != 0)
@@ -173,9 +173,13 @@ public class Monster extends Entity {
 */
 	public void setStrategy(String aStrategy){
 		this.Strategy = aStrategy;
-		String[] separatedStrategy =  aStrategy.split("/");
-		for(int i = 0 ;i<separatedStrategy.length; i++){
-			movesList.add(separatedStrategy[i].split(","));
+		if (aStrategy.indexOf("/") != -1){
+			String[] separatedStrategy =  aStrategy.split("/");
+			for(int i = 0 ;i<separatedStrategy.length; i++){
+				movesList.add(separatedStrategy[i].split(","));
+			}
+		}else{
+			movesList.add(aStrategy.split(","));
 		}
 	}
 
