@@ -13,7 +13,6 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
@@ -53,7 +52,7 @@ public class GameAppGridPane extends javafx.application.Application {
 	private Card cardSelected; 
 	private char cardBtnLetter;
 	private Label notificationLabel;
-	notificationLabel.setFont(Font.font("Arial", 18));
+	//notificationLabel.setFont(Font.font("Arial", 18));
 	
 	/*
 	 * Checks if the player has enough energy available to play a card in their hand
@@ -124,6 +123,29 @@ public class GameAppGridPane extends javafx.application.Application {
 			cardE.setDisable(true);
 	}
 	
+	/*
+	 * Method takes a monster object, then gets its properties and adds them to the javafx scene
+	 */
+	public void importMonster(Monster m) {
+	//Creates a VBox for a single monster GUI
+		VBox monsterStack = new VBox();
+		monsterStack.setAlignment(Pos.CENTER);		
+		//Monster Name [Display]
+		Label monsterName = new Label(m.getName());
+		monsterName.setFont(Font.font("Arial", 12));
+		//Monster Image Area [Button]
+		Button btnMonsterImage;	
+		btnMonsterImage = new Button ("Monster");
+		btnMonsterImage.setFont(Font.font("Arial", 36));
+		monsterStack.getChildren().add(btnMonsterImage);
+		//Monster HP Bar [Display]
+		Label monsterHPBar = new Label (m.getHealth() + "/" + m.getMaxHealth());
+		monsterStack.getChildren().add(monsterHPBar);	
+		//Adds to the HBox
+		masterMonsterStack.getChildren().add(monsterStack);
+	}
+		
+	
 /////////////////////////////////////////////////////////////////////////
 //	MAIN START ROOT 											////////
 ////////////////////////////////////////////////////////////////////////	
@@ -168,15 +190,15 @@ public class GameAppGridPane extends javafx.application.Application {
 		/* Card Buttons [Button]
 		 * Adds the card buttons to the scene in a HBox layout
 		 */
-		Button cardA = new Button ("Card A");
+		cardA = new Button ("Card A");
 		cardStack.getChildren().add(cardA);
-		Button cardB = new Button ("Card B");
+		cardB = new Button ("Card B");
 		cardStack.getChildren().add(cardB);
-		Button cardC = new Buton ("Card C");
+		cardC = new Button ("Card C");
 		cardStack.getChildren().add(cardC);
-		Button cardD = new Button ("Card D");
+		cardD = new Button ("Card D");
 		cardStack.getChildren().add(cardD);
-		Button cardE = new Button ("Card E");
+		cardE = new Button ("Card E");
 		cardStack.getChildren().add(cardE);
 		
 		root.add(cardStack, 254, 617);
@@ -184,29 +206,10 @@ public class GameAppGridPane extends javafx.application.Application {
 		
 // MONSTERS ------------------------------------------------------------------
 		HBox masterMonsterStack = new HBox();
-		
-	/*
-	 * Method takes a monster object, then gets its properties and adds them to the javafx scene
-	 */
-	public void importMonster(Monster m) {
-	//Creates a VBox for a single monster GUI
-		VBox monsterStack = new VBox();
-		monsterStack.setAlignment(Pos.CENTER);		
-		//Monster Name [Display]
-		Label monsterName = new Label(m.getName());
-		monsterName.setFont(Font.font("Arial", 12));
-		//Monster Image Area [Button]
-		Button btnMonsterImage;	
-		btnMonsterImage = new Button ("Monster");
-		btnMonsterImage.setFont(Font.font("Arial", 36));
-		monsterStack.getChildren().add(btnMonsterImage);
-		//Monster HP Bar [Display]
-		Label monsterHPBar = new Label (m.getHealth() + "/" + m.getMaxHealth());
-		monsterStack.getChildren().add(monsterHPBar);	
-		//Adds to the HBox
-		masterMonsterStack.getChildren().add(monsterStack);
-	}
-		
+		while (Game.monstersAlive()==true) {
+			this.importMonster();
+		}
+
 		root.add(masterMonsterStack, 508, 240);
 
 		
@@ -222,7 +225,7 @@ public class GameAppGridPane extends javafx.application.Application {
 				this.cardSelected.use(player, player);
 				disableCardAfterUse(cardBtnLetter);
 			}
-		}	
+		}	);
 		
 		//Pressing Monster Image Area
 		btnMonsterImage.setOnAction(new EventHandler<ActionEvent>(){
@@ -231,7 +234,7 @@ public class GameAppGridPane extends javafx.application.Application {
 				this.cardSelected.use(player, monster);
 				disableCardAfterUse(cardBtnLetter);
 			}
-		}
+		} );
 		
 		//Pressing Card
 		cardA.setOnAction(new EventHandler<ActionEvent>(){
@@ -246,7 +249,7 @@ public class GameAppGridPane extends javafx.application.Application {
 					return ("Invalid selection, please select another card");
 				}
 			}
-		}
+		});
 		cardB.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
@@ -259,7 +262,7 @@ public class GameAppGridPane extends javafx.application.Application {
 					return ("Invalid selection, please select another card");
 				}
 			}
-		}		 
+		}		);
 		cardC.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
@@ -272,7 +275,7 @@ public class GameAppGridPane extends javafx.application.Application {
 					return ("Invalid selection, please select another card");
 				}
 			}
-		}	
+		} )	;
 		cardD.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
@@ -285,8 +288,8 @@ public class GameAppGridPane extends javafx.application.Application {
 					return ("Invalid selection, please select another card");
 				}
 			}
-		}	
-		cardE.setOnAction(new EventHandler<ActionEvent(){
+		}	);
+		cardE.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
 				cardSelected = player.getDeck().getHand().get(4);
@@ -298,13 +301,15 @@ public class GameAppGridPane extends javafx.application.Application {
 					return ("Invalid selection, please select another card");
 				}
 			}
-		}	
+		}	);
 		
 		//Pressing btnEndTurn
+		/*
 		btnEndTurn.setOnAction(new EventHandler<ActionEvent>(){
 			player.setEnergy(0);
 			player.endTurn();
-		}		
+		}	)	;
+		*/
 		
 		//Making Scene as root
 		Scene scene = new Scene(root, 1270, 720);			
