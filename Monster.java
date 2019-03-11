@@ -27,6 +27,9 @@ public class Monster extends Entity {
 	public Monster(Monster m) {
 		super(m);
 		fillMoves(m.getMoves());
+		if (m.getStrategy()!= null){
+		this.setStrategy(m.getStrategy()) ;
+		}
 	}
 
 	/**
@@ -182,5 +185,14 @@ public class Monster extends Entity {
 			movesList.add(aStrategy.split(","));
 		}
 	}
+
+	/**
+	* @return Strategy
+	*/
+	public String getStrategy()
+	{
+		return this.Strategy;
+	}
+
 
 }
