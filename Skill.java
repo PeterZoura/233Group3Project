@@ -42,28 +42,7 @@ public class Skill extends Card {
 	*/
 	public Skill(String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, boolean zone, String name) {
 		super(0,0,0,cost,zone,name);
-		this.whichAttribute = whichAttribute;
-		this.currentTurnModify = currentTurnModify;
-		this.startTurnModify = startTurnModify;
-		this.endTurnModify = endTurnModify;
-		this.duration = duration;
-		String skillDescription = String.format("Costs %d mana. ", cost);
-		if (currentTurnModify!=0) {
-			skillDescription += String.format("Get/Afflict %d %s this turn. ", currentTurnModify, whichAttribute);
-		}
-		if (startTurnModify!=0) {
-			skillDescription += String.format("Get/Afflict %d %s at the beginning of your turn. ",startTurnModify,whichAttribute);
-		}
-		if (endTurnModify!=0) {
-			skillDescription += String.format("Get/Afflict %d %s at the end of your turn. ", endTurnModify,whichAttribute);
-		}
-		if (duration == -1){
-			skillDescription += "Effect lasts until the end of combat.";
-		}
-		else {
-			skillDescription += String.format("Effect lasts for %d turn(s).", duration);
-		}
-		super.setDescription(skillDescription);
+		initialize(whichAttribute, currentTurnModify, startTurnModify, endTurnModify, duration, zone);
 	}
 	
 	/**
@@ -73,38 +52,9 @@ public class Skill extends Card {
 	*/	
 	public Skill(int heal, int damage, int block, String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, int cost, boolean zone, String name) {
 		super(heal,damage,block,cost,zone,name);
-		this.whichAttribute = whichAttribute;
-		this.currentTurnModify = currentTurnModify;
-		this.startTurnModify = startTurnModify;
-		this.endTurnModify = endTurnModify;
-		this.duration = duration;
-		
-		String skillDescription = String.format("Costs %d mana. ", cost);
-		if (heal < 0)
-			skillDescription += "Take " + -1*this.getHeal() + " damage to yourself once. ";
-		if (heal > 0)
-			skillDescription += String.format("Heal %d health to yourself once. ", this.getHeal());
-		if (damage > 0)
-			skillDescription += String.format("Deal %d damage to an enemy once. ", this.getDamage());
-		if (block > 0)
-			skillDescription += String.format("Block %d damage for the next turn once. ", this.getBlock());
-		if (currentTurnModify!=0) {
-			skillDescription += String.format("Get/Afflict %d %s this turn. ", currentTurnModify, whichAttribute); 
-		}
-		if (startTurnModify!=0) {
-			skillDescription += String.format("Get/Afflict %d %s at the beginning of your turn. ",startTurnModify,whichAttribute);
-		}
-		if (endTurnModify!=0) {
-			skillDescription += String.format("Get/Afflict %d %s at the end of your turn. ", endTurnModify,whichAttribute);
-		}
-		if (duration == -1) {
-			skillDescription += "Effect lasts until the end of combat.";
-		}
-		else {
-			skillDescription += String.format("Effect lasts for %d turn(s).", duration);
-		}
-		super.setDescription(skillDescription);
+		initialize(whichAttribute, currentTurnModify, startTurnModify, endTurnModify, duration, zone);
 	}
+	
 	/**
 	* Constructor method that creates a skill card that has similiar functions to a normal card (heals, damages and blocks, but ALSO
 	* modifies a given attributes start turn modifications and end turn modifications.
@@ -118,12 +68,54 @@ public class Skill extends Card {
 		this.endTurnModify = endTurnModify;
 		this.duration = duration;
 	}
+	
 	/**
 	* Constructor copy method that copies a Skill card.
 	*/
 	public Skill(Skill aSkill) {
 		this(aSkill.getHeal(), aSkill.getDamage(), aSkill.getBlock(), aSkill.getAttribute(), aSkill.getCurrentModify(),
 			aSkill.getStartModify(), aSkill.getEndModify(), aSkill.getDuration(), aSkill.getCost(), aSkill.isZone(), aSkill.getName(), aSkill.getDescription());
+	}
+	
+	/**
+	 * Private utility method used by constructors. Initializes the Skill's variables and creates a description.
+	 * @param whichAttribute used to initialize the Skill and create a Skill description.
+	 * @param currentTurnModify used to initialize the Skill and create a Skill description.
+	 * @param startTurnModify used to initialize the Skill and create a Skill description.
+	 * @param endTurnModify used to initialize the Skill and create a Skill description.
+	 * @param duration used to initialize the Skill and create a Skill description.
+	 * @param zone used in the creation of the description.
+	 */
+	private void initialize(String whichAttribute, int currentTurnModify, int startTurnModify, int endTurnModify, int duration, boolean zone) {
+		this.whichAttribute = whichAttribute;
+		this.currentTurnModify = currentTurnModify;
+		this.startTurnModify = startTurnModify;
+		this.endTurnModify = endTurnModify;
+		this.duration = duration;
+		
+		String skillDescription = getDescription();
+		String verb = "weak vulnerable poison frail".contains(whichAttribute) ? "Afflict " : "Gain ";
+		
+		String quantifier = "";
+		if (verb.equals("Afflict ")) {
+			quantifier = isZone() ? " to all enemies" : " on an enemy";
+		}
+		
+		if (currentTurnModify!=0) {
+			skillDescription += String.format(verb + "%d %s" + quantifier + ".", currentTurnModify, whichAttribute);
+		}
+		if (startTurnModify!=0) {
+			skillDescription += String.format(verb + "%d %s" + quantifier + "at the beginning of your turn. ",startTurnModify,whichAttribute);
+		}
+		if (endTurnModify!=0) {
+			skillDescription += String.format(verb + "%d %s" + quantifier +  "at the end of your turn. ", endTurnModify,whichAttribute);
+		}
+		if (duration == -1){
+			skillDescription += " Effect lasts until the end of combat.";
+		} else if (duration > 1){
+			skillDescription += String.format(" Effect lasts for %d turns.", duration);
+		}
+		super.setDescription(skillDescription);
 	}
 	
 	/**
@@ -180,8 +172,6 @@ public class Skill extends Card {
 				case "poison":
 					attributes[i] = targets[i].getPoison();
 					break;
-				case "constricted":
-					attributes[i] = targets[i].getConstricted();
 			
 			}
 		}
