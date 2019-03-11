@@ -18,7 +18,7 @@ public class Deck {
 	 */
 	public Deck (Card...cards) {
 		for (Card c : cards)
-			deck.add(checkTypeAndCopy(c));
+			deck.add(CardsUtil.checkTypeAndCopy(c));
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class Deck {
 	private static ArrayList<Card> clone (ArrayList<Card> cardList) {
 		ArrayList<Card> newList = new ArrayList<Card>();
 		for (Card c: cardList)
-			newList.add(checkTypeAndCopy(c));
+			newList.add(CardsUtil.checkTypeAndCopy(c));
 		return newList;
 	}
 	
@@ -83,7 +83,7 @@ public class Deck {
 		}
 		
 		for (int i = 0; i < 5; i ++) {
-			hand.add(checkTypeAndCopy(drawPile.get(0)));
+			hand.add(CardsUtil.checkTypeAndCopy(drawPile.get(0)));
 			drawPile.remove(0);
 		}
 	}
@@ -149,28 +149,28 @@ public class Deck {
 	 * @param aCard add this card to the deck.
 	 */
 	public void addToDeck(Card aCard) {
-		deck.add(checkTypeAndCopy(aCard));
+		deck.add(CardsUtil.checkTypeAndCopy(aCard));
 	}
 
 	/**
 	 * @param aCard add this card to the discard pile.
 	 */
 	public void addToDiscardPile(Card aCard) {
-		discardPile.add(checkTypeAndCopy(aCard));
+		discardPile.add(CardsUtil.checkTypeAndCopy(aCard));
 	}
 
 	/**
 	 * @param aCard add this card to the draw pile.
 	 */
 	public void addToDrawPile(Card aCard) {
-		drawPile.add(checkTypeAndCopy(aCard));
+		drawPile.add(CardsUtil.checkTypeAndCopy(aCard));
 	}
 
 	/**
 	 * @param aCard add this card to the hand.
 	 */
 	public void addToHand(Card aCard) {
-		hand.add(checkTypeAndCopy(aCard));
+		hand.add(CardsUtil.checkTypeAndCopy(aCard));
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class Deck {
 	 * @return the Card at the given index in the hand.
 	 */
 	public Card drawFromHand(int cardIndex) {
-		Card aCard = checkTypeAndCopy(hand.get(cardIndex));
+		Card aCard = CardsUtil.checkTypeAndCopy(hand.get(cardIndex));
 		discardPile.add(aCard);
 		hand.remove(cardIndex);
 		return aCard;
@@ -219,24 +219,8 @@ public class Deck {
 	 * @return the Card at the given index in the deck.
 	 */
 	public Card drawFromDeck(int cardIndex) {
-		Card aCard = checkTypeAndCopy(deck.get(cardIndex));
+		Card aCard = CardsUtil.checkTypeAndCopy(deck.get(cardIndex));
 		return aCard;
-	}
-	/**
-	* Checks the type of the card and creates a copy of it
-	* basic cards only belong to the superclass Card, skill cards belong to the subclass Skill.
-	* @param aCard card to be checked and copied.
-	* @return copy of the card returned.
-	*/
-	private static Card checkTypeAndCopy(Card aCard){
-		Card copyCard;
-		if (aCard instanceof Skill) {
-			copyCard = new Skill((Skill)aCard);
-		}
-		else {
-			copyCard = new Card(aCard);
-		}
-		return copyCard;
 	}
 
 }
