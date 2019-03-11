@@ -11,7 +11,7 @@ public class Player extends Entity {
 	*getter for deck
 	*/
 	public Deck getDeck(){
-		return Deck new Deck = Deck(this.deck);
+		return new Deck(deck);
 	}
 	/**
 	 * Creates a Player object with a given name, maximum health, and any number of Cards to put in their deck.
