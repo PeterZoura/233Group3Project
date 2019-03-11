@@ -49,6 +49,48 @@ import javafx.geometry.Insets;
 /* */
 
 public class GameAppGridPane extends javafx.application.Application {
+	//Private Instance Variables
+	//private boolean forPlayer; NOT USED
+	//private boolean forMonster; NOT USED
+	private Card cardSelected; 
+	private char cardBtnLetter;
+	
+	/*
+	 * Boolean method to check if the card is for increasing block or healing the player
+	 * Returns true if card affects the player
+	 * Returns false if it does not affect the player, thus making it a card that affects the monster
+	 */
+	public boolean isForPlayer(Card input) {
+		if (	(input.getBlock() > 0) || (input.getHeal() > 0)  ) {
+			return true;
+		}
+		else if ( (input.getDamage() > 0) )
+			return false; 
+	}
+	
+	
+	public void disablePlayerOrMonsterButton () {
+		if (this.isForPlayer(cardSelected) == true) {
+			btnMonsterImage.setDisable(true);
+		}
+		else if (this.isForPlayer(cardSelected) == false) {
+			btnPlayerImage.setDisable(true);
+		}
+	}
+	
+	public void disableCardAfterUse(char inputLetter) {
+		if (inputLetter = 'A')
+			cardA.setDisable(true);
+		else if (inputLetter = 'B')
+			cardB.setDisable(true);
+		else if (inputLetter = 'C')
+			cardC.setDisable(true);
+		else if (inputLetter = 'D')
+			cardD.setDisable(true);
+		else if (inputLetter = 'E')
+			cardE.setDisable(true);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		//Creating GridPane layout
@@ -87,15 +129,15 @@ public class GameAppGridPane extends javafx.application.Application {
 // CARDS --------------------------------------------------------------------
 		HBox cardStack = new HBox();		
 		//Card Buttons [Button]
-		cardA = new Button ("Card A");
+		Button cardA = new Button ("Card A");
 		cardStack.getChildren().add(cardA);
-		cardB = new Button ("Card B");
+		Button cardB = new Button ("Card B");
 		cardStack.getChildren().add(cardB);
-		cardC = new Buton ("Card C");
+		Button cardC = new Buton ("Card C");
 		cardStack.getChildren().add(cardC);
-		cardD = new Button ("Card D");
+		Button cardD = new Button ("Card D");
 		cardStack.getChildren().add(cardD);
-		cardE = new Button ("Card E");
+		Button cardE = new Button ("Card E");
 		cardStack.getChildren().add(cardE);
 		
 		root.add(cardStack, 254, 617);
@@ -127,37 +169,73 @@ public class GameAppGridPane extends javafx.application.Application {
 
 		
 //EventHandler--------------------------------------------------------------------
-		//Pressing Player Image Area
+		/* Pressing Player Image Area Button
+		 * Enabled if card is for player
+		 * disabled if card is NOT for player
+		 * activates the card effects once selected
+		 */
 		btnPlayerImage.setOnAction(new EventHandler<ActionEvent>(){
-		
-		}	
-		
-		//Pressing btnEndTurn
-		btnEndTurn.setOnAction(new EventHandler<ActionEvent>(){
-		
-		}		
-		
-		//Pressing Card
-		cardA.setOnAction(new EventHandler<ActionEvent(){
-		
-		}
-		cardB.setOnAction(new EventHandler<ActionEvent(){
-		
-		}		 
-		cardC.setOnAction(new EventHandler<ActionEvent(){
-		
-		}	
-		cardD.setOnAction(new EventHandler<ActionEvent(){
-		
-		}	
-		cardE.setOnAction(new EventHandler<ActionEvent(){
-		
+			@Override
+			public void handle(ActionEvent event) {
+				this.cardSelected.use(player, player);
+				disableCardAfterUse(cardBtnLetter);
+			}
 		}	
 		
 		//Pressing Monster Image Area
 		btnMonsterImage.setOnAction(new EventHandler<ActionEvent>(){
 		
 		}
+		
+
+		
+		//Pressing Card
+		cardA.setOnAction(new EventHandler<ActionEvent(){
+			@Override
+			public void handle(ActionEvent event) {
+				cardSelected = player.getDeck().getHand().get(0);
+				this.disablePlayerOrMonsterButton();
+				cardBtnLetter = 'A';
+				
+			}
+		}
+		cardB.setOnAction(new EventHandler<ActionEvent(){
+			@Override
+			public void handle(ActionEvent event) {
+				cardSelected = player.getDeck().getHand().get(1);
+				this.disablePlayerOrMonsterButton();
+				cardBtnLetter = 'B';
+			}
+		}		 
+		cardC.setOnAction(new EventHandler<ActionEvent(){
+			@Override
+			public void handle(ActionEvent event) {
+				cardSelected = player.getDeck().getHand().get(2);
+				this.disablePlayerOrMonsterButton();
+				cardBtnLetter = 'C';
+			}
+		}	
+		cardD.setOnAction(new EventHandler<ActionEvent(){
+			@Override
+			public void handle(ActionEvent event) {
+				cardSelected = player.getDeck().getHand().get(3);
+				this.disablePlayerOrMonsterButton();
+				cardBtnLetter = 'D';
+			}
+		}	
+		cardE.setOnAction(new EventHandler<ActionEvent(){
+			@Override
+			public void handle(ActionEvent event) {
+				cardSelected = player.getDeck().getHand().get(4);
+				this.disablePlayerOrMonsterButton();
+				cardBtnLetter = 'E';
+			}
+		}	
+		
+		//Pressing btnEndTurn
+		btnEndTurn.setOnAction(new EventHandler<ActionEvent>(){
+		
+		}		
 		
 		//Making Scene as root
 		Scene scene = new Scene(root, 1270, 720);			
