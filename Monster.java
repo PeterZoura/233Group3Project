@@ -104,9 +104,9 @@ public class Monster extends Entity {
 			if (skill.getCurrentModify() != 0)
 				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getCurrentModify() + " " + skill.getAttribute() + "!");
 			if (skill.getStartModify() != 0)
-				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getStartModify() + " " + skill.getAttribute() + " at the end of every turn!");
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getStartModify() + " " + skill.getAttribute() + " at the start of every turn!");
 			if (skill.getEndModify() != 0)
-				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getEndModify() + " " + skill.getAttribute() + " at the start of every turn!");
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getEndModify() + " " + skill.getAttribute() + " at the end of every turn!");
 		}
 		return report;
 	}
