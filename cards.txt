@@ -12,7 +12,7 @@ basic,Immolate,-7,32,0,2,true
 skill,Flex,strength,2,0,-2,1,0,false
 skill,Regrow,regeneration,3,0,0,0,2,false
 skill,Seeping,poison,0,2,0,-1,2,false
-skillAction,Venom Bite,0,5,0,poison,2,0,0,2,1,false
+skillAction,Venom Bite,0,5,0,poison,2,0,0,0,1,false
 skillAction,Desperate Strike,-2,20,0,constricted,2,0,0,0,1,false
 skillAction,Bash,0,8,0,vulnerable,2,0,0,0,2,false
 basic,Monster WkAttack,0,4,0,0,false
