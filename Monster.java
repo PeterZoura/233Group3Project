@@ -63,11 +63,20 @@ public class Monster extends Entity {
 		String intentions = "";
 
 		if (move.getDamage() > 0)
-			intentions += "Attack: " + move.getDamage() + ". ";
+			intentions += "Attack: " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getFrail().getCurrentVal()) == 0) ? 1 : 0.75))) + ". ";
 		if (move.getBlock() > 0)
 			intentions += "Block. ";
 		if (move.getHeal() > 0)
 			intentions += "Heal. ";
+		if (move.getClass().getSimpleName().equals("Skill")) {
+			
+			Skill skill = (Skill)move;
+			if ("weak vulnerable poison frail".contains(skill.getAttribute()))
+				intentions += "Use a negative effect on you. ";
+			else
+				intentions += "Use a buff. ";
+			
+		}
 
 		if (intentions.equals(""))
 			intentions = "Unkown. ";
@@ -81,11 +90,21 @@ public class Monster extends Entity {
 	public String actionReport() {
 		String report = "";
 		if (move.getDamage() > 0)
-			report += getName() + " attacked for " + move.getDamage() + " damage! ";
+			report += getName() + " attacked for " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getFrail().getCurrentVal()) == 0) ? 1 : 0.75))) + " damage! ";
 		if (move.getBlock() > 0)
-			report += getName() + " blocked with " + move.getBlock() + " armour! ";
+			report += getName() + " blocked with " + (move.getBlock() + getDexterity().getCurrentVal()) + " armour! ";
 		if (move.getHeal() > 0)
 			report += getName() + " restored " + move.getHeal() + " health! ";
+		
+		if (move.getClass().getSimpleName().equals("Skill")) {
+			Skill skill = (Skill)move;
+			if (skill.getCurrentModify() != 0)
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getCurrentModify() + " " + skill.getAttribute() + "!");
+			if (skill.getStartModify() != 0)
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getStartModify() + " " + skill.getAttribute() + " at the end of every turn!");
+			if (skill.getEndModify() != 0)
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getEndModify() + " " + skill.getAttribute() + " at the start of every turn!");
+		}
 		return report;
 	}
 
