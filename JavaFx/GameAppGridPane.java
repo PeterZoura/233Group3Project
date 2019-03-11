@@ -44,6 +44,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos; 
 import javafx.geometry.Insets; 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 
 /* */
 
@@ -245,9 +254,6 @@ public class GameAppGridPane extends javafx.application.Application {
 					this.disablePlayerOrMonsterButton();
 					cardBtnLetter = 'A';
 				}
-				else {
-					return ("Invalid selection, please select another card");
-				}
 			}
 		});
 		cardB.setOnAction(new EventHandler<ActionEvent>(){
@@ -257,9 +263,6 @@ public class GameAppGridPane extends javafx.application.Application {
 				if (enoughEnergyToPlayCard(cardSelected, player) == true) {
 					this.disablePlayerOrMonsterButton();
 					cardBtnLetter = 'B';
-				}
-				else {
-					return ("Invalid selection, please select another card");
 				}
 			}
 		}		);
@@ -271,9 +274,6 @@ public class GameAppGridPane extends javafx.application.Application {
 					this.disablePlayerOrMonsterButton();
 					cardBtnLetter = 'C';
 				}
-				else {
-					return ("Invalid selection, please select another card");
-				}
 			}
 		} )	;
 		cardD.setOnAction(new EventHandler<ActionEvent>(){
@@ -284,9 +284,6 @@ public class GameAppGridPane extends javafx.application.Application {
 					this.disablePlayerOrMonsterButton();
 					cardBtnLetter = 'D';
 				}
-				else {
-					return ("Invalid selection, please select another card");
-				}
 			}
 		}	);
 		cardE.setOnAction(new EventHandler<ActionEvent>(){
@@ -296,9 +293,6 @@ public class GameAppGridPane extends javafx.application.Application {
 				if (enoughEnergyToPlayCard(cardSelected, player) == true) {
 					this.disablePlayerOrMonsterButton();
 					cardBtnLetter = 'E';
-				}
-				else {
-					return ("Invalid selection, please select another card");
 				}
 			}
 		}	);
