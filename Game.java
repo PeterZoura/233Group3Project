@@ -12,7 +12,7 @@ public class Game {
 	 * @param monsters
 	 * @return if one or more of the Monsters in the given array are alive.
 	 */
-	private static boolean monstersAlive(Monster[] monsters) {
+	public static boolean monstersAlive(Monster[] monsters) {
 		for (Monster m : monsters) {
 			if (m.alive())
 				return true;
