@@ -63,7 +63,7 @@ public class Monster extends Entity {
 		String intentions = "";
 
 		if (move.getDamage() > 0)
-			intentions += "Attack: " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getFrail().getCurrentVal()) == 0) ? 1 : 0.75))) + ". ";
+			intentions += "Attack: " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getWeak().getCurrentVal()) == 0) ? 1 : 0.75))) + ". ";
 		if (move.getBlock() > 0)
 			intentions += "Block. ";
 		if (move.getHeal() > 0)
@@ -90,7 +90,7 @@ public class Monster extends Entity {
 	public String actionReport() {
 		String report = "";
 		if (move.getDamage() > 0)
-			report += getName() + " attacked for " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getFrail().getCurrentVal()) == 0) ? 1 : 0.75))) + " damage! ";
+			report += getName() + " attacked for " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getWeak().getCurrentVal()) == 0) ? 1 : 0.75))) + " damage! ";
 		if (move.getBlock() > 0)
 			report += getName() + " blocked with " + (move.getBlock() + getDexterity().getCurrentVal()) + " armour! ";
 		if (move.getHeal() > 0)
