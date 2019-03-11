@@ -44,13 +44,31 @@ public class CardsUtil {
 	}
 	
 	/**
+	* Checks the type of the card and creates a copy of it
+	* basic cards only belong to the superclass Card, skill cards belong to the subclass Skill.
+	* @param aCard card to be checked and copied.
+	* @return copy of the card returned.
+	*/
+	public static Card checkTypeAndCopy(Card aCard){
+		Card copyCard;
+		if (aCard instanceof Skill) {
+			copyCard = new Skill((Skill)aCard);
+		}
+		else {
+			copyCard = new Card(aCard);
+		}
+		return copyCard;
+	}
+	
+	/**
 	 * @param name name of the card to find.
 	 * @return a Card object with the given name, or null if no such card exists.
 	 */
 	public static Card get(String name) {
 		for (Card c : cards) {
-			if (c.getName().equals(name))
-				return c;
+			if (c.getName().equals(name)) {
+				return checkTypeAndCopy(c);
+			}
 		}
 		return null;
 	}
@@ -61,7 +79,7 @@ public class CardsUtil {
 	public static Card randomP () {
 		Card c;
 		while ((c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Monster"));
-		return c;
+		return checkTypeAndCopy(c);
 	}
 	
 	/**
@@ -70,7 +88,7 @@ public class CardsUtil {
 	public static Card randomM () {
 		Card c;
 		while (!(c = cards.get((int) (Math.random() * cards.size()))).getName().contains("Monster"));
-		return c;
+		return checkTypeAndCopy(c);
 	}
 
 }
