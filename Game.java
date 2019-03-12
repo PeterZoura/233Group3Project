@@ -1,13 +1,14 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javafx.application.Application;
 
 
 /**
  * Uses a main method to run the primary game loop.
  */
 public class Game {
-	
+
 	/**
 	 * @param monsters
 	 * @return if one or more of the Monsters in the given array are alive.
@@ -92,28 +93,48 @@ public class Game {
 		return new Monster[][][] {tier1, tier2, tier3, tier4};
 		
 	}
-	
+	/*
+	new Thread() {
+            @Override
+            public void run() {
+                javafx.application.Application.launch(GameAppGridPane.class);
+            }
+        }.start();
+	*/
 
 	/**
 	 * Main game loop.
 	 */
 	public static void main(String[] args) {
+
 		CardsUtil.load();
 		
 		Monster[][][] encounters = getEncounters();
 		
 		Scanner in = new Scanner(System.in);
 		Player player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		
+        
 
 		for (int i = 0; i < 4; i ++) {
 			if (!player.alive())
 				break;
 			Monster[] combatMonsters = getEncounter(i, encounters);
+			
 		//	monster.setStrategy("0.8,Monster Special,2/0.2,Monster Special,2");
 		//	monster.setStrategy("1,Monster Special,3/0.9,Monster SpecialTwo,2");
 			player.startCombat();
 
 			while (monstersAlive(combatMonsters) && player.alive()) {
+				new Thread() {
+					@Override
+					public void run() {
+						javafx.application.Application.launch(GameAppGridPane.class);
+					}
+				}.start();
+				GameAppGridPane G = new GameAppGridPane();
+				G.setPlayerApp(player);
+				G.setCombatMonsters(combatMonsters);
 				playerTurn(player, combatMonsters);
 				player.endTurn();
 				combatMonsters = removeDead(combatMonsters);

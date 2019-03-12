@@ -15,6 +15,10 @@ public class Player extends Entity {
 		deck = new Deck(cards);
 	}
 	
+	public Player(Player pCopy) {
+		super(pCopy);
+	}
+	
 	/** Private utility method used to number and print all Entities from an array.
 	 * @param targets print these Entities.
 	 */
@@ -114,6 +118,10 @@ public class Player extends Entity {
 	 */
 	public void addCard(Card c) {
 		deck.addToDeck(c);
+	}
+	
+	public Deck getDeck() {
+		return deck;
 	}
 	
 }

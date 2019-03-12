@@ -7,7 +7,7 @@ public class Entity {
 	private int maxHealth;
 	private int health;
 	private int maxEnergy;
-	private int energy;
+	public int energy;
 	
 	//The Entity's attributes impact the effectiveness of various actions. See descriptions of each attribute with their getters below.
 	private Attribute strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour;
