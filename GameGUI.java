@@ -62,6 +62,8 @@ public class GameGUI extends Application{
 	static VBox playerPane = new VBox();
 	static ArrayList<VBox> monsterPanes = new ArrayList<VBox>();
 	static ArrayList<Button> cardButtons = new ArrayList<Button>();
+	static int cardToUse;
+	static Label descriptions= new Label("");
 	
 	public static void main(String[] args)
 	{
@@ -82,16 +84,27 @@ public class GameGUI extends Application{
 		playerPane.getChildren().add(PlayerButton);
 		Label playerHP = new Label(player.getHealth()+"/"+player.getMaxHealth());
 		playerPane.getChildren().add(playerHP);
+		Label playerAttributes = new Label(getPlayerAttributes());
+		playerPane.getChildren().add(playerAttributes);
 		
 		//monsterPanes
+		ArrayList<String> monsterAttributes = getMonsterAttributes();
 		try{
 			for (int j = 0; j < combatMonsters.length; j++){
 				Label monsterIntentions = new Label(combatMonsters[j].intentions());
 				monsterPanes.get(j).getChildren().add(monsterIntentions);
+				
 				Button MonsterButton = new Button(combatMonsters[j].getName());
 				monsterPanes.get(j).getChildren().add(MonsterButton);
+				
+				MonsterTargetClick clickEvent = new MonsterTargetClick(j);
+				MonsterButton.setOnAction(clickEvent);
+				
 				Label monsterHP = new Label(combatMonsters[j].getHealth()+"/"+combatMonsters[j].getMaxHealth());
 				monsterPanes.get(j).getChildren().add(monsterHP);
+				
+				Label aMonsterAttributes = new Label(monsterAttributes.get(0));
+				monsterPanes.get(j).getChildren().add(aMonsterAttributes);
 			}
 		}catch(Exception e){
 		}
@@ -112,6 +125,10 @@ public class GameGUI extends Application{
 		loadGame();
 		refreshVisuals();
 		
+		Button endTurnButton = new Button("End Turn");
+		EndButtonClick endClick = new EndButtonClick();
+		endTurnButton.setOnAction(endClick);
+		
 		BorderPane root = new BorderPane();
 		
 		HBox monsters = new HBox();
@@ -123,17 +140,18 @@ public class GameGUI extends Application{
 		int i =0;
 		for (Button card : cardButtons){
 			hand.getChildren().add(card);
-			HandleButtonClick clickEvent = new HandleButtonClick(i);
+			CardButtonClick clickEvent = new CardButtonClick(i);
 			card.setOnAction(clickEvent);
 			i++;
 		}
 		
-		
+		root.setTop(endTurnButton);
 		root.setLeft(playerPane);
 		root.setRight(monsters);
 		root.setBottom(hand);
+		root.setCenter(descriptions);
 		
-		Scene scene = new Scene(root,500,500);
+		Scene scene = new Scene(root,1000,500);
 		stage.setTitle("Slay the Spire");
 		stage.setScene(scene);
 		stage.show();
@@ -162,6 +180,8 @@ public class GameGUI extends Application{
 		for(Monster m : combatMonsters){
 			monsterPanes.add(new VBox());
 		}
+		descriptions.setWrapText(true);
+		
 	}
 	
 	public static boolean monstersAlive(Monster[] monsters) {
@@ -259,7 +279,9 @@ public class GameGUI extends Application{
 	public static void playerTurn() {
 		for (Monster m : combatMonsters){
 			m.setMove();
-			
+		}
+		for (Button card : cardButtons){
+			card.setDisable(false);
 		}
 		player.startTurn();
 		
@@ -271,28 +293,28 @@ public class GameGUI extends Application{
 	 * @param player
 	 * @param monster
 	 */
-	public static void endTurn(Scanner in, Player player, Monster[] monster) {
-		if (monstersAlive(monster) && player.alive()) {
-			pressEnter(in, player.getName() + "'s turn is over!");
+	public static void endTurn() {
+		if (monstersAlive(combatMonsters) && player.alive()) {
 			
-			System.out.println("Monsters' turn!");
-			for (Monster m : monster) {
+			player.endTurn();
+			
+			for (Monster m : combatMonsters) {
 				m.startTurn();
 			}
-			monster = removeDead(monster);		
-			printStats(player, monster);
+			combatMonsters = removeDead(combatMonsters);		
 			
-			for (Monster m : monster ) {
+			String describeTurn = "";
+			for (Monster m : combatMonsters ) {
 				m.getMove().use(m, player);
-				System.out.println(m.actionReport());
+				describeTurn += m.actionReport();
 			}
 			
-			for (Monster m : monster) {
+			descriptions.setText(describeTurn);
+			
+			for (Monster m : combatMonsters) {
 				m.endTurn();
 			}
-			monster = removeDead(monster);
-			printStats(player, monster);
-			pressEnter(in, "");
+			combatMonsters = removeDead(combatMonsters);
 		}
 	}
 
@@ -336,38 +358,43 @@ public class GameGUI extends Application{
 	/**
 	 * Prints the health, armour and various non-zero attributes of the given player and monster, as well as the energy of the player.
 	 */
-	public static void printStats(Entity player, Monster[] monster) {
-		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Frail", "Vulnerable", "Regeneration", "Poison", "Constricted", "Armour"));
+	public static String getPlayerAttributes() {
+		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Frail", "Vulnerable", "Regeneration",
+			"Poison", "Constricted", "Armour"));
 
-		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() +
-				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy());
+		String playerStatus = "";
 		int i = 0;
-		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(),player.getFrail(), player.getVulnerable(), player.getRegeneration(),
-		player.getPoison(), player.getConstricted(), player.getArmour()}){
+		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(),player.getFrail(),
+			player.getVulnerable(), player.getRegeneration(), player.getPoison(), player.getConstricted(), player.getArmour()}){
 			if (a.getCurrentVal()!= 0){
-				playerStatus += String.format("      %s: %d", attributeList.get(i), a.getCurrentVal());
+				playerStatus += String.format("%s: %d", attributeList.get(i), a.getCurrentVal())+"\n";
 			}
 			i++;
 		}
-
-		String monsterStatus = "";
+		return playerStatus;
+	}
+	
+	public static ArrayList<String> getMonsterAttributes(){
+		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Frail", "Vulnerable", "Regeneration",
+			"Poison", "Constricted", "Armour"));
+			
+		ArrayList<String> monsterAttributes = new ArrayList<String>();
 		
-		for (Monster m : monster) {
+		for (Monster m : combatMonsters) {
+			String aMonsterAttribute = "";
 			if (m.alive()) {
-				monsterStatus += ("\n" + m.getName() + ":    health: " + m.getHealth() + "/" + m.getMaxHealth());
 				int j = 0;
 				for (Attribute a : new Attribute[] {m.getStrength(), m.getDexterity(), m.getWeak(),m.getFrail(), m.getVulnerable(), m.getRegeneration(),
 				m.getPoison(), m.getConstricted(), m.getArmour()}){
 					if (a.getCurrentVal()!= 0){
-						monsterStatus += String.format("      %s: %d", attributeList.get(j), a.getCurrentVal());
+						aMonsterAttribute += String.format("%s: %d", attributeList.get(j), a.getCurrentVal())+"\n";
 					}
 					j++;
 				}
 			}
-		
+			monsterAttributes.add(aMonsterAttribute);
 		}
-		System.out.println(playerStatus + "\n");
-		System.out.println(monsterStatus);
+		return  monsterAttributes;
 	}
 
 
