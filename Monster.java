@@ -70,7 +70,7 @@ public class Monster extends Entity {
 			intentions += "Heal. ";
 
 		if (intentions.equals(""))
-			intentions = "Unkown. ";
+			intentions = "Unknown. ";
 
 		return getName() +  "'s intentions: " + intentions;
 	}

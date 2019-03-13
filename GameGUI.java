@@ -1,21 +1,169 @@
+import javafx.application.Application;
+import javafx.scene.Scene.*;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.*;
+import javafx.scene.paint.*;
+import javafx.scene.canvas.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-/**
- * Uses a main method to run the primary game loop.
- */
-public class Game {
-	
-	static Monster[][][] monsterEncounters;
-	static Monster[] combatMonsters;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+
+import javafx.scene.layout.GridPane;
+import javafx.geometry.Pos; 
+import javafx.geometry.Insets; 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+
+public class GameGUI extends Application{
 	static Player player;
+	static Monster[] combatMonsters;
+	static Monster[][][] monsterEncounters;
+	static VBox playerPane = new VBox();
+	static ArrayList<VBox> monsterPanes = new ArrayList<VBox>();
+	static ArrayList<Button> cardButtons = new ArrayList<Button>();
+	
+	public static void main(String[] args)
+	{
+		launch(args);
+	}
+	
+	public static void refreshVisuals(){
+		playerPane.getChildren().clear();
+		for (VBox panes : monsterPanes){
+			panes.getChildren().clear();
+		}
+		combatMonsters = removeDead(combatMonsters);
+		
+		//Player Pane
+		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
+		playerPane.getChildren().add(playerEnergy);
+		Button PlayerButton = new Button(player.getName());
+		playerPane.getChildren().add(PlayerButton);
+		Label playerHP = new Label(player.getHealth()+"/"+player.getMaxHealth());
+		playerPane.getChildren().add(playerHP);
+		
+		//monsterPanes
+		try{
+			for (int j = 0; j < combatMonsters.length; j++){
+				Label monsterIntentions = new Label(combatMonsters[j].intentions());
+				monsterPanes.get(j).getChildren().add(monsterIntentions);
+				Button MonsterButton = new Button(combatMonsters[j].getName());
+				monsterPanes.get(j).getChildren().add(MonsterButton);
+				Label monsterHP = new Label(combatMonsters[j].getHealth()+"/"+combatMonsters[j].getMaxHealth());
+				monsterPanes.get(j).getChildren().add(monsterHP);
+			}
+		}catch(Exception e){
+		}
+		
+		//Hand
+		try{
+			for(int i=0;i<player.getDeck().getHand().size();i++){
+				String cardName = player.getDeck().getHand().get(i).getName();
+				cardButtons.get(i).setText(cardName);
+			}
+		}catch(Exception e){
+		}
+		
+		
+	}
+    public void start(Stage stage) throws Exception
+	{
+		loadGame();
+		refreshVisuals();
+		
+		BorderPane root = new BorderPane();
+		
+		HBox monsters = new HBox();
+		for (VBox mPane : monsterPanes){
+			monsters.getChildren().add(mPane);
+		}
 
-	/**
-	 * @param monsters
-	 * @return if one or more of the Monsters in the given array are alive.
-	 */
+		HBox hand = new HBox();
+		int i =0;
+		for (Button card : cardButtons){
+			hand.getChildren().add(card);
+			HandleButtonClick clickEvent = new HandleButtonClick(i);
+			card.setOnAction(clickEvent);
+			i++;
+		}
+		
+		
+		root.setLeft(playerPane);
+		root.setRight(monsters);
+		root.setBottom(hand);
+		
+		Scene scene = new Scene(root,500,500);
+		stage.setTitle("Slay the Spire");
+		stage.setScene(scene);
+		stage.show();
+
+		gameLoop();
+		refreshVisuals();
+	}
+	
+	public static void gameLoop(){
+		player.startCombat();
+		playerTurn();
+			
+				
+	}
+	
+	public static void loadGame(){
+		CardsUtil.load();
+		monsterEncounters = getEncounters();
+		Scanner in = new Scanner(System.in);
+		combatMonsters = getEncounter(0,monsterEncounters);
+		player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		for(int i = 0; i<5;i++){
+			cardButtons.add(new Button());
+		}
+		
+		for(Monster m : combatMonsters){
+			monsterPanes.add(new VBox());
+		}
+	}
+	
 	public static boolean monstersAlive(Monster[] monsters) {
 		for (Monster m : monsters) {
 			if (m.alive())
@@ -24,15 +172,7 @@ public class Game {
 		return false;
 	}
 	
-	/**
-	 * Prints the intentions of each Monster in the given array.
-	 * @param monsters
-	 */
-	private static void printMonstersIntentions(Monster[] monsters) {
-		for (Monster m : monsters)
-			System.out.println(m.intentions() + "\n");
-	}
-	
+
 	/**
 	 * Removes dead Monsters from the given array.
 	 * @param monsters
@@ -96,61 +236,7 @@ public class Game {
 		return new Monster[][][] {tier1, tier2, tier3, tier4};
 		
 	}
-	/*
-	new Thread() {
-            @Override
-            public void run() {
-                javafx.application.Application.launch(GameAppGridPane.class);
-            }
-        }.start();
-	*/
 
-	/**
-	 * Main game loop.
-	 */
-	public static void main(String[] args) {
-
-		CardsUtil.load();
-		
-		monsterEncounters = getEncounters();
-		
-		Scanner in = new Scanner(System.in);
-		player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
-		
-        
-
-		for (int i = 0; i < 4; i ++) {
-			if (!player.alive())
-				break;
-			combatMonsters = getEncounter(i, monsterEncounters);
-			
-		//	monster.setStrategy("0.8,Monster Special,2/0.2,Monster Special,2");
-		//	monster.setStrategy("1,Monster Special,3/0.9,Monster SpecialTwo,2");
-			player.startCombat();
-
-			while (monstersAlive(combatMonsters) && player.alive()) {
-				/*new Thread() {
-					@Override
-					public void run() {
-						javafx.application.Application.launch(GameAppGridPane.class);
-					}
-				}.start();
-				//GameAppGridPane G = new GameAppGridPane();
-				//G.setPlayerApp(player);
-				//G.setCombatMonsters(combatMonsters);
-				*/
-				playerTurn(player, combatMonsters);
-				player.endTurn();
-				combatMonsters = removeDead(combatMonsters);
-				endTurn(in, player, combatMonsters);
-				
-			}
-			player.endCombat();
-			endCombat(in, player, combatMonsters);
-		}
-
-		in.close();
-	}
 
 	/**
 	 * Prints the game intro and returns the user's name.
@@ -170,20 +256,13 @@ public class Game {
 	 * @param player
 	 * @param monster
 	 */
-	public static void playerTurn(Player player, Monster[] monster) {
-		System.out.println(player.getName() + "'s turn!\n");
-		for (Monster m : monster)
+	public static void playerTurn() {
+		for (Monster m : combatMonsters){
 			m.setMove();
-		printMonstersIntentions(monster);
-
-		player.startTurn();
-		printStats(player, monster);
-
-		while (player.nextCard(monster) && monstersAlive(monster)) {
-			monster = removeDead(monster);
-			printMonstersIntentions(monster);
-			printStats(player, monster);
+			
 		}
+		player.startTurn();
+		
 	}
 
 	/**
@@ -200,8 +279,7 @@ public class Game {
 			for (Monster m : monster) {
 				m.startTurn();
 			}
-			monster = removeDead(monster);
-			printMonstersIntentions(monster);			
+			monster = removeDead(monster);		
 			printStats(player, monster);
 			
 			for (Monster m : monster ) {
@@ -302,6 +380,6 @@ public class Game {
 		System.out.println(message + "\nPress enter to continue.");
 		in.nextLine();
 	}
-	
 
 }
+
