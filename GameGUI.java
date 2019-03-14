@@ -13,47 +13,21 @@ import javafx.scene.image.ImageView;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.text.Font;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Button;
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.text.Font;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos; 
-import javafx.geometry.Insets; 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.text.Font;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
+import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+
 /**
 *GameGUI this will take care of most of the logic
 */
@@ -138,7 +112,18 @@ public class GameGUI extends Application{
 		
 		BorderPane root = new BorderPane();
 		
-		HBox monsters = new HBox();
+		//Setting first background. We plan to have the background change after each battle.
+		Image back1Image = new Image("sprites/background1.png"); //Load image
+		
+		//construct BackgroundImage needed to construct Background.
+		//The four nulls are parameters for repeating the image, changing image position, and size.
+		BackgroundImage background1Image = new BackgroundImage(back1Image, null, null, null, null);
+
+		Background firstBack = new Background(background1Image); //construct background using 1 background image
+		
+		root.setBackground(firstBack); //add to root
+		
+		HBox monsters = new HBox(); //this hbox stores the vboxes for each monster
 		for (VBox mPane : monsterPanes){
 			monsters.getChildren().add(mPane);
 		}
