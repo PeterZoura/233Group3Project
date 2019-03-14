@@ -41,11 +41,17 @@ public class GameGUI extends Application{
 	static int cardToUse;
 	static Label descriptions= new Label("");
 	
+	//Main method launches the gui.
 	public static void main(String[] args)
 	{
 		launch(args);
 	}
 	
+	/**
+	*Method refreshVisuals
+	*no parameters and returns nothing, it clears everything in the borderpane and removes dead monsters.
+	*it then refreshes all the visuals.
+	*/
 	public static void refreshVisuals(){
 		playerPane.getChildren().clear();
 		for (VBox panes : monsterPanes){
@@ -53,7 +59,7 @@ public class GameGUI extends Application{
 		}
 		combatMonsters = removeDead(combatMonsters);
 		
-		//Player Pane
+		//Player Pane.
 		Image playerImage = new Image("sprites/playerImage.png");
 		ImageView playerImageView = new ImageView(playerImage);
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
@@ -65,7 +71,7 @@ public class GameGUI extends Application{
 		Label playerAttributes = new Label(getPlayerAttributes());
 		playerPane.getChildren().add(playerAttributes);
 		
-		//monsterPanes
+		//monsterPanes.
 		ArrayList<String> monsterAttributes = getMonsterAttributes();
 		try{
 			for (int j = 0; j < combatMonsters.length; j++){
@@ -87,7 +93,7 @@ public class GameGUI extends Application{
 		}catch(Exception e){
 		}
 		
-		//Hand
+		//Hand.
 		try{
 			for(int i=0;i<player.getDeck().getHand().size();i++){
 				String cardName = player.getDeck().getHand().get(i).getName();
@@ -101,6 +107,12 @@ public class GameGUI extends Application{
 		
 		
 	}
+	
+	/**
+	*Start method
+	*@param stage
+	*This is where the root and all children are constructed and added
+	*/
     public void start(Stage stage) throws Exception
 	{
 		loadGame();
@@ -112,24 +124,26 @@ public class GameGUI extends Application{
 		
 		BorderPane root = new BorderPane();
 		
-		//Setting first background. We plan to have the background change after each battle.
+	//Setting first background. We plan to have the background change after each battle.
 		Image back1Image = new Image("sprites/background1.png"); //Load image
 		
-		//construct BackgroundImage needed to construct Background.
-		//The four nulls are parameters for repeating the image, changing image position, and size.
+		//Construct BackgroundImage, needed to construct Background.
+		//The four nulls are parameters for repeating the image in x and y, changing image position, and size.
 		BackgroundImage background1Image = new BackgroundImage(back1Image, null, null, null, null);
 
-		Background firstBack = new Background(background1Image); //construct background using 1 background image
-		
+		Background firstBack = new Background(background1Image); //Construct background using 1 background image.
 		root.setBackground(firstBack); //add to root
 		
-		HBox monsters = new HBox(); //this hbox stores the vboxes for each monster
+		HBox monsters = new HBox(); //This HBox stores the vboxes for each monster.
+		
 		for (VBox mPane : monsterPanes){
 			monsters.getChildren().add(mPane);
-		}
-
-		HBox hand = new HBox();
-		int i =0;
+		}  //Adds the array of VBoxes representing the monsters.
+		
+		HBox hand = new HBox();  //This HBox contains the 5 buttons representing the player's hand.
+		int i = 0;
+		
+		//Adds the array of buttons that represents the player's hand.
 		for (Button card : cardButtons){
 			hand.getChildren().add(card);
 			CardButtonClick clickEvent = new CardButtonClick(i);
@@ -152,13 +166,20 @@ public class GameGUI extends Application{
 		refreshVisuals();
 	}
 	
+	/**
+	*Method gameLoop used to instantiate new Attributes to be used for one battle and playerTurn sets the monsters strategies
+	*and it enables the buttons that represent the player's hand.
+	*/
 	public static void gameLoop(){
 		player.startCombat();
 		playerTurn();
 			
 				
 	}
-	
+	/**
+	*loadGame method. uses CardsUtil.load to construct all cards, creates the different kinds of encounters,
+	*sets the monsnters to be used for the current battle, creates the player, and adds and creates the buttons for monsters and cards in hand.
+	*/
 	public static void loadGame(){
 		CardsUtil.load();
 		monsterEncounters = getEncounters();
@@ -176,6 +197,11 @@ public class GameGUI extends Application{
 		
 	}
 	
+	/**
+	*Method monstersAlive returns a boolean. True if there is one or more enemies, false if there are no enemies.
+	*@param Monster[] monsters, the list of monsters in the current battle.
+	*@return boolean true or false based on if one or more monsters are alive.
+	*/
 	public static boolean monstersAlive(Monster[] monsters) {
 		for (Monster m : monsters) {
 			if (m.alive())
@@ -366,6 +392,10 @@ public class GameGUI extends Application{
 		return playerStatus;
 	}
 	
+	/**
+	*Method getMonsterAttributes returns a list of the status effects that each monster is currently affected by.
+	*@return monsterAttributes, a list of the attributes that each monster currently has.
+	*/
 	public static ArrayList<String> getMonsterAttributes(){
 		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Frail", "Vulnerable", "Regeneration",
 			"Poison", "Constricted", "Armour"));
