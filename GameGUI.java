@@ -54,7 +54,9 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-
+/**
+*GameGUI this will take care of most of the logic
+*/
 public class GameGUI extends Application{
 	static Player player;
 	static Monster[] combatMonsters;
@@ -78,9 +80,11 @@ public class GameGUI extends Application{
 		combatMonsters = removeDead(combatMonsters);
 		
 		//Player Pane
+		Image playerImage = new Image("sprites/playerImage.png");
+		ImageView playerImageView = new ImageView(playerImage);
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
 		playerPane.getChildren().add(playerEnergy);
-		Button PlayerButton = new Button(player.getName());
+		Button PlayerButton = new Button(player.getName(),playerImageView);
 		playerPane.getChildren().add(PlayerButton);
 		Label playerHP = new Label(player.getHealth()+"/"+player.getMaxHealth());
 		playerPane.getChildren().add(playerHP);
@@ -103,7 +107,7 @@ public class GameGUI extends Application{
 				Label monsterHP = new Label(combatMonsters[j].getHealth()+"/"+combatMonsters[j].getMaxHealth());
 				monsterPanes.get(j).getChildren().add(monsterHP);
 				
-				Label aMonsterAttributes = new Label(monsterAttributes.get(0));
+				Label aMonsterAttributes = new Label(monsterAttributes.get(j));
 				monsterPanes.get(j).getChildren().add(aMonsterAttributes);
 			}
 		}catch(Exception e){
@@ -113,7 +117,10 @@ public class GameGUI extends Application{
 		try{
 			for(int i=0;i<player.getDeck().getHand().size();i++){
 				String cardName = player.getDeck().getHand().get(i).getName();
-				cardButtons.get(i).setText(cardName);
+				Image cardImage = new Image("sprites/" + cardName + ".png");
+				ImageView cardImageView = new ImageView(cardImage);
+				cardButtons.get(i).setText("");
+				cardButtons.get(i).setGraphic(cardImageView);
 			}
 		}catch(Exception e){
 		}

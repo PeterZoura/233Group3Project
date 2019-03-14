@@ -26,7 +26,7 @@ public class MonsterTargetClick extends GameGUI implements EventHandler<ActionEv
 		else{
 			card.use(player,combatMonsters[monsterIndex]);
 		}
-		cardButtons.get(cardToUse).setDisable(true);
+		cardButtons.get(cardToUse).setVisible(false);
 		cardToUse = -1;
 	}
 		

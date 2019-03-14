@@ -73,7 +73,6 @@ public class Game {
 		Monster jawWorm = new Monster("Jaw Worm", 44, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster Strength"));
 		
 		Monster cultist = new Monster("Cultist", 48, CardsUtil.get("Monster Frail Attack"), CardsUtil.get("Monster Attack"), CardsUtil.get("Monster Strength Power"));
-		cultist.setStrategy("1,Monster Strength Power,1");
 		
 		Monster louse   = new Monster("Louse", 16, CardsUtil.get("Monster WkAttack"), CardsUtil.get("Monster BlAttack"), CardsUtil.get("Monster StBlock"), CardsUtil.get("Monster Block"), CardsUtil.get("Monster Frail"));
 		
@@ -81,7 +80,6 @@ public class Game {
 		sphericGuardian.block(30);
 		sphericGuardian.getDexterity().modifyVal(2);
 		sphericGuardian.getArmour().setModifyRate(0);
-		sphericGuardian.setStrategy("1,Monster StBlock,1");
 		
 		Monster gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.get("Monster Attack"), CardsUtil.get("Monster StAttack"), CardsUtil.get("Monster HvAttack"), CardsUtil.get("Monster Strength Power"));
 		
@@ -89,7 +87,6 @@ public class Game {
 		awakenedOne.getStrength().addStartModifier(1, -1);
 		awakenedOne.getRegeneration().setModifyRate(0);
 		awakenedOne.getRegeneration().modifyVal(10);
-		awakenedOne.setStrategy("1,Monster Awakened Special,1");
 
 		Monster[][] tier1 = new Monster[][] {{ new Monster(slime), new Monster(slime), new Monster(slime) }, { new Monster(cultist) }, { new Monster(louse), new Monster(louse) }, { new Monster(slime), new Monster(slime) }};
 		Monster[][] tier2 = new Monster[][] {{ new Monster(sphericGuardian)}, {new Monster(jawWorm), new Monster(jawWorm) }, { new Monster(cultist), new Monster(jawWorm) }, { new Monster(sphericGuardian), new Monster(jawWorm) }};
@@ -99,7 +96,6 @@ public class Game {
 		return new Monster[][][] {tier1, tier2, tier3, tier4};
 		
 	}
-	
 	/*
 	new Thread() {
             @Override

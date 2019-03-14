@@ -27,9 +27,6 @@ public class Monster extends Entity {
 	public Monster(Monster m) {
 		super(m);
 		fillMoves(m.getMoves());
-		if (m.getStrategy()!= null){
-		this.setStrategy(m.getStrategy()) ;
-		}
 	}
 
 	/**
@@ -66,23 +63,14 @@ public class Monster extends Entity {
 		String intentions = "";
 
 		if (move.getDamage() > 0)
-			intentions += "Attack: " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getWeak().getCurrentVal()) == 0) ? 1 : 0.75))) + ". ";
+			intentions += "Attack: " + move.getDamage() + ". ";
 		if (move.getBlock() > 0)
 			intentions += "Block. ";
 		if (move.getHeal() > 0)
 			intentions += "Heal. ";
-		if (move.getClass().getSimpleName().equals("Skill")) {
-
-			Skill skill = (Skill)move;
-			if ("weak vulnerable poison frail".contains(skill.getAttribute()))
-				intentions += "Use a negative effect on you. ";
-			else
-				intentions += "Use a buff. ";
-
-		}
 
 		if (intentions.equals(""))
-			intentions = "Unkown. ";
+			intentions = "Unknown. ";
 
 		return getName() +  "'s intentions: " + intentions;
 	}
@@ -176,23 +164,10 @@ public class Monster extends Entity {
 */
 	public void setStrategy(String aStrategy){
 		this.Strategy = aStrategy;
-		if (aStrategy.indexOf("/") != -1){
-			String[] separatedStrategy =  aStrategy.split("/");
-			for(int i = 0 ;i<separatedStrategy.length; i++){
-				movesList.add(separatedStrategy[i].split(","));
-			}
-		}else{
-			movesList.add(aStrategy.split(","));
+		String[] separatedStrategy =  aStrategy.split("/");
+		for(int i = 0 ;i<separatedStrategy.length; i++){
+			movesList.add(separatedStrategy[i].split(","));
 		}
 	}
-
-	/**
-	* @return Strategy
-	*/
-	public String getStrategy()
-	{
-		return this.Strategy;
-	}
-
 
 }
