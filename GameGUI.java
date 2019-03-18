@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos; 
 import javafx.geometry.Insets;
@@ -312,6 +311,7 @@ public class GameGUI extends Application{
 	 * @param monster
 	 */
 	public static void endTurn() {
+		int tierCounter = 0;
 		if (monstersAlive(combatMonsters) && player.alive()) {
 			
 			player.endTurn();
@@ -333,6 +333,10 @@ public class GameGUI extends Application{
 				m.endTurn();
 			}
 			combatMonsters = removeDead(combatMonsters);
+		}else if (player.alive() && !monstersAlive(combatMonsters)){
+			player.endTurn();
+			combatMonsters = getEncounter(tierCounter, monsterEncounters);
+			tierCounter++;
 		}
 	}
 
