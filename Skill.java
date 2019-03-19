@@ -119,6 +119,35 @@ public class Skill extends Card {
 	}
 	
 	/**
+	 * describes stats without cost (used for relics and poisons) 
+	 */
+	public String describeStats() {
+		String skillDescription = super.describeStats();
+		String verb = "weak vulnerable poison frail".contains(whichAttribute) ? "Afflict " : "Gain ";
+		
+		String quantifier = "";
+		if (verb.equals("Afflict ")) {
+			quantifier = isZone() ? " to all enemies" : " on an enemy";
+		}
+		
+		if (currentTurnModify!=0) {
+			skillDescription += String.format(verb + "%d %s" + quantifier + ".", currentTurnModify, whichAttribute);
+		}
+		if (startTurnModify!=0) {
+			skillDescription += String.format(verb + "%d %s" + quantifier + "at the beginning of your turn. ",startTurnModify,whichAttribute);
+		}
+		if (endTurnModify!=0) {
+			skillDescription += String.format(verb + "%d %s" + quantifier +  "at the end of your turn. ", endTurnModify,whichAttribute);
+		}
+		if (duration == -1){
+			skillDescription += " Effect lasts until the end of combat.";
+		} else if (duration > 1){
+			skillDescription += String.format(" Effect lasts for %d turns.", duration);
+		}
+		return skillDescription;
+	}
+	
+	/**
 	* @return String of the attribute being targeted
 	*/
 	public String getAttribute() {
@@ -188,7 +217,7 @@ public class Skill extends Card {
 	
 	
 	/**
-	 * Attempts to use the Card on a given user and target. Returns true if the user has enough mana and the use is successful, otherwise returns false.
+	 * Attempts to use the Card on a given user and target. Returns true if the user has enough Energy and the use is successful, otherwise returns false.
 	 * If the skill card has standard card abilities (heal, damage, block), use those first, then apply changes to the specified attribute.
 	 * @param user the Entity using the card.
 	 * @param target the Entity the user is targeting with the card.

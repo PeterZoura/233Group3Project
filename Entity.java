@@ -2,13 +2,13 @@
  * Contains basic behavior and traits to be used by both the Player and Monster Classes.
  */
 public class Entity {
-	
+
 	private String name;
 	private int maxHealth;
 	private int health;
 	private int maxEnergy;
 	private int energy;
-	
+
 	//The Entity's attributes impact the effectiveness of various actions. See descriptions of each attribute with their getters below.
 	private Attribute strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour;
 
@@ -25,14 +25,14 @@ public class Entity {
 		poison = new Attribute(0, -1);
 		constricted = new Attribute(0, 0);
 		this.armour = new Attribute(0);
-		
+
 		this.name = name;
 		this.maxHealth = maxHealth;
 		this.health = health;
 		this.maxEnergy = maxEnergy;
 		this.energy = energy;
 		this.armour.modifyVal(armour);
-		
+
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class Entity {
 		constricted = new Attribute(anEntity.getConstricted());
 		armour = new Attribute(anEntity.getArmour());
 	}
-	
+
 	/**
 	 * Applies the Entity's regeneration and poison. Updates the Entity's attributes.
 	 */
@@ -61,7 +61,7 @@ public class Entity {
 		for (Attribute a : new Attribute[] {strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour})
 			a.startTurn();
 	}
-	
+
 	/**
 	 * Applies damage from the Entity's constricted attribute. Updates the Entity's attributes.
 	 */
@@ -70,7 +70,7 @@ public class Entity {
 		for (Attribute a : new Attribute[] {strength, dexterity, weak, frail, vulnerable, regeneration, poison, constricted, armour})
 			a.endTurn();
 	}
-	
+
 	/**
 	 * Clears all modifiers from each attribute.
 	 */
@@ -83,32 +83,32 @@ public class Entity {
 	 * @param amount damage to deal to the entity. Deals 25% more damage if the Entity has any vulnerability. Damages armour first, then health.
 	 */
 	public void damage(int amount) {
-		
+
 		if (!vulnerable.equals(0)) {
 			amount *= 1.25;
 		}
-		
+
 		if (amount > 0) {
 			setHealth(health - Math.max(amount - armour.getCurrentVal(), 0));
 			armour.modifyVal(-amount);
 		}
 	}
-	
+
 	/**
 	 * @param amount of poison damage to deal to the entity. Poison damage goes through armor and is not affect by vulnerable state.
 	 */
 	public void poisonDamage(int amount){
-		
+
 		setHealth(health - Math.max(amount, 0));
 	}
-	
+
 	/**
 	 * @param amount heal this amount health (cannot exceed maximum health).
 	 */
 	public void heal(int amount) {
 		setHealth(health + amount);
 	}
-	
+
 	/**
 	 * @param amount lose this amount of energy.
 	 */
@@ -116,7 +116,7 @@ public class Entity {
 		if (amount > 0)
 			setEnergy(energy - amount);
 	}
-	
+
 	/**
 	 * @param amount gain this amount of energy.
 	 */
@@ -124,7 +124,15 @@ public class Entity {
 		if (amount > 0)
 			setEnergy(energy + amount);
 	}
-	
+
+	/**
+	*@param amount gain this amount of maxEnergy.
+	*/
+	public void gainMaxEnergy(int amount){
+		if(amount > 0)
+			this.maxEnergy += amount;
+	}
+
 	/**
 	 * @param amount add this amount of armour.
 	 */
@@ -163,7 +171,7 @@ public class Entity {
 			this.maxHealth = 1;
 		}
 	}
-	
+
 	/**
 	 * Sets the Entity's energy. If the given value is less than 0, defaults to 0.
 	 */
@@ -174,7 +182,7 @@ public class Entity {
 			this.energy = 0;
 		}
 	}
-	
+
 	/**
 	 * Sets the Entity's maximum energy. If the given value is less than 0, defaults to 0.
 	 */
@@ -220,7 +228,7 @@ public class Entity {
 	public int getMaxEnergy() {
 		return maxEnergy;
 	}
-	
+
 	/**
 	 * @return each attack deals the Entity's strength in extra damage(can be negative);
 	 */
@@ -241,7 +249,7 @@ public class Entity {
 	public Attribute getWeak() {
 		return weak;
 	}
-	
+
 	/**
 	 * @return reduces by 1 each turn, with a minimum of 0. An Entity blocks with 25% less armour if it has 1 or more frail.
 	 */
@@ -276,14 +284,14 @@ public class Entity {
 	public Attribute getConstricted() {
 		return constricted;
 	}
-	
+
 	/**
 	 * @return the Entity's armour.
 	 */
 	public Attribute getArmour() {
 		return armour;
 	}
-		
+
 
 	/**
 	 * @return whether or not the Entity's health is above 0.
