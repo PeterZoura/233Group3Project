@@ -43,6 +43,7 @@ public class CardsUtil {
 		}
 	}
 	
+	
 	/**
 	* Checks the type of the card and creates a copy of it
 	* basic cards only belong to the superclass Card, skill cards belong to the subclass Skill.

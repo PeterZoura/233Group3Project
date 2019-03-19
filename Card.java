@@ -56,6 +56,24 @@ public class Card {
 	}
 	
 	/**
+	 * generates stat description of a card without the cost (used for relics) 
+	 */
+	public String describeStats() {
+		String statDescription = "";
+		if (heal < 0)
+			statDescription += "Take " + -1*this.heal + " damage to yourself. ";
+		if (heal > 0)
+			statDescription += String.format("Heal %d health to yourself. ", this.heal);
+
+		if (damage > 0)
+			statDescription += String.format("Deal %d damage to " + (zone ? "all enemies." : "an enemy. "), this.damage);
+
+		if (block > 0)
+			statDescription += String.format("Block %d damage for the next turn. ", this.block);
+		return statDescription;
+	}
+	
+	/**
 	 * @return if the card is designed to target all enemies at once(false means a specific enemy will be targeted, or it is a self-buff).
 	 */
 	public boolean isZone() {
@@ -112,6 +130,9 @@ public class Card {
 		this.description = description;
 	}
 	
+	public void setCost(int i) {
+		this.cost = i;
+	}
 	/**
 	 * @return if the card requires a target to be selected in order to be used.
 	 */
