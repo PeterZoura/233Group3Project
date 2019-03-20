@@ -1,5 +1,6 @@
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.application.Platform;
 
 /**
 This class handles a button click and outputs a message.

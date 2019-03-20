@@ -26,11 +26,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
+import javafx.application.Platform;
 
 /**
 *GameGUI this will take care of most of the logic
 */
 public class GameGUI extends Application{
+	static int tierCounter = 0;
 	static Player player;
 	static Monster[] combatMonsters;
 	static Monster[][][] monsterEncounters;
@@ -183,7 +185,7 @@ public class GameGUI extends Application{
 		CardsUtil.load();
 		monsterEncounters = getEncounters();
 		Scanner in = new Scanner(System.in);
-		combatMonsters = getEncounter(0,monsterEncounters);
+		combatMonsters = getEncounter(tierCounter,monsterEncounters);
 		player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		for(int i = 0; i<5;i++){
 			cardButtons.add(new Button());
@@ -294,6 +296,10 @@ public class GameGUI extends Application{
 	 * @param monster
 	 */
 	public static void playerTurn() {
+		if (!player.alive()){
+			descriptions.setText("You have died!NOOO! You were soo yooouung. *shakes fist into sky*.");
+			Platform.exit();
+		}
 		for (Monster m : combatMonsters){
 			m.setMove();
 		}
@@ -311,7 +317,6 @@ public class GameGUI extends Application{
 	 * @param monster
 	 */
 	public static void endTurn() {
-		int tierCounter = 0;
 		if (monstersAlive(combatMonsters) && player.alive()) {
 			
 			player.endTurn();
@@ -333,10 +338,15 @@ public class GameGUI extends Application{
 				m.endTurn();
 			}
 			combatMonsters = removeDead(combatMonsters);
-		}else if (player.alive() && !monstersAlive(combatMonsters)){
+		}else if (!player.alive()){
+			descriptions.setText("You have died!NOOO! You were soo yooouung. *shakes fist into sky*.");
+			System.out.println("You have died!NOOO! You were soo yooouung. *shakes fist into sky*.");
+			Platform.exit();
+		}else if (!monstersAlive(combatMonsters)){
 			player.endTurn();
-			combatMonsters = getEncounter(tierCounter, monsterEncounters);
 			tierCounter++;
+			combatMonsters = getEncounter(tierCounter, monsterEncounters);
+			
 		}
 	}
 
