@@ -346,6 +346,7 @@ public class GameGUI extends Application{
 			player.endTurn();
 			tierCounter++;
 			combatMonsters = getEncounter(tierCounter, monsterEncounters);
+			gameLoop();
 			
 		}
 	}
