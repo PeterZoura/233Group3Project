@@ -108,8 +108,8 @@ public class Game {
 		Monster[][][] encounters = getEncounters();
 
 		Scanner in = new Scanner(System.in);
-		Player player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
-		
+		Player player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		player.addRelic(CardsUtil.getRelic("Iron Blood"));
 		
 		for (int i = 0; i < 4; i ++) {
 			if (!player.alive())
@@ -132,8 +132,6 @@ public class Game {
 				player.endCombat();
 				endCombat(in, player, combatMonsters);
 			}
-			
-			
 		}
 
 		in.close();
@@ -218,7 +216,6 @@ public class Game {
 			pressEnter(in, "Victory!");
 			Rewards(in, player);
 			pressEnter(in,"");
-
 		}
 	}
 	
@@ -285,8 +282,10 @@ public class Game {
 	private static Relic newRelic(Player player) {
 		Relic r = CardsUtil.randomRelic();
 		String playerRelics = player.listRelics();
-		while((playerRelics.contains(r.getName()))){
+		int i = 0;
+		while((playerRelics.contains(r.getName()))&&(i<20)){
 			r = CardsUtil.randomRelic();
+			i++;
 		}
 		return r;
 	}

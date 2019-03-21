@@ -16,5 +16,6 @@ skillAction,Venom Bite,0,5,0,poison,2,0,0,0,1,false
 skillAction,Desperate Strike,-2,20,0,constricted,2,0,0,0,1,false
 skillAction,Bash,0,8,0,vulnerable,2,0,0,0,2,false
 basic,Poisonous Scale,0,5,0,0,true 
+basic,kill,0,999,0,0,true
 
 

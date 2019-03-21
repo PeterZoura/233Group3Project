@@ -126,7 +126,7 @@ public class Monster extends Entity {
 *it will return a random card from monster's moves
 */
 	private Card checkStrategy(){
-		CardsUtil.load();
+		//CardsUtil.load();
 		Card toBeUsed =  moves.get((int) (Math.random() * moves.size()));
 		refreshMovesList();
 		if(this.movesList!= null && this.movesList.size()>1)

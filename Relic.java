@@ -239,7 +239,5 @@ public class Relic{
       user.setMaxHealth(newMaxHealth);
     }
     
-  }
-	  
-
+  }  
 }

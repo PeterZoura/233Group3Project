@@ -12,12 +12,14 @@ public class CardsUtil {
 	private static ArrayList<Card> monsterCards;
 	private static ArrayList<Card> potions;
 	private static ArrayList<Relic> relics;
+	private static ArrayList<Card> relicCards;
 	
 	
 	public static void load(){
 		loadPlayerCards();
 		loadMonsterCards();
 		loadPotions();
+		loadRelicCards();
 		loadRelics();
 	}
 	/**
@@ -122,7 +124,6 @@ public class CardsUtil {
 	*/
 	public static void loadRelics(){
 		relics = new ArrayList<Relic>();
-		ArrayList<Card> relicCards = loadRelicCards();
 		try{
 			Scanner read = new Scanner(new File("Relics.txt"));
 			int i =0;
@@ -140,8 +141,8 @@ public class CardsUtil {
 	* Initializes all cards that relics use in RelicCards.txt
 	*/	
 	
-	private static ArrayList<Card> loadRelicCards(){
-		ArrayList<Card> relicCards = new ArrayList<Card>();
+	private static void loadRelicCards(){
+		relicCards = new ArrayList<Card>();
 		try {
 			Scanner read = new Scanner(new File("RelicCards.txt"));
 			while (read.hasNextLine()) {
@@ -168,7 +169,6 @@ public class CardsUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return relicCards;
 	}	
 	
 	
@@ -197,6 +197,7 @@ public class CardsUtil {
 		ArrayList<Card> cards = new ArrayList<Card>(playerCards);
 		cards.addAll(monsterCards);
 		cards.addAll(potions);
+		cards.addAll(relicCards);
 		for (Card c : cards) {
 			if (c.getName().equals(name)) {
 				return checkTypeAndCopy(c);
