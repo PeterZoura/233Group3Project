@@ -129,7 +129,7 @@ public class Relic{
    *  
    * @return String description of the efects of the relics
    */
-  public String getStatDescprition() {
+  public String getStatDescription() {
 	  String statDescription = "";
 	  if (this.cardEffect != null) {
 		  statDescription = this.cardEffect.describeStats();
@@ -141,7 +141,19 @@ public class Relic{
 	  if (!this.type.equals("p")) {
 		  statDescription += (healthEffect>0)?" Increases player's  health by: "+this.healthEffect:"";
 		  statDescription += (energyEffect>0)?" Increases player's  Energy by: "+energyEffect:"";
-	  }	  
+	  }
+	  if(this.type.equals("e"))
+		  statDescription += " at the end of combat.";
+	  if(this.type.equals("s"))
+		  statDescription += " at the start of combat.";
+	  if(this.type.equals("p"))
+		  statDescription += " upon pick up.";
+	  if(this.type.equals("iS")){
+		  if (iterations==1)
+			  statDescription += " at the start of your turn.";
+		  else
+			  statDescription += " at the start of your turn every "+iterations+ " turns.";
+	  }
 	  return statDescription;
 	    
   }
@@ -177,7 +189,7 @@ public class Relic{
   public void use(Entity user) {
 	switch(this.type) {
     case "e"://uses the relic at the end of combat
-	  useRelic( user);
+	  useRelic(user);
       break;
     case "p"://uses the relic immediately after getting added to player's relics
       if(this.iterations == 1){
@@ -211,6 +223,7 @@ public class Relic{
    * @param user
    */
   private void useRelic(Entity user){
+
     if(this.energyEffect != 0 && this.type !="p") {
       //use energy
       user.gainEnergy(this.energyEffect);

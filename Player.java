@@ -8,7 +8,7 @@ public class Player extends Entity {
 	private Deck deck;
 	private ArrayList<Relic> relics = new ArrayList<Relic>();
 	private ArrayList<Card> potions = new ArrayList<Card>();
-	private int potionsLimit;
+	private int potionsLimit=3;
 
 
 	/**
@@ -144,7 +144,7 @@ public class Player extends Entity {
 					Card card = potions.get(whichCard);
 
 					if (!card.requiresTarget()) {
-						System.out.println(card.describeStats() + "\nPress enter to use, type anything else to go back.1");
+						System.out.println(card.describeStats() + "\nPress enter to use, type anything else to go back.");
 
 						if (in.nextLine().equals("")) {
 							usePotions(card, whichCard, target);
@@ -152,7 +152,7 @@ public class Player extends Entity {
 							System.out.println("Potion cancelled");
 						}
 					} else {
-						System.out.println(card.describeStats() + "\nEnter the number corresponding to your target, or anything else to go back.2");
+						System.out.println(card.describeStats() + "\nEnter the number corresponding to your target, or anything else to go back.");
 						printTargets(target);
 						try {
 							usePotions(card, whichCard, target[Integer.parseInt(in.nextLine()) - 1]);
@@ -175,7 +175,7 @@ public class Player extends Entity {
 			Card card = deck.getHand().get(whichCard);
 
 			if (!card.requiresTarget()) {
-				System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.1");
+				System.out.println(card.getDescription() + "\nPress enter to use, type anything else to go back.");
 
 				if (in.nextLine().equals("")) {
 					attemptCardUse(card, whichCard, target);
@@ -183,7 +183,7 @@ public class Player extends Entity {
 					System.out.println("Card cancelled");
 				}
 			} else {
-				System.out.println(card.getDescription() + "\nEnter the number corresponding to your target, or anything else to go back.2");
+				System.out.println(card.getDescription() + "\nEnter the number corresponding to your target, or anything else to go back.");
 				printTargets(target);
 				try {
 					attemptCardUse(card, whichCard, target[Integer.parseInt(in.nextLine()) - 1]);
@@ -243,7 +243,7 @@ public class Player extends Entity {
 
 
 	/**
-	* @param
+	* @param use a relics card ability if it has one
 	*/
 	public void useRelics(String type ,int iteration, Entity... target){
 		for(Relic r: this.relics)

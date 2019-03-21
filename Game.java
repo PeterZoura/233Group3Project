@@ -7,6 +7,8 @@ import java.util.Arrays;
  * Uses a main method to run the primary game loop.
  */
 public class Game {
+	
+	private static int battleCounter = 0;
 
 	/**
 	 * @param monsters
@@ -107,13 +109,6 @@ public class Game {
 
 		Scanner in = new Scanner(System.in);
 		Player player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
-		Relic aRelic = new Relic("p","Holy Grail", null, 1, 20, 1 );
-		Relic aRelic2 = new Relic("iS","poisonous Scale",CardsUtil.get("Seeping"), 0,0,1);
-		player.addRelic(aRelic);
-		player.addRelic(aRelic2);
-		player.setPotionsLimit(3);
-		player.addPotion(CardsUtil.get("Seeping"));
-		player.addPotion(CardsUtil.get("Poisonous Scale"));
 		
 		
 		for (int i = 0; i < 4; i ++) {
@@ -121,17 +116,24 @@ public class Game {
 				break;
 			Monster[] combatMonsters = getEncounter(i, encounters);
 			player.startCombat(0, combatMonsters);
-
-			while (monstersAlive(combatMonsters) && player.alive()) {
-				int turnCount = 0;
+			int turnCount = 0;
+			while (monstersAlive(combatMonsters) && player.alive()) {	
 				playerTurn(player,turnCount, combatMonsters);
 				player.endTurn();
 				combatMonsters = removeDead(combatMonsters);
 				endTurn(in, player,turnCount, combatMonsters);
 				turnCount++;
 			}
-			player.endCombat();
-			endCombat(in, player, combatMonsters);
+			battleCounter++;
+			if (!player.alive()){
+				endCombat(in, player, combatMonsters);
+			}
+			else{
+				player.endCombat();
+				endCombat(in, player, combatMonsters);
+			}
+			
+			
 		}
 
 		in.close();
@@ -214,21 +216,101 @@ public class Game {
 			System.out.println("DEFEAT!");
 		else {
 			pressEnter(in, "Victory!");
-			Card reward = newCard();
-			pressEnter(in, "Your reward: " + reward.getName() + "\n" + reward.getDescription());
-			player.addCard(reward);
+			Rewards(in, player);
+			pressEnter(in,"");
+
+		}
+	}
+	
+	/**
+	 * Retrieves a reward for the player at the end of comabt consisting of a choice between 3 random cards, a relic and a potion
+	 * @param in this Scanner will be used to prompt the user to hit enter.
+	 * @param player
+	 */
+	public static void Rewards(Scanner in, Player player){
+		ArrayList<Card> cardRewards = newCards();
+		Card potionReward = newPotion();
+		Relic relicReward = newRelic(player);
+		player.addRelic(relicReward);
+		player.addPotion(potionReward);
+		printRewards(cardRewards, potionReward,relicReward);
+		while(true){
+			try {
+				System.out.println("Type anything else if you do not want any of the cards");
+				int whichCard = Integer.parseInt(in.nextLine());
+				Card card = cardRewards.get(whichCard);
+				System.out.println(card.getDescription() + "\nPress enter to add to your deck, type anything else to select a different card.");
+				if (in.nextLine().equals("")){
+					System.out.println(card.getName() + " added to your deck.");
+					player.addCard(card);
+					break;
+				}
+				else
+					System.out.println("Select a new card");
+			} catch(Exception e){
+				System.out.println("No card selected");
+				break;
+			}
 		}
 	}
 
 	/**
-	 * @return a random player card, cannot be Strike.
+	 * @return an arraylist of 3 random player cards, cannot be Strike.
 	 */
-	private static Card newCard() {
+	private static ArrayList<Card> newCards() {
+		ArrayList<Card> cards = new ArrayList<Card>();
 		Card c;
-		while((c = CardsUtil.randomP()).getName().equals("Strike"));
-		return c;
+		for (int i=0; i<3; i++){
+			c = CardsUtil.randomP();
+			while((c.getName().equals("Strike"))||c.getName().equals("Defend")){
+				c = CardsUtil.randomP();
+			}
+			cards.add(c);
+		}
+		return cards;
 	}
-
+	
+	/**
+	 * @return a random potion card
+	 */
+	private static Card newPotion() {
+		Card potion;
+		potion = CardsUtil.randomPotion();
+		return potion;
+	}
+	
+	/**
+	 * @return a random relic
+	 */	
+	private static Relic newRelic(Player player) {
+		Relic r = CardsUtil.randomRelic();
+		String playerRelics = player.listRelics();
+		while((playerRelics.contains(r.getName()))){
+			r = CardsUtil.randomRelic();
+		}
+		return r;
+	}
+	
+	/**
+	 * prints to the console the rewards received from the battle.
+	 * @param cards array list of cards
+	 * @param potion
+	 * @param relic
+	 */
+	public static void printRewards(ArrayList<Card> cards,Card potion,Relic relic){
+		System.out.println("Your rewards are:");
+		if (relic!=null)
+			System.out.println(relic.getName() + ": \n" + relic.getStatDescription());
+		if (potion!= null)
+			System.out.println(potion.getName() + ": \n" + potion.getDescription());
+		System.out.println("Please select a card to add to your deck:");
+		int i = 0;
+		for (Card c : cards){
+			System.out.println(i+": "+c.getName());
+			i++;
+		}
+	}
+	
 	/**
 	 * Returns a random monster from a given array, with full health.
 	 * @param monsters the monsters to choose from.
@@ -279,7 +361,6 @@ public class Game {
 		System.out.println(playerStatus + "\n");
 		System.out.println(monsterStatus);
 	}
-
 
 	/**
 	 * Prompts the user to press enter, accompanied by a given message.
