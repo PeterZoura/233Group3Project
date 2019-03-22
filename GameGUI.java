@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.application.Platform;
+import java.lang.Thread;
 
 /**
 *GameGUI this will take care of most of the logic
