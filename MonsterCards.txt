@@ -1,0 +1,16 @@
+basic,Monster WkAttack,0,4,0,0,false
+basic,Monster Attack,0,7,0,0,false
+basic,Monster StAttack,0,16,0,0,false
+basic,Monster HvAttack,0,24,0,0,false
+basic,Monster WkBlock,0,0,4,0,false
+basic,Monster Block,0,0,8,0,false
+basic,Monster StBlock,0,0,18,0,false
+basic,Monster BlAttack,0,5,7,0,false
+basic,Monster Awakened Special,0,40,0,0,false
+skill,Monster Strength Power,strength,0,2,0,-1,0,false
+skill,Monster Frail,frail,2,0,0,0,0,false
+skill,Monster Vulnerable,vulnerable,2,0,0,0,0,false
+skill,Monster Strength,strength,3,0,0,0,0,false
+skillAction,Monster Frail Attack,0,7,0,frail,2,0,0,0,0,false
+skillAction,Monster HvFrail Attack,0,18,0,frail,3,0,0,0,0,false
+skillAction,Monster Vulnerable Attack,0,6,0,vulnerable,2,0,0,0,0,false

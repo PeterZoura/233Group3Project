@@ -1,0 +1,19 @@
+basic,Iron Wave,0,5,5,1,false
+basic,Strike,0,5,0,1,false
+basic,Defend,0,0,5,1,false
+basic,Anger,0,6,0,0,false
+basic,Clothesline,0,8,0,2,false
+basic,Headbutt,0,9,0,1,false
+basic,Heavy Blade,0,14,0,3,false
+basic,Wild Strike,-5,12,0,1,false
+basic,combust,0,15,0,2,true
+basic,Sweeping Strike,0,8,0,1,true
+basic,Immolate,-7,32,0,2,true
+skill,Flex,strength,2,0,-2,1,0,false
+skill,Regrow,regeneration,3,0,0,0,2,false
+skill,Seeping,poison,0,2,0,-1,2,false
+skillAction,Venom Bite,0,5,0,poison,2,0,0,0,1,false
+skillAction,Desperate Strike,-2,20,0,constricted,2,0,0,0,1,false
+skillAction,Bash,0,8,0,vulnerable,2,0,0,0,2,false
+
+
