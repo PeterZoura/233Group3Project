@@ -66,7 +66,7 @@ public class GameGUI extends Application{
 		combatMonsters = removeDead(combatMonsters);
 		
 		//Player Pane.
-		Image playerImage = new Image("sprites/playerImage.png");
+		Image playerImage = new Image("RawCards/playerImage.gif");
 		ImageView playerImageView = new ImageView(playerImage);
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
 		playerPane.getChildren().add(playerEnergy);
@@ -111,7 +111,7 @@ public class GameGUI extends Application{
 		try{
 			for(int j=0;j<player.getPotions().size();j++){
 				String potionName = player.getPotions().get(j).getName();
-				//Image cardImage = new Image("sprites/" + cardName + ".png");
+				//Image cardImage = new Image("RawCards/" + cardName + ".png");
 				//ImageView cardImageView = new ImageView(cardImage);
 				potionButtons.get(j).setText(potionName);
 				//cardButtons.get(i).setGraphic(cardImageView);
@@ -169,7 +169,7 @@ public class GameGUI extends Application{
 		
 		
 	//Setting first background. We plan to have the background change after each battle.
-		Image back1Image = new Image("sprites/background1.png"); //Load image
+		Image back1Image = new Image("RawCards/background1.png"); //Load image
 		
 		//Construct BackgroundImage, needed to construct Background.
 		//The four nulls are parameters for repeating the image in x and y, changing image position, and size.
