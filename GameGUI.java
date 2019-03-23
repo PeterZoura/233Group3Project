@@ -102,7 +102,7 @@ public class GameGUI extends Application{
 		
 		for(int i=0;i<player.getDeck().getHand().size();i++){
 				String cardName = player.getDeck().getHand().get(i).getName();
-				Image cardImage = new Image("sprites/" + cardName + ".png");
+				Image cardImage = new Image("Player Cards/" + cardName + ".png");
 				ImageView cardImageView = new ImageView(cardImage);
 				cardButtons.get(i).setGraphic(cardImageView);
 		}
