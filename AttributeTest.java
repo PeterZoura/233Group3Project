@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Uses JUnit to test various game mechanics for Group 3's project.
+ * Uses JUnit to test the behavior of Attribute.
  */
 public class AttributeTest {
 	
