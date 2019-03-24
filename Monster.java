@@ -82,7 +82,7 @@ public class Monster extends Entity {
 		}
 
 		if (intentions.equals(""))
-			intentions = "Unkown. ";
+			intentions = "Unknown. ";
 
 		return getName() +  "'s intentions: " + intentions;
 	}
@@ -102,11 +102,11 @@ public class Monster extends Entity {
 		if (move.getClass().getSimpleName().equals("Skill")) {
 			Skill skill = (Skill)move;
 			if (skill.getCurrentModify() != 0)
-				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getCurrentModify() + " " + skill.getAttribute() + "!");
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getCurrentModify() + " " + skill.getAttribute() + "! ");
 			if (skill.getStartModify() != 0)
-				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getStartModify() + " " + skill.getAttribute() + " at the start of every turn!");
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getStartModify() + " " + skill.getAttribute() + " at the start of every turn! ");
 			if (skill.getEndModify() != 0)
-				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getEndModify() + " " + skill.getAttribute() + " at the end of every turn!");
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getEndModify() + " " + skill.getAttribute() + " at the end of every turn! ");
 		}
 		return report;
 	}
