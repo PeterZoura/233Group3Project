@@ -1,0 +1,7 @@
+Slime,Attack,Block,Frail,Vulnerable,Frail Attack
+Jaw Worm,Attack,Block,BlAttack,Strength
+Cultist,Frail Attack,Attack,Strength Power
+Louse,WkAttack,BlAttack,StBlock,Block,Frail
+Spheric Guardian,StBlock,Frail Attack,Vulnerable Attack,Attack,Block
+Gremlin Nob,Attack,StAttack,HvAttack,Strength Power
+Awakened One,HvAttack,HvFrail Attack,Strength,Awakened Special
