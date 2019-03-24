@@ -3,8 +3,7 @@
  * Relics can be used by the player for a variety of buffs that can be permanent or occur based on amount of turns, or at the start/end of every combat.
  */
 public class Relic {
-	private String type; // can be "s"-start combat,"e"-end combat,"p"-permanent,"iS"-iterative start
-							// turn,"iE"-iterative End turn
+	private String type; // can be "s"-start combat,"e"-end combat,"p"-permanent,"iS"-iterative start,"iE"-iterative End turn(iE is discontinued)
 	private String name;
 	private String description;
 	private Card cardEffect;
@@ -14,7 +13,7 @@ public class Relic {
 
 	/**
 	 * a constructor that accepts description
-	 * 
+	 *
 	 * @param type
 	 * @param name
 	 * @param description
@@ -39,7 +38,7 @@ public class Relic {
 
 	/**
 	 * a constructor that does not accept description
-	 * 
+	 *
 	 * @param type
 	 * @param name
 	 * @param cardEffect
@@ -62,7 +61,7 @@ public class Relic {
 
 	/**
 	 * copy constructor
-	 * 
+	 *
 	 * @param aRelic
 	 */
 	public Relic(Relic aRelic) {
@@ -80,7 +79,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return String type of relic
 	 */
 	public String getType() {
@@ -88,7 +87,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return String name of relic
 	 */
 	public String getName() {
@@ -96,7 +95,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return String description
 	 */
 	public String getDescription() {
@@ -104,7 +103,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the card that a relic uses
 	 */
 	public Card getCardEffect() {
@@ -113,7 +112,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the amount of energy it gives the player
 	 */
 	public int getEnergyEffect() {
@@ -121,7 +120,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return an Int of how many counts before the relic uses it's effects during a
 	 *         combat
 	 */
@@ -130,7 +129,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return an Int of how much it affects player's health or max health
 	 */
 	public int getHealthEffect() {
@@ -138,7 +137,7 @@ public class Relic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return String description of the efects of the relics
 	 */
 	public String getStatDescription() {
@@ -172,7 +171,7 @@ public class Relic {
 
 	/**
 	 * uses the relic of types"s"- start combat "iS"- iterative Start turn
-	 * 
+	 *
 	 * @param iteration
 	 * @param user
 	 * @param target
@@ -198,64 +197,61 @@ public class Relic {
 
 	/**
 	 * uses relics of type"p"-permanent and "e"- end combat
-	 * 
+	 *
 	 * @param user
 	 */
-	public void use(Entity user) {
-		switch (this.type) {
-		case "e":// uses the relic at the end of combat
-			useRelic(user);
-			break;
-		case "p":// uses the relic immediately after getting added to player's relics
-			if (this.iterations == 1) {
-				useRelic(user);
-				this.iterations = 0;
-			}
-			break;
-		}
-	}
+	 public void use(Entity user) {
+	 switch(this.type) {
+		 case "e"://uses the relic at the end of combat
+		 useRelic(user);
+			 break;
+		 case "p"://uses the relic immediately after getting added to player's relics
+			 if(this.iterations == 0){
+			 useRelic(user);
+			 this.iterations = 1 ;
+			 }
+			 break;
+	 }
+	 }
 
-	/**
-	 * private method used by use(user, iterations, monsters...) in relic
-	 * 
-	 * @param user
-	 * @param target
-	 */
-	private void useRelic(Entity user, Entity... target) {
-		if (this.cardEffect != null) {
-			// use it
-			CardsUtil.get(cardEffect.getName()).use(user, target);
-		}
-		if (this.energyEffect != 0) {
-			// use energy
-			user.gainEnergy(this.energyEffect);
-		}
-		if (this.healthEffect != 0) {
-			user.heal(this.healthEffect);
-		}
-	}
+ /**
+	*  private method used by use(user, iterations, monsters...) in relic
+	* @param user
+	* @param target
+	*/
+	 private void useRelic(Entity user, Entity... target){
+		 if(this.cardEffect != null){
+			 //use it
+			 CardsUtil.get(cardEffect.getName()).use(user, target);
+		 }
+		 if(this.energyEffect != 0) {
+			 //use energy
+			 user.gainEnergy(this.energyEffect);
+		 }
+		 if(this.healthEffect != 0){
+			 user.heal(this.healthEffect);
+		 }
+	 }
+	 /**
+		* rivate method used  by use(user) in relic
+		* @param user
+		*/
+	 private void useRelic(Entity user){
 
-	/**
-	 * rivate method used by use(user) in relic
-	 * 
-	 * @param user
-	 */
-	private void useRelic(Entity user) {
-
-		if (this.energyEffect != 0 && this.type != "p") {
-			// use energy
-			user.gainEnergy(this.energyEffect);
-		}
-		if (this.energyEffect != 0 && this.type == "p") {
-			user.gainMaxEnergy(this.energyEffect);
-		}
-		if (this.healthEffect != 0 && this.type != "p") {
-			user.heal(this.healthEffect);
-		}
-		if (this.healthEffect != 0 && this.type == "p") {
-			int newMaxHealth = user.getMaxHealth() + this.healthEffect;
-			user.setMaxHealth(newMaxHealth);
-		}
+		 if(this.energyEffect != 0 && !this.type.equals("p")) {
+			 //use energy
+			 user.gainEnergy(this.energyEffect);
+		 }
+		 if(this.energyEffect !=0 && this.type.equals("p") ){
+			 user.gainMaxEnergy(this.energyEffect);
+		 }
+		 if(this.healthEffect != 0 && !this.type.equals("p")){
+				 user.heal(this.healthEffect);
+		 }
+		 if(this.healthEffect != 0 && this.type.equals("p")){
+			 int newMaxHealth = user.getMaxHealth()+ this.healthEffect;
+			 user.setMaxHealth(newMaxHealth);
+		 }
 
 	}
 }
