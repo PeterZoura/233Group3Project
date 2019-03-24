@@ -3,5 +3,5 @@ p,Pear,0,15,0
 s,Vajra,0,0,0
 s,Anchor,0,0,0
 s,Stone,0,0,0
-p,Death Pact,0,1,-15,0
-iS,Sunflower,0,1,0,3
+p,Death Pact,1,-15,0
+iS,Sunflower,1,0,3

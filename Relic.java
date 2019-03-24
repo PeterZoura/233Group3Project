@@ -32,9 +32,9 @@ public class Relic{
     this.healthEffect = healthEffect;
     this.iterations = iterations;
   }
-  
+
   /**
-   *a constructor that does not accept description 
+   *a constructor that does not accept description
    * @param type
    * @param name
    * @param cardEffect
@@ -71,62 +71,62 @@ public class Relic{
     this.iterations = aRelic.getIterations();
 
   }
-  
+
 /**
- * 
+ *
  * @return String type of relic
  */
  public String getType(){
     return  this.type;
   }
- 
+
 /**
- * 
+ *
  * @return String name of relic
  */
   public String getName(){
     return this.name;
   }
 /**
- * 
+ *
  * @return String description
  */
   public String getDescription(){
     return this.description;
   }
 /**
- * 
- * @return the card that a relic uses 
+ *
+ * @return the card that a relic uses
  */
   public Card getCardEffect(){
     Card toBeReturned = new Card(this.cardEffect);
     return toBeReturned;
   }
   /**
-   * 
+   *
    * @return the  amount of energy it gives the player
    */
   public int getEnergyEffect(){
     return this.energyEffect;
   }
   /**
-   * 
+   *
    * @return an Int of how many counts before the relic uses it's effects during a combat
    */
   public int getIterations(){
     return this.iterations;
   }
-  
+
   /**
-   * 
+   *
    * @return an Int of how much it affects player's health or max health
    */
-  public int getHealthEffect() {		
+  public int getHealthEffect() {
 	return this.healthEffect;
   }
-  
+
   /**
-   *  
+   *
    * @return String description of the efects of the relics
    */
   public String getStatDescription() {
@@ -155,12 +155,12 @@ public class Relic{
 			  statDescription += " at the start of your turn every "+iterations+ " turns.";
 	  }
 	  return statDescription;
-	    
+
   }
-  
-  
+
+
 /**
- *  uses the relic of types"s"- start combat "iS"- iterative Start turn 
+ *  uses the relic of types"s"- start combat "iS"- iterative Start turn
  * @param iteration
  * @param user
  * @param target
@@ -175,7 +175,7 @@ public class Relic{
         useRelic( user, target);
         }
         break;
-      case "iE":// uses the relic in iterations during a battle in iteration at the end of the turn( not used) 
+      case "iE":// uses the relic in iterations during a battle in iteration at the end of the turn( not used)
         if((iteration %this.iterations) ==0){
         useRelic( user, target);
         }
@@ -183,7 +183,7 @@ public class Relic{
     }
   }
   /**
-   * uses relics of type"p"-permanent and "e"- end combat 
+   * uses relics of type"p"-permanent and "e"- end combat
    * @param user
    */
   public void use(Entity user) {
@@ -192,14 +192,14 @@ public class Relic{
 	  useRelic(user);
       break;
     case "p"://uses the relic immediately after getting added to player's relics
-      if(this.iterations == 1){
+      if(this.iterations == 0){
       useRelic(user);
-      this.iterations = 0 ;
+      this.iterations = 1 ;
       }
       break;
 	}
   }
-  
+
 /**
  *  private method used by use(user, iterations, monsters...) in relic
  * @param user
@@ -208,7 +208,7 @@ public class Relic{
   private void useRelic(Entity user, Entity... target){
     if(this.cardEffect != null){
       //use it
-      CardsUtil.get(cardEffect.getName()).use(user, target);	
+      CardsUtil.get(cardEffect.getName()).use(user, target);
     }
     if(this.energyEffect != 0) {
       //use energy
@@ -224,20 +224,20 @@ public class Relic{
    */
   private void useRelic(Entity user){
 
-    if(this.energyEffect != 0 && this.type !="p") {
+    if(this.energyEffect != 0 && !this.type.equals("p")) {
       //use energy
       user.gainEnergy(this.energyEffect);
     }
-    if(this.energyEffect !=0 && this.type == "p" ){
+    if(this.energyEffect !=0 && this.type.equals("p") ){
       user.gainMaxEnergy(this.energyEffect);
     }
-    if(this.healthEffect != 0 && this.type !="p"){
+    if(this.healthEffect != 0 && !this.type.equals("p")){
         user.heal(this.healthEffect);
     }
-    if(this.healthEffect != 0 && this.type =="p"){
+    if(this.healthEffect != 0 && this.type.equals("p")){
       int newMaxHealth = user.getMaxHealth()+ this.healthEffect;
       user.setMaxHealth(newMaxHealth);
     }
-    
-  }  
+
+  }
 }
