@@ -1,6 +1,8 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -13,6 +15,7 @@ public class CardsUtil {
 	private static ArrayList<Card> potions;
 	private static ArrayList<Relic> relics;
 	private static ArrayList<Card> relicCards;
+	private static HashMap<String, Card[]> monsterMovesets;
 	
 	
 	public static void load(){
@@ -21,6 +24,7 @@ public class CardsUtil {
 		loadPotions();
 		loadRelicCards();
 		loadRelics();
+		loadMonsterMovesets();
 	}
 	/**
 	 * Initializes all player Card objects as found in PlayerCards.txt.
@@ -28,7 +32,7 @@ public class CardsUtil {
 	 * skill cards are cards that only change the attributes of the user or the target.
 	 * skillAction cards are cards that do basic card functions (damage,heal,block) AND change the attributes of the user or target.
 	 */
-	public static void loadPlayerCards () {
+	public static void loadPlayerCards() {
 		playerCards = new ArrayList<Card>();
 		try {
 			Scanner read = new Scanner(new File("PlayerCards.txt"));
@@ -61,7 +65,7 @@ public class CardsUtil {
 	 * skill cards are cards that only change the attributes of the user or the target.
 	 * skillAction cards are cards that do basic card functions (damage,heal,block) AND change the attributes of the user or target.
 	 */	
-	public static void loadPotions () {
+	public static void loadPotions() {
 		potions = new ArrayList<Card>();
 		try {
 			Scanner read = new Scanner(new File("Potions.txt"));
@@ -93,7 +97,7 @@ public class CardsUtil {
 	 * skill cards are cards that only change the attributes of the user or the target.
 	 * skillAction cards are cards that do basic card functions (damage,heal,block) AND change the attributes of the user or target.
 	 */	
-	public static void loadMonsterCards () {
+	public static void loadMonsterCards() {
 		monsterCards = new ArrayList<Card>();
 		try {
 			Scanner read = new Scanner(new File("MonsterCards.txt"));
@@ -119,10 +123,42 @@ public class CardsUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Loads all monster movesets, which can be accessed by monster name.
+	 */
+	public static void loadMonsterMovesets() {
+		monsterMovesets = new HashMap<String, Card[]>();
+		try {
+			Scanner read = new Scanner(new File("MonsterMovesets.txt"));
+			while(read.hasNextLine()) {
+				String[] a = read.nextLine().split(",");
+				Card[] moves = new Card[a.length - 1];
+				for (int i = 1; i < a.length; i ++)
+					moves[i - 1] = get("Monster " + a[i]);
+				
+				monsterMovesets.put(a[0], moves);
+					
+			}
+			read.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("MonsterMovesets.txt not found.");
+		}
+		
+	}
+	
+	/**
+	 * @param monsterName the name of the monster to get the moveset for.
+	 * @return the moveset for the monster with the given name.
+	 */
+	public static Card[] getMonsterMoveset(String monsterName) {
+		return monsterMovesets.get(monsterName);
+	}
+	
 	/**
 	* Initializes all relics in Relics.txt, relics use cards which are initialized in loadRelicCards
 	*/
-	public static void loadRelics(){
+	public static void loadRelics()  {
 		relics = new ArrayList<Relic>();
 		try{
 			Scanner read = new Scanner(new File("Relics.txt"));
@@ -141,7 +177,7 @@ public class CardsUtil {
 	* Initializes all cards that relics use in RelicCards.txt
 	*/	
 	
-	private static void loadRelicCards(){
+	private static void loadRelicCards() {
 		relicCards = new ArrayList<Card>();
 		try {
 			Scanner read = new Scanner(new File("RelicCards.txt"));
@@ -178,7 +214,7 @@ public class CardsUtil {
 	* @param aCard card to be checked and copied.
 	* @return copy of the card returned.
 	*/
-	public static Card checkTypeAndCopy(Card aCard){
+	public static Card checkTypeAndCopy(Card aCard) {
 		Card copyCard;
 		if (aCard instanceof Skill) {
 			copyCard = new Skill((Skill)aCard);
