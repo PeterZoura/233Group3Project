@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Uses JUnit to test various game mechanics for Group 3's project.
  */
-public class SlayTheSpireTest {
+public class AttributeTest {
 	
 	/**
 	 * Checks that the cloning constructor for Attribute copies values correctly.
@@ -248,7 +248,7 @@ public class SlayTheSpireTest {
 			p.endTurn();
 		}
 		
-		Monster m = new Monster("Monster", 5);
+		Monster m = new Monster("Monster", 5, CardsUtil.getMonsterMoveset("Louse"));
 		CardsUtil.get("Strike").use(p, m);
 		
 		assertEquals("Testing weak", true, p.getWeak().equals(1) && m.alive());
@@ -268,7 +268,7 @@ public class SlayTheSpireTest {
 			p.endTurn();
 		}
 		
-		Monster m = new Monster("Monster", 8);
+		Monster m = new Monster("Monster", 8, CardsUtil.getMonsterMoveset("Louse"));
 		CardsUtil.get("Strike").use(p, m);
 		
 		assertEquals("Testing strength", true, p.getStrength().equals(3) && !m.alive());
