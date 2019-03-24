@@ -15,7 +15,7 @@ public class Monster extends Entity {
 	/**
 	 * Creates a Monster with a given name, maximum health, and any number of Cards, which will be randomly accessed as the Monster's moves.
 	 */
-	public Monster(String name, int maxHealth, Card... moves) {
+	public Monster(String name, int maxHealth, Card[] moves) {
 		super(name, maxHealth, maxHealth, 0, 0, 0);
 		fillMoves(new ArrayList<Card> (Arrays.asList(moves)));
 	}
