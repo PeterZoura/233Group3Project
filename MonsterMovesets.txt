@@ -1,7 +1,13 @@
-Slime,Attack,Block,Frail,Vulnerable,Frail Attack
+Acid Slime,Attack,Block,Weak,Vulnerable Attack
+Spike Slime,Attack,Block,Frail,Vulnerable Attack
+Fungi Beast,Attack,Strength
+Shelled Parasite,StAttack,Parasite Suck,Frail Attack
+Snake Plant,Frail,Weak,HvAttack,Block
 Jaw Worm,Attack,Block,BlAttack,Strength
-Cultist,Frail Attack,Attack,Strength Power
+Cultist,Frail Attack,Attack
 Louse,WkAttack,BlAttack,StBlock,Block,Frail
 Spheric Guardian,StBlock,Frail Attack,Vulnerable Attack,Attack,Block
 Gremlin Nob,Attack,StAttack,HvAttack,Strength Power
-Awakened One,HvAttack,HvFrail Attack,Strength,Awakened Special
+Orb Walker,StAttack,Vulnerable Attack
+Awakened One,HvAttack,HvFrail Attack,Strength
+The Champ,StAttack,Weak,Vulnerable,Champ Defensive Stance,HvFrail Attack
