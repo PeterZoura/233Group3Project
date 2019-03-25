@@ -17,8 +17,8 @@ public class CardsUtil {
 	private static ArrayList<Relic> relics;
 	private static ArrayList<Card> relicCards;
 	private static HashMap<String, Card[]> monsterMovesets;
-	
-	
+
+
 	public static void load(){
 		loadPlayerCards();
 		loadMonsterCards();
@@ -36,16 +36,16 @@ public class CardsUtil {
 	public static void loadPlayerCards() {
 		playerCards = new ArrayList<Card>();
 		try {
-			Scanner read = new Scanner(new File("PlayerCards.txt"));
+			Scanner read = new Scanner(new File("files/PlayerCards.txt"));
 			while (read.hasNextLine()) {
 				String[] traits = read.nextLine().split(",");
-				
+
 				if (traits[0].equals("basic")) {
 					playerCards.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), Boolean.parseBoolean(traits[6]), traits[1]));
 				}
 				else if (traits[0].equals("skill")){
 					playerCards.add(new Skill(traits[2], Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]),
-						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));				
+						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));
 				}
 				else if (traits[0].equals("skillAction")){
 					playerCards.add(new Skill(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]),
@@ -54,31 +54,31 @@ public class CardsUtil {
 				}
 			}
 			read.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Initializes all potion Card objects as found in Potions.txt.
 	 * basic cards are cards that only do damage,heal and/or block.
 	 * skill cards are cards that only change the attributes of the user or the target.
 	 * skillAction cards are cards that do basic card functions (damage,heal,block) AND change the attributes of the user or target.
-	 */	
+	 */
 	public static void loadPotions() {
 		potions = new ArrayList<Card>();
 		try {
-			Scanner read = new Scanner(new File("Potions.txt"));
+			Scanner read = new Scanner(new File("files/Potions.txt"));
 			while (read.hasNextLine()) {
 				String[] traits = read.nextLine().split(",");
-				
+
 				if (traits[0].equals("basic")) {
 					potions.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), Boolean.parseBoolean(traits[6]), traits[1]));
 				}
 				else if (traits[0].equals("skill")){
 					potions.add(new Skill(traits[2], Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]),
-						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));				
+						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));
 				}
 				else if (traits[0].equals("skillAction")){
 					potions.add(new Skill(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]),
@@ -87,30 +87,30 @@ public class CardsUtil {
 				}
 			}
 			read.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 	/**
 	 * Initializes all monster Card objects as found in MonsterCards.txt.
 	 * basic cards are cards that only do damage,heal and/or block.
 	 * skill cards are cards that only change the attributes of the user or the target.
 	 * skillAction cards are cards that do basic card functions (damage,heal,block) AND change the attributes of the user or target.
-	 */	
+	 */
 	public static void loadMonsterCards() {
 		monsterCards = new ArrayList<Card>();
 		try {
-			Scanner read = new Scanner(new File("MonsterCards.txt"));
+			Scanner read = new Scanner(new File("files/MonsterCards.txt"));
 			while (read.hasNextLine()) {
 				String[] traits = read.nextLine().split(",");
-				
+
 				if (traits[0].equals("basic")) {
 					monsterCards.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), Boolean.parseBoolean(traits[6]), traits[1]));
 				}
 				else if (traits[0].equals("skill")){
 					monsterCards.add(new Skill(traits[2], Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]),
-						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));				
+						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));
 				}
 				else if (traits[0].equals("skillAction")){
 					monsterCards.add(new Skill(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]),
@@ -119,35 +119,35 @@ public class CardsUtil {
 				}
 			}
 			read.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Loads all monster movesets, which can be accessed by monster name.
 	 */
 	public static void loadMonsterMovesets() {
 		monsterMovesets = new HashMap<String, Card[]>();
 		try {
-			Scanner read = new Scanner(new File("MonsterMovesets.txt"));
+			Scanner read = new Scanner(new File("files/MonsterMovesets.txt"));
 			while(read.hasNextLine()) {
 				String[] a = read.nextLine().split(",");
 				Card[] moves = new Card[a.length - 1];
 				for (int i = 1; i < a.length; i ++)
 					moves[i - 1] = get("Monster " + a[i]);
-				
+
 				monsterMovesets.put(a[0], moves);
-					
+
 			}
 			read.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("MonsterMovesets.txt not found.");
 		}
-		
+
 	}
-	
+
 	/**
 	 * @param monsterName the name of the monster to get the moveset for.
 	 * @return the moveset for the monster with the given name.
@@ -155,14 +155,14 @@ public class CardsUtil {
 	public static Card[] getMonsterMoveset(String monsterName) {
 		return monsterMovesets.get(monsterName);
 	}
-	
+
 	/**
 	* Initializes all relics in Relics.txt, relics use cards which are initialized in loadRelicCards
 	*/
 	public static void loadRelics()  {
 		relics = new ArrayList<Relic>();
 		try{
-			Scanner read = new Scanner(new File("Relics.txt"));
+			Scanner read = new Scanner(new File("files/Relics.txt"));
 			int i =0;
 			while (read.hasNextLine()){
 				String[] traits = read.nextLine().split(",");
@@ -173,24 +173,24 @@ public class CardsUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	* Initializes all cards that relics use in RelicCards.txt
-	*/	
-	
+	*/
+
 	private static void loadRelicCards() {
 		relicCards = new ArrayList<Card>();
 		try {
-			Scanner read = new Scanner(new File("RelicCards.txt"));
+			Scanner read = new Scanner(new File("files/RelicCards.txt"));
 			while (read.hasNextLine()) {
 				String[] traits = read.nextLine().split(",");
-				
+
 				if (traits[0].equals("basic")) {
 					relicCards.add(new Card(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]), Boolean.parseBoolean(traits[6]), traits[1]));
 				}
 				else if (traits[0].equals("skill")){
 					relicCards.add(new Skill(traits[2], Integer.parseInt(traits[3]), Integer.parseInt(traits[4]), Integer.parseInt(traits[5]),
-						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));				
+						Integer.parseInt(traits[6]),Integer.parseInt(traits[7]), Boolean.parseBoolean(traits[8]), traits[1]));
 				}
 				else if (traits[0].equals("skillAction")){
 					relicCards.add(new Skill(Integer.parseInt(traits[2]), Integer.parseInt(traits[3]), Integer.parseInt(traits[4]),
@@ -202,13 +202,13 @@ public class CardsUtil {
 				}
 			}
 			read.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
-	
-	
+	}
+
+
 	/**
 	* Checks the type of the card and creates a copy of it
 	* basic cards only belong to the superclass Card, skill cards belong to the subclass Skill.
@@ -225,7 +225,7 @@ public class CardsUtil {
 		}
 		return copyCard;
 	}
-	
+
 	/**
 	 * @param name name of the card to find.
 	 * @return a Card object with the given name, or null if no such card exists.
@@ -255,7 +255,7 @@ public class CardsUtil {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return a random Card object (for use by the player).
 	 */
@@ -264,7 +264,7 @@ public class CardsUtil {
 		while ((c = playerCards.get((int) (Math.random() * playerCards.size()))).getName().contains("Monster"));
 		return checkTypeAndCopy(c);
 	}
-	
+
 	/**
 	 * @return a random Card object (for use by the monsters).
 	 */
@@ -273,23 +273,23 @@ public class CardsUtil {
 		while (!(c = monsterCards.get((int) (Math.random() * monsterCards.size()))).getName().contains("Monster"));
 		return checkTypeAndCopy(c);
 	}
-	
+
 	/**
 	 * @return a random potion (which is just a card) (for use by the player).
-	 */	
+	 */
 	public static Card randomPotion(){
 		Card c;
 		while (!(c = potions.get((int) (Math.random() * potions.size()))).getName().contains("Potion"));
 		return checkTypeAndCopy(c);
 	}
-	
+
 	/**
 	 * @return a random relic (for use by the player).
-	 */	
+	 */
 	public static Relic randomRelic(){
 		Relic r;
 		r = relics.get((int) (Math.random() * relics.size()));
 		return new Relic(r);
-	}	
+	}
 
 }
