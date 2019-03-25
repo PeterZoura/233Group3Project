@@ -18,14 +18,14 @@ public class Player extends Entity {
 	public Deck getDeck(){
 		return new Deck(deck);
 	}
-	
+
 	/**
 	* getter for Potions
 	*/
 	public ArrayList<Card> getPotions(){
 		return Deck.clone(potions);
 	}
-	
+
 	/**
 	* getter for Relics
 	*/
@@ -35,15 +35,15 @@ public class Player extends Entity {
 				newList.add(new Relic(r));
 			return newList;
 	}
-	
+
 	/**
 	*	remove Potions
 	*/
-	
+
 	public void removePotion(int index){
 		potions.remove(index);
 	}
-	
+
 	/**
 	 * Creates a Player object with a given name, maximum health, and any number of Cards to put in their deck.
 	 */
@@ -53,7 +53,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	*@param Relic a relic to be added  
+	*@param Relic a relic to be added
 	*/
 	public void addRelic(Relic aRelic){
 		relics.add(aRelic);
@@ -62,7 +62,7 @@ public class Player extends Entity {
 	/**
 	 * adds potion(a Card) to potions  if it is below or equal to limit and sets it's cost to 0
 	 */
-	
+
 	public void addPotion(Card aCard) {
 		if(potions.size()<= potionsLimit){
 			aCard.setCost(0);
@@ -97,7 +97,7 @@ public class Player extends Entity {
 			System.out.println("You don't have enough energy.");
 		}
 	}
-	
+
 	/**
 	 * uses potion and removes it from potions arraylist
 	 * @param card
@@ -109,7 +109,7 @@ public class Player extends Entity {
 		potions.remove(index);
 		return true;
 	}
-	
+
 	/**
 	 * displays potions in order with indexing
 	 * @return s
@@ -122,8 +122,8 @@ public class Player extends Entity {
 		return s;
 	}
 	/**
-	 * lists potions in one line 
-	 * @return string 
+	 * lists potions in one line
+	 * @return string
 	 */
 	public String listPotions() {
 		String toBeReturned= "";
@@ -136,7 +136,7 @@ public class Player extends Entity {
 		return toBeReturned;
 	}
 	/**
-	 * lists relics in one line 
+	 * lists relics in one line
 	 * @return string
 	 */
 	public String listRelics() {
@@ -149,7 +149,7 @@ public class Player extends Entity {
 		}
 		return toBeReturned;
 	}
-	
+
 	/**
 	 * Asks player if player wants to use potions,given player has available potions.Prompts the player to select a Card from their hand, and attempts to use it on the player(as the user) and the given target. If the user enters
 	 * an incorrect index or String value, this will be caught by the try catch block as an IndexOutOfBoundsException or InputMismatchException, and
@@ -186,15 +186,15 @@ public class Player extends Entity {
 						} catch(Exception e) {
 							System.out.println("Potion Cancelled");
 						}
-					
+
 					}
 					return true;
 				} catch (Exception e) {
 					return false;
 				}
-			}						
+			}
 		}
-		
+
 		System.out.println("Enter the number of the card you wish to use, anything else to end your turn." + "\n" + deck.handToString());
 		try {
 			int whichCard = Integer.parseInt(in.nextLine());
@@ -239,9 +239,10 @@ public class Player extends Entity {
 	/**
 	 * Updates the Player's attributes, and empties the Player's hand into the discard pile.
 	 */
-	public void endTurn() {
+	public void endTurn(int turnCount,Entity... target) {
 		super.endTurn();
 		deck.endTurn();
+		useRelics("iE",turnCount, target);
 	}
 
 	/**
