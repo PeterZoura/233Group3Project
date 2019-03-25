@@ -16,7 +16,6 @@ public class EndButtonClick extends GameGUI implements EventHandler<ActionEvent>
 			cardButtons.get(i).setVisible(true);
 		}
 		endTurn();
-		playerTurn();
 		refreshVisuals();
 	}
 	
