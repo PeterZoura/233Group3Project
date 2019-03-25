@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import logic.Card;
+import logic.Monster;
 import logic.CardsUtil;
 import logic.Player;
 import logic.Relic;
@@ -15,7 +16,7 @@ import logic.Skill;
  * Tests the functionality of Relic using JUnit.
  */
 public class RelicTest {
-	
+
 	/**
 	 * Tests a relic that applies its effect at the end of combat.
 	 */
@@ -31,7 +32,7 @@ public class RelicTest {
 		}
 		assertEquals("Testing healing relic at end of combat.", 72, player.getHealth());
 	}
-	
+
 	/**
 	 * Tests a relic that applies its effect at the start of combat.
 	 */
@@ -39,14 +40,15 @@ public class RelicTest {
 	public void testStartCombat() {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(CardsUtil.getRelic("Vajra"));
-		for (int i = 0; i < 2; i ++) {
-			player.startCombat();
+		for (int i = 1; i < 3; i ++) {
+			player.startCombat(0, m);
 		}
 		assertEquals("Testing strength relic at start of combat.", 1, player.getStrength().getCurrentVal());
 	}
-	
+
 	/**
 	 * Tests a relic that applies its effect without a card.
 	 */
@@ -55,14 +57,15 @@ public class RelicTest {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		player.damage(20);
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.addRelic(new Relic("e", "noCardTest", null, 0, 5, 0));
-		for (int i = 0; i < 2; i ++) {
-			player.startCombat();
+		for (int i = 1; i < 3; i ++) {
+			player.startCombat(0, m);
 			player.endCombat();
 		}
 		assertEquals("Testing healing relic without a card.", 70, player.getHealth());
 	}
-	
+
 	/**
 	 * Tests a relic that effects energy.
 	 */
@@ -70,13 +73,14 @@ public class RelicTest {
 	public void testEnergy() {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iS", "energyTest", null, 1, 0, 1));
-		player.startCombat();
-		player.startTurn();
+		player.startCombat(0, m);
+		player.startTurn(1, m);
 		assertEquals("Testing energy relic at start of turn.", 4, player.getEnergy());
 	}
-	
+
 	/**
 	 * Tests a relic that applies an effect each time a turn starts.
 	 */
@@ -84,13 +88,14 @@ public class RelicTest {
 	public void testIterativeStart() {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iS", "iterativeStartTest", new Card(0, 0, 5, 0, false, "blockTest"), 0, 0, 1));
-		player.startCombat();
-		player.startTurn();
+		player.startCombat(1, m);
+		player.startTurn(1, m);
 		assertEquals("Testing relic that applies its effect at the start of each turn.", 5, player.getArmour().getCurrentVal());
 	}
-	
+
 	/**
 	 * Tests a relic that applies an effect at the start of every third turn.
 	 */
@@ -98,16 +103,17 @@ public class RelicTest {
 	public void testIterativeStartThreeTurns() {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
-		player.addRelic(new Relic("iS", "iterativeStartTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "threeTurnsTest"), 0, 0, 1));
-		player.startCombat();
-		for (int i = 0; i < 8; i ++) {
-		player.startTurn();
-		player.endTurn();
+		player.addRelic(new Relic("iS", "iterativeStartTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "threeTurnsTest"), 0, 0, 3));
+		player.startCombat(0, m);
+		for (int i = 1; i < 8; i ++) {
+			player.startTurn(i, m);
+			player.endTurn(i, m);
 		}
 		assertEquals("Testing relic that applies its effect at the start of every third turn.", 2, player.getStrength().getCurrentVal());
 	}
-	
+
 	/**
 	 * Tests a relic that applies an effect each time a turn ends.
 	 */
@@ -115,16 +121,17 @@ public class RelicTest {
 	public void testIterativeEnd() {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iE", "iterativeEndTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "strengthTest"), 0, 0, 1));
-		player.startCombat();
-		for (int i = 0; i < 5; i ++) {
-			player.startTurn();
-			player.endTurn();
+		player.startCombat(0, m);
+		for (int i = 1; i < 6; i ++) {
+			player.startTurn(i, m);
+			player.endTurn(i,m);
 		}
-		assertEquals("Testing relic that applies its effect at the end of each turn.", 5, player.getArmour().getCurrentVal());
+		assertEquals("Testing relic that applies its effect at the end of each turn.", 5, player.getStrength().getCurrentVal());
 	}
-	
+
 	/**
 	 * Tests a relic that applies an effect at the end of every third turn.
 	 */
@@ -133,15 +140,16 @@ public class RelicTest {
 		CardsUtil.load();
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		player.damage(20);
+		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.addRelic(new Relic("iE", "iterativeEndTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "threeTurnsTest"), 0, 0, 3));
-		player.startCombat();
-		for (int i = 0; i < 8; i ++) {
-		player.startTurn();
-		player.endTurn();
+		player.startCombat(0, m);
+		for (int i = 1; i < 9; i ++) {
+			player.startTurn(i, m);
+			player.endTurn(i, m);
 		}
 		assertEquals("Testing relic that applies its effect at the end of every third turn.", 2, player.getStrength().getCurrentVal());
 	}
-	
+
 	/**
 	 * Tests a relic that applies a permanent health boost.
 	 */
@@ -158,7 +166,7 @@ public class RelicTest {
 		}
 		assertEquals("Testing relic that increases max HP by 5 permanently.", 85, player.getMaxHealth());
 	}
-	
+
 	/**
 	 * Tests a relic that applies a permanent energy boost.
 	 */
@@ -175,5 +183,5 @@ public class RelicTest {
 		}
 		assertEquals("Testing relic that increases max energy by 1 permanently.", 4, player.getMaxEnergy());
 	}
-	
+
 }
