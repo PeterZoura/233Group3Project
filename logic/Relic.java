@@ -108,7 +108,7 @@ public class Relic {
 	 * @return the card that a relic uses
 	 */
 	public Card getCardEffect() {
-		Card toBeReturned = new Card(this.cardEffect);
+		Card toBeReturned = CardsUtil.checkTypeAndCopy(this.cardEffect);
 		return toBeReturned;
 	}
 
@@ -223,7 +223,7 @@ public class Relic {
 	 private void useRelic(Entity user, Entity... target){
 		 if(this.cardEffect != null){
 			 //use it
-			 CardsUtil.get(cardEffect.getName()).use(user, target);
+			 cardEffect.use(user, target);
 		 }
 		 if(this.energyEffect != 0) {
 			 //use energy
