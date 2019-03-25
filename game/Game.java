@@ -16,7 +16,7 @@ import java.util.Arrays;
  * Uses a main method to run the primary game loop.
  */
 public class Game {
-	
+
 	private static int battleCounter = 0;
 
 	/**
@@ -77,13 +77,13 @@ public class Game {
 	private static Monster[][][] getEncounters() {
 		Monster acidSlime   = new Monster("Acid Slime", 21, CardsUtil.getMonsterMoveset("Acid Slime"));
 		Monster spikeSlime   = new Monster("Spike Slime", 19, CardsUtil.getMonsterMoveset("Spike Slime"));
-		
+
 		Monster fungiBeast = new Monster("Fungi Beast", 26, CardsUtil.getMonsterMoveset("Fungi Beast"));
-		
+
 		Monster shelledParasite = new Monster("Shelled Parasite", 71, CardsUtil.getMonsterMoveset("Shelled Parasite"));
 		shelledParasite.setStrategy("1,Monster Block,1");
 		shelledParasite.getArmour().addStartModifier(6, -1);
-		
+
 		Monster snakePlant = new Monster("Snake Plant", 78, CardsUtil.getMonsterMoveset("Snake Plant"));
 		snakePlant.getRegeneration().setModifyRate(0);
 		snakePlant.getRegeneration().modifyVal(1);
@@ -102,7 +102,7 @@ public class Game {
 		sphericGuardian.setStrategy("1,Monster StBlock,1");
 
 		Monster gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.getMonsterMoveset("Gremlin Nob"));
-		
+
 		Monster orbWalker = new Monster("Orb Walker", 91, CardsUtil.getMonsterMoveset("Orb Walker"));
 		orbWalker.getStrength().addEndModifier(3, -1);
 
@@ -111,7 +111,7 @@ public class Game {
 		awakenedOne.getRegeneration().setModifyRate(0);
 		awakenedOne.getRegeneration().modifyVal(10);
 		awakenedOne.setStrategy("1,Monster Awakened Special,1");
-		
+
 		Monster theChamp = new Monster("The Champ", 420, CardsUtil.getMonsterMoveset("The Champ"));
 		theChamp.setStrategy("0.5,Monster Champ Anger,1");
 
@@ -136,16 +136,16 @@ public class Game {
 		Scanner in = new Scanner(System.in);
 		Player player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		player.addRelic(CardsUtil.getRelic("Iron Blood"));
-		
+
 		for (int i = 0; i < 4; i ++) {
 			if (!player.alive())
 				break;
 			Monster[] combatMonsters = getEncounter(i, encounters);
 			player.startCombat(0, combatMonsters);
 			int turnCount = 0;
-			while (monstersAlive(combatMonsters) && player.alive()) {	
+			while (monstersAlive(combatMonsters) && player.alive()) {
 				playerTurn(player,turnCount, combatMonsters);
-				player.endTurn();
+				player.endTurn(turnCount, combatMonsters);
 				combatMonsters = removeDead(combatMonsters);
 				endTurn(in, player,turnCount, combatMonsters);
 				turnCount++;
@@ -244,7 +244,7 @@ public class Game {
 			pressEnter(in,"");
 		}
 	}
-	
+
 	/**
 	 * Retrieves a reward for the player at the end of comabt consisting of a choice between 3 random cards, a relic and a potion
 	 * @param in this Scanner will be used to prompt the user to hit enter.
@@ -292,7 +292,7 @@ public class Game {
 		}
 		return cards;
 	}
-	
+
 	/**
 	 * @return a random potion card
 	 */
@@ -301,10 +301,10 @@ public class Game {
 		potion = CardsUtil.randomPotion();
 		return potion;
 	}
-	
+
 	/**
 	 * @return a random relic
-	 */	
+	 */
 	private static Relic newRelic(Player player) {
 		Relic r = CardsUtil.randomRelic();
 		String playerRelics = player.listRelics();
@@ -315,7 +315,7 @@ public class Game {
 		}
 		return r;
 	}
-	
+
 	/**
 	 * prints to the console the rewards received from the battle.
 	 * @param cards array list of cards
@@ -335,7 +335,7 @@ public class Game {
 			i++;
 		}
 	}
-	
+
 	/**
 	 * Returns a random monster from a given array, with full health.
 	 * @param monsters the monsters to choose from.
@@ -357,7 +357,7 @@ public class Game {
 				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy());
 		playerStatus +="\nPlayer's Relics: "+player.listRelics();
 		playerStatus +="\nPlayer's Potions: "+player.listPotions();
-		
+
 		int i = 0;
 		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(),player.getFrail(), player.getVulnerable(), player.getRegeneration(),
 		player.getPoison(), player.getConstricted(), player.getArmour()}){
