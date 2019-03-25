@@ -33,7 +33,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.geometry.Pos; 
+import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -59,31 +59,27 @@ public class GameGUI extends Application{
 	public static ArrayList<Button> potionButtons = new ArrayList<Button>();
 	public static ArrayList<Button> relicButtons = new ArrayList<Button>();
 	public static int turnCount;
-	
+
 	//Main method launches the gui.
 	public static void main(String[] args)
 	{
 		launch(args);
 	}
-	
+
 	/**
 	*Method refreshVisuals
 	*no parameters and returns nothing, it clears everything in the borderpane and removes dead monsters.
 	*it then refreshes all the visuals.
 	*/
 	public static void refreshVisuals(){
-		System.out.println("Entered refreshVisuals");
 		playerPane.getChildren().clear();
 		for (VBox panes : monsterPanes){
 			panes.getChildren().clear();
 		}
-		System.out.println("Cleared monsters");
 		combatMonsters = removeDead(combatMonsters);
-		System.out.println("Removed dead");
-		
+
 		//Player Pane.
 		Image playerImage = new Image("RawCards/playerImage.gif");
-		System.out.println("Got player image");
 		ImageView playerImageView = new ImageView(playerImage);
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
 		playerPane.getChildren().add(playerEnergy);
@@ -93,40 +89,37 @@ public class GameGUI extends Application{
 		playerPane.getChildren().add(playerHP);
 		Label playerAttributes = new Label(getPlayerAttributes());
 		playerPane.getChildren().add(playerAttributes);
-		
-		System.out.println("Big ass block done");
-		
+
 		//monsterPanes.
 		ArrayList<String> monsterAttributes = getMonsterAttributes();
 		try{
 			for (int j = 0; j < combatMonsters.length; j++){
-				System.out.println("Monster stuff");
 				Label monsterIntentions = new Label(combatMonsters[j].intentions());
 				monsterPanes.get(j).getChildren().add(monsterIntentions);
-				
+
 				Button MonsterButton = new Button(combatMonsters[j].getName());
 				monsterPanes.get(j).getChildren().add(MonsterButton);
-				
+
 				MonsterTargetClick clickEvent = new MonsterTargetClick(j);
 				MonsterButton.setOnAction(clickEvent);
-				
+
 				Label monsterHP = new Label(combatMonsters[j].getHealth()+"/"+combatMonsters[j].getMaxHealth());
 				monsterPanes.get(j).getChildren().add(monsterHP);
-				
+
 				Label aMonsterAttributes = new Label(monsterAttributes.get(j));
 				monsterPanes.get(j).getChildren().add(aMonsterAttributes);
 			}
 		}catch(Exception e){}
-		
+
 		//Hand.
-		
+
 		for(int i=0;i<player.getDeck().getHand().size();i++){
 				String cardName = player.getDeck().getHand().get(i).getName();
 				Image cardImage = new Image("RawCards/" + cardName + ".png");
 				ImageView cardImageView = new ImageView(cardImage);
 				cardButtons.get(i).setGraphic(cardImageView);
 		}
-		
+
 		//Potions
 		try{
 			for(int j=0;j<player.getPotions().size();j++){
@@ -137,16 +130,16 @@ public class GameGUI extends Application{
 				//cardButtons.get(i).setGraphic(cardImageView);
 			}
 		}catch(Exception e){}
-		
+
 		//Relics
 		for(int i=0;i<player.getRelics().size();i++){
 			String relicName = player.getRelics().get(i).getName();
 			relicButtons.get(i).setText(relicName);
 			relicButtons.get(i).setVisible(true);
 		}
-		
+
 	}
-	
+
 	/**
 	*Start method
 	*@param stage
@@ -154,7 +147,6 @@ public class GameGUI extends Application{
 	*/
     public void start(Stage stage) throws Exception
 	{
-    	System.out.println("loading");
 		loadGame();
 		refreshVisuals();
 		BorderPane root = new BorderPane();
@@ -162,7 +154,6 @@ public class GameGUI extends Application{
 		Button endTurnButton = new Button("End Turn");
 		EndButtonClick endClick = new EndButtonClick();
 		endTurnButton.setOnAction(endClick);
-		System.out.println("???");
 		HBox potionInv = new HBox();
 		int j = 0;
 		for (Button potion : potionButtons){
@@ -171,7 +162,7 @@ public class GameGUI extends Application{
 			potion.setOnAction(clickEvent);
 			j++;
 		}
-		
+
 		HBox relicInv = new HBox();
 		int h = 0;
 		for (Button relic : relicButtons){
@@ -180,34 +171,34 @@ public class GameGUI extends Application{
 			relic.setOnAction(clickEvent);
 			h++;
 		}
-		
+
 		HBox topPane = new HBox();
-		
+
 		topPane.getChildren().add(endTurnButton);
 		topPane.getChildren().add(potionInv);
 		topPane.getChildren().add(relicInv);
-		
-		
-		
+
+
+
 	//Setting first background. We plan to have the background change after each battle.
 		Image back1Image = new Image("RawCards/background1.png"); //Load image
-		
+
 		//Construct BackgroundImage, needed to construct Background.
 		//The four nulls are parameters for repeating the image in x and y, changing image position, and size.
 		BackgroundImage background1Image = new BackgroundImage(back1Image, null, null, null, null);
 
 		Background firstBack = new Background(background1Image); //Construct background using 1 background image.
 		root.setBackground(firstBack); //add to root
-		
+
 		HBox monsters = new HBox(); //This HBox stores the vboxes for each monster.
-		
+
 		for (VBox mPane : monsterPanes){
 			monsters.getChildren().add(mPane);
 		}  //Adds the array of VBoxes representing the monsters.
-		
+
 		HBox hand = new HBox();  //This HBox contains the 5 buttons representing the player's hand.
 		int i = 0;
-		
+
 		//Adds the array of buttons that represents the player's hand.
 		for (Button card : cardButtons){
 			hand.getChildren().add(card);
@@ -215,37 +206,34 @@ public class GameGUI extends Application{
 			card.setOnAction(clickEvent);
 			i++;
 		}
-		
+
 		root.setTop(topPane);
 		root.setLeft(playerPane);
 		root.setRight(monsters);
 		root.setBottom(hand);
 		root.setCenter(descriptions);
-		
+
 		Scene scene = new Scene(root,1000,500);
 		stage.setTitle("Slay the Spire");
 		stage.setScene(scene);
 		stage.show();
-		System.out.println("Entering game loop");
 		gameLoop();
 		refreshVisuals();
-		System.out.println("I dont think you can reach this");
 	}
-	
+
 	/**
 	*Method gameLoop used to instantiate new Attributes to be used for one battle and playerTurn sets the monsters strategies
 	*and it enables the buttons that represent the player's hand.
 	*/
 	public static void gameLoop(){
 		player.startCombat(turnCount,combatMonsters);
-		playerTurn();			
+		playerTurn();
 	}
 	/**
 	*loadGame method. uses CardsUtil.load to construct all cards, creates the different kinds of encounters,
 	*sets the monsnters to be used for the current battle, creates the player, and adds and creates the buttons for monsters and cards in hand.
 	*/
 	public static void loadGame(){
-		System.out.println("Loading cards");
 		CardsUtil.load();
 		monsterEncounters = getEncounters();
 		Scanner in = new Scanner(System.in);
@@ -253,36 +241,27 @@ public class GameGUI extends Application{
 		player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		player.addPotion(CardsUtil.get("Explosive Potion"));
 		player.addRelic(CardsUtil.getRelic("Sunflower"));
-		System.out.println("Potions successfully added");
 		for(int i = 0; i<5;i++){
 			cardButtons.add(new Button());
 		}
-		
-		System.out.println("card buttons added");
-		
+
 		for(int i = 0; i<3; i++){
 			potionButtons.add(new Button());
 		}
-		
-		System.out.println("potion buttons added");
-		
+
 		for(int i = 0; i<10; i++){
 			relicButtons.add(new Button());
 			relicButtons.get(i).setVisible(false);
 		}
-		
-		System.out.println("relic buttons added");
-		
+
 		for(Monster m : combatMonsters){
 			monsterPanes.add(new VBox());
 		}
-		
-		System.out.println("monsters added");
+
 		descriptions.setWrapText(true);
-		System.out.println("Done loading");
-		
+
 	}
-	
+
 	/**
 	*Method monstersAlive returns a boolean. True if there is one or more enemies, false if there are no enemies.
 	*@param Monster[] monsters, the list of monsters in the current battle.
@@ -295,7 +274,7 @@ public class GameGUI extends Application{
 		}
 		return false;
 	}
-	
+
 
 	/**
 	 * Removes dead Monsters from the given array.
@@ -314,10 +293,10 @@ public class GameGUI extends Application{
 				monsters = newMonsters;
 			}
 		}
-		
+
 		return monsters;
 	}
-	
+
 	/**
 	 * @param tier the tier to access from the given array.
 	 * @param monsters tiered array of all possible encounters.
@@ -326,7 +305,7 @@ public class GameGUI extends Application{
 	private static Monster[] getEncounter(int tier, Monster[][][] encounters) {
 		return encounters[tier][(int) (Math.random() * encounters[tier].length)];
 	}
-	
+
 	/**
 	 * Initializes all types of Monsters, and creates and returns all possible encounters using said monsters.
 	 * @return all possible encounters, in a tiered array(encounters[0][0] would return the tier 1 encounter {slime, slime, slime}).
@@ -334,13 +313,13 @@ public class GameGUI extends Application{
 	private static Monster[][][] getEncounters() {
 		Monster acidSlime   = new Monster("Acid Slime", 21, CardsUtil.getMonsterMoveset("Acid Slime"));
 		Monster spikeSlime   = new Monster("Spike Slime", 19, CardsUtil.getMonsterMoveset("Spike Slime"));
-		
+
 		Monster fungiBeast = new Monster("Fungi Beast", 26, CardsUtil.getMonsterMoveset("Fungi Beast"));
-		
+
 		Monster shelledParasite = new Monster("Shelled Parasite", 71, CardsUtil.getMonsterMoveset("Shelled Parasite"));
 		shelledParasite.setStrategy("1,Monster Block,1");
 		shelledParasite.getArmour().addStartModifier(6, -1);
-		
+
 		Monster snakePlant = new Monster("Snake Plant", 78, CardsUtil.getMonsterMoveset("Snake Plant"));
 		snakePlant.getRegeneration().setModifyRate(0);
 		snakePlant.getRegeneration().modifyVal(1);
@@ -359,7 +338,7 @@ public class GameGUI extends Application{
 		sphericGuardian.setStrategy("1,Monster StBlock,1");
 
 		Monster gremlinNob = new Monster("Gremlin Nob", 82, CardsUtil.getMonsterMoveset("Gremlin Nob"));
-		
+
 		Monster orbWalker = new Monster("Orb Walker", 91, CardsUtil.getMonsterMoveset("Orb Walker"));
 		orbWalker.getStrength().addEndModifier(3, -1);
 
@@ -368,7 +347,7 @@ public class GameGUI extends Application{
 		awakenedOne.getRegeneration().setModifyRate(0);
 		awakenedOne.getRegeneration().modifyVal(10);
 		awakenedOne.setStrategy("1,Monster Awakened Special,1");
-		
+
 		Monster theChamp = new Monster("The Champ", 420, CardsUtil.getMonsterMoveset("The Champ"));
 		theChamp.setStrategy("0.5,Monster Champ Anger,1");
 
@@ -413,7 +392,7 @@ public class GameGUI extends Application{
 			card.setDisable(false);
 		}
 		player.startTurn(turnCount,combatMonsters);
-		
+
 	}
 
 	/**
@@ -424,20 +403,20 @@ public class GameGUI extends Application{
 	 */
 	public static void endTurn() {
 		if (monstersAlive(combatMonsters) && player.alive()) {
-			
+
 			player.endTurn();
-			
+
 			for (Monster m : combatMonsters) {
 				m.startTurn();
 			}
-			combatMonsters = removeDead(combatMonsters);		
-			
+			combatMonsters = removeDead(combatMonsters);
+
 			String describeTurn = "";
 			for (Monster m : combatMonsters ) {
 				m.getMove().use(m, player);
 				describeTurn += m.actionReport();
 			}
-			
+
 			descriptions.setText(describeTurn);
 			for (Monster m : combatMonsters) {
 				m.endTurn();
@@ -452,7 +431,7 @@ public class GameGUI extends Application{
 			tierCounter++;
 			combatMonsters = getEncounter(tierCounter, monsterEncounters);
 			gameLoop();
-			
+
 		}
 	}
 
@@ -511,7 +490,7 @@ public class GameGUI extends Application{
 		}
 		return playerStatus;
 	}
-	
+
 	/**
 	*Method getMonsterAttributes returns a list of the status effects that each monster is currently affected by.
 	*@return monsterAttributes, a list of the attributes that each monster currently has.
@@ -519,9 +498,9 @@ public class GameGUI extends Application{
 	public static ArrayList<String> getMonsterAttributes(){
 		ArrayList<String> attributeList = new ArrayList<String>(Arrays.asList("Strength", "Dexterity", "Weak", "Frail", "Vulnerable", "Regeneration",
 			"Poison", "Constricted", "Armour"));
-			
+
 		ArrayList<String> monsterAttributes = new ArrayList<String>();
-		
+
 		for (Monster m : combatMonsters) {
 			String aMonsterAttribute = "";
 			if (m.alive()) {
