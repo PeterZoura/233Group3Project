@@ -404,7 +404,7 @@ public class GameGUI extends Application{
 	public static void endTurn() {
 		if (monstersAlive(combatMonsters) && player.alive()) {
 
-			player.endTurn();
+			player.endTurn(turnCount, combatMonsters);
 
 			for (Monster m : combatMonsters) {
 				m.startTurn();
