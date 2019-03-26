@@ -13,7 +13,7 @@ import logic.Player;
  * Uses JUnit to test the functionality of Card.
  */
 public class CardTest {
-	
+
 	/**
 	 * Tests a card with only damage.
 	 */
@@ -23,9 +23,9 @@ public class CardTest {
 		Player player = new Player("player", 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("kill"), CardsUtil.get("Defend"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		Monster cultist = new Monster("Cultist", 48, CardsUtil.getMonsterMoveset("Cultist"));
 		CardsUtil.get("Strike").use(player, cultist);
-		assertEquals("Checking card damage", 43, cultist.getHealth());
+		assertEquals("Checking card damage", 42, cultist.getHealth());
 	}
-	
+
 	/**
 	 * Tests a card with only block.
 	 */
@@ -37,7 +37,7 @@ public class CardTest {
 		CardsUtil.get("Defend").use(player, cultist);
 		assertEquals("Checking card block", 5, player.getArmour().getCurrentVal());
 	}
-	
+
 	/**
 	 * Tests a card with only healing.
 	 */
@@ -50,7 +50,7 @@ public class CardTest {
 		new Card(5, 0, 0, 0, false, "healTest").use(player, cultist);
 		assertEquals("Checking card block", 75, player.getHealth());
 	}
-	
+
 	/**
 	 * Tests a card with damage against multiple enemies.
 	 */
@@ -61,11 +61,11 @@ public class CardTest {
 		Monster cultist = new Monster("Cultist", 48, CardsUtil.getMonsterMoveset("Cultist"));
 		Monster cultist2 = new Monster("Cultist", 48, CardsUtil.getMonsterMoveset("Cultist"));
 		CardsUtil.get("Strike").use(player, cultist, cultist2);
-		assertEquals("Checking card damage against multiple enemies", 86, cultist.getHealth() + cultist2.getHealth());
+		assertEquals("Checking card damage against multiple enemies", 84, cultist.getHealth() + cultist2.getHealth());
 	}
-	
+
 	/**
-	 * Tests a card with all effects. 
+	 * Tests a card with all effects.
 	 */
 	@Test
 	public void testAllEffects() {
