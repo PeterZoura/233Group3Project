@@ -1,4 +1,5 @@
 package logic;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,8 +11,8 @@ public class Monster extends Entity {
 	private ArrayList<Card> moves = new ArrayList<Card>();
 	private Card move;
 
- private String Strategy;
- private ArrayList<String[]> movesList = new ArrayList<String[]>();
+	private String Strategy;
+	private ArrayList<String[]> movesList = new ArrayList<String[]>();
 
 	/**
 	 * Creates a Monster with a given name, maximum health, and any number of Cards, which will be randomly accessed as the Monster's moves.
@@ -28,6 +29,9 @@ public class Monster extends Entity {
 	public Monster(Monster m) {
 		super(m);
 		fillMoves(m.getMoves());
+		if (m.getStrategy()!= null){
+		this.setStrategy(m.getStrategy()) ;
+		}
 	}
 
 	/**
@@ -35,8 +39,9 @@ public class Monster extends Entity {
 	 * @param moves ArrayList of moves(Cards) to give the Monster.
 	 */
 	private void fillMoves(ArrayList<Card> moves) {
-		for (Card c : moves)
-			this.moves.add(new Card(c));
+		for (Card c : moves) {
+			this.moves.add(CardsUtil.checkTypeAndCopy(c));
+		}
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class Monster extends Entity {
 	public ArrayList<Card> getMoves() {
 		ArrayList<Card> newList = new ArrayList<Card>();
 		for (Card c: moves)
-			newList.add(new Card(c));
+			newList.add(CardsUtil.checkTypeAndCopy(c));
 		return newList;
 	}
 
@@ -63,11 +68,20 @@ public class Monster extends Entity {
 		String intentions = "";
 
 		if (move.getDamage() > 0)
-			intentions += "Attack: " + move.getDamage() + ". ";
+			intentions += "Attack: " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getWeak().getCurrentVal()) == 0) ? 1 : 0.75))) + ". ";
 		if (move.getBlock() > 0)
 			intentions += "Block. ";
 		if (move.getHeal() > 0)
 			intentions += "Heal. ";
+		if (move.getClass().getSimpleName().equals("Skill")) {
+
+			Skill skill = (Skill)move;
+			if ("weak vulnerable poison frail".contains(skill.getAttribute()))
+				intentions += "Use a negative effect on you. ";
+			else
+				intentions += "Use a buff. ";
+
+		}
 
 		if (intentions.equals(""))
 			intentions = "Unkown. ";
@@ -81,11 +95,21 @@ public class Monster extends Entity {
 	public String actionReport() {
 		String report = "";
 		if (move.getDamage() > 0)
-			report += getName() + " attacked for " + move.getDamage() + " damage! ";
+			report += getName() + " attacked for " + ((int)((move.getDamage() + getStrength().getCurrentVal()) * (((getWeak().getCurrentVal()) == 0) ? 1 : 0.75))) + " damage! ";
 		if (move.getBlock() > 0)
-			report += getName() + " blocked with " + move.getBlock() + " armour! ";
+			report += getName() + " blocked with " + (move.getBlock() + getDexterity().getCurrentVal()) + " armour! ";
 		if (move.getHeal() > 0)
 			report += getName() + " restored " + move.getHeal() + " health! ";
+
+		if (move.getClass().getSimpleName().equals("Skill")) {
+			Skill skill = (Skill)move;
+			if (skill.getCurrentModify() != 0)
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getCurrentModify() + " " + skill.getAttribute() + "!");
+			if (skill.getStartModify() != 0)
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getStartModify() + " " + skill.getAttribute() + " at the start of every turn!");
+			if (skill.getEndModify() != 0)
+				report += (getName() + (("weak vulnerable poison frail".contains(skill.getAttribute())) ? " gave you " : " gave itself ") + skill.getEndModify() + " " + skill.getAttribute() + " at the end of every turn!");
+		}
 		return report;
 	}
 
@@ -93,7 +117,7 @@ public class Monster extends Entity {
 	 * @return the Monster's next move.
 	 */
 	public Card getMove() {
-		return new Card(move);
+		return CardsUtil.checkTypeAndCopy(move);
 	}
 
 
@@ -104,7 +128,7 @@ public class Monster extends Entity {
 *it will return a random card from monster's moves
 */
 	private Card checkStrategy(){
-		CardsUtil.load();
+		//CardsUtil.load();
 		Card toBeUsed =  moves.get((int) (Math.random() * moves.size()));
 		refreshMovesList();
 		if(this.movesList!= null && this.movesList.size()>1)
@@ -154,10 +178,23 @@ public class Monster extends Entity {
 */
 	public void setStrategy(String aStrategy){
 		this.Strategy = aStrategy;
-		String[] separatedStrategy =  aStrategy.split("/");
-		for(int i = 0 ;i<separatedStrategy.length; i++){
-			movesList.add(separatedStrategy[i].split(","));
+		if (aStrategy.indexOf("/") != -1){
+			String[] separatedStrategy =  aStrategy.split("/");
+			for(int i = 0 ;i<separatedStrategy.length; i++){
+				movesList.add(separatedStrategy[i].split(","));
+			}
+		}else{
+			movesList.add(aStrategy.split(","));
 		}
 	}
+
+	/**
+	* @return Strategy
+	*/
+	public String getStrategy()
+	{
+		return this.Strategy;
+	}
+
 
 }
