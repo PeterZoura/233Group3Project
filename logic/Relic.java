@@ -138,37 +138,47 @@ public class Relic {
 	}
 
 	/**
-	 *
-	 * @return String description of the efects of the relics
-	 */
-	public String getStatDescription() {
-		String statDescription = "";
-		if (this.cardEffect != null) {
-			statDescription = this.cardEffect.describeStats();
-		}
-		if (this.type.equals("p")) {
-			statDescription += (healthEffect > 0) ? " Increases player's max health by: " + this.healthEffect : "";
-			statDescription += (energyEffect > 0) ? " Increases player's max Energy by: " + energyEffect : "";
-		}
-		if (!this.type.equals("p")) {
-			statDescription += (healthEffect > 0) ? " Increases player's  health by: " + this.healthEffect : "";
-			statDescription += (energyEffect > 0) ? " Increases player's  Energy by: " + energyEffect : "";
-		}
-		if (this.type.equals("e"))
-			statDescription += " at the end of combat.";
-		if (this.type.equals("s"))
-			statDescription += " at the start of combat.";
-		if (this.type.equals("p"))
-			statDescription += " upon pick up.";
-		if (this.type.equals("iS")) {
-			if (iterations == 1)
-				statDescription += " at the start of your turn.";
-			else
-				statDescription += " at the start of your turn every " + iterations + " turns.";
-		}
-		return statDescription;
+   *
+   * @return String description of the efects of the relics
+   */
+  public String getStatDescription() {
+	  String statDescription = "";
+	  if (this.cardEffect != null) {
+		  statDescription += getCardEffect().describeStats();
+	  }
+	  if (this.type.equals("p")){
+		  statDescription += (healthEffect>0)?"Increases player's max health by "+this.healthEffect+".":"";
+      statDescription += (healthEffect<0)?"Decreases player's max health by "+this.healthEffect+".":"";
+		  statDescription += (energyEffect>0)?"Increases player's max Energy by "+energyEffect+".":"";
+      statDescription += (energyEffect<0)?"Decreases player's max Energy by "+energyEffect+".":"";
+	  }
+	  if (!this.type.equals("p")) {
+		  statDescription += (healthEffect>0)?("Increases player's  health by "+this.healthEffect+"."):"";
+		  statDescription += (energyEffect>0)?("Increases player's  Energy by "+energyEffect+"."):"";
+      statDescription += (healthEffect<0)?("Decreases player's  health by "+this.healthEffect+"."):"";
+		  statDescription += (energyEffect<0)?("Decreases player's  Energy by "+energyEffect+"."):"";
+	  }
+	  if(this.type.equals("e"))
+		  statDescription += "Activates at the end of every combat.";
+	  if(this.type.equals("s"))
+		  statDescription += "Activates at the start of every combat.";
+	  if(this.type.equals("p"))
+		  statDescription += "Activates upon pick up.";
+	  if(this.type.equals("iS")){
+		  if (iterations==1)
+			  statDescription += "Activates at the start of every turn.";
+		  else
+			  statDescription += "Activates at the start of turn after"+iterations+ " turns.";
+	  }
+		if(this.type.equals("iE")){
+		  if (iterations==1)
+			  statDescription += "Activates at the end of every turn.";
+		  else
+			  statDescription += "Activates at the end of turn after every"+iterations+ " turns.";
+	  }
+	  return statDescription;
 
-	}
+  }
 
 	/**
 	 * uses the relic of types"s"- start combat "iS"- iterative Start turn

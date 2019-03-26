@@ -147,7 +147,7 @@ public class Game {
 				playerTurn(player,turnCount, combatMonsters);
 				player.endTurn(turnCount, combatMonsters);
 				combatMonsters = removeDead(combatMonsters);
-				endTurn(in, player,turnCount, combatMonsters);
+				endTurn(in, player, combatMonsters);
 				turnCount++;
 			}
 			battleCounter++;
@@ -203,7 +203,7 @@ public class Game {
 	 * @param player
 	 * @param monster
 	 */
-	public static void endTurn(Scanner in, Player player,int turnCount, Monster[] monster) {
+	public static void endTurn(Scanner in, Player player, Monster[] monster) {
 		if (monstersAlive(monster) && player.alive()) {
 			pressEnter(in, player.getName() + "'s turn is over!");
 
@@ -327,7 +327,7 @@ public class Game {
 		if (relic!=null)
 			System.out.println(relic.getName() + ": \n" + relic.getStatDescription());
 		if (potion!= null)
-			System.out.println(potion.getName() + ": \n" + potion.getDescription());
+			System.out.println(potion.getName() + ": \n" + potion.describeStats());
 		System.out.println("Please select a card to add to your deck:");
 		int i = 0;
 		for (Card c : cards){
@@ -355,8 +355,7 @@ public class Game {
 
 		String playerStatus = ("\n" + player.getName() + ":   health: " + player.getHealth() + "/" + player.getMaxHealth() +
 				"      Energy: " + player.getEnergy() + "/"  + player.getMaxEnergy());
-		playerStatus +="\nPlayer's Relics: "+player.listRelics();
-		playerStatus +="\nPlayer's Potions: "+player.listPotions();
+
 
 		int i = 0;
 		for (Attribute a : new Attribute[] {player.getStrength(), player.getDexterity(), player.getWeak(),player.getFrail(), player.getVulnerable(), player.getRegeneration(),
@@ -366,6 +365,8 @@ public class Game {
 			}
 			i++;
 		}
+		playerStatus +="\nPlayer's Relics: "+player.listRelics();
+		playerStatus +="\nPlayer's Potions: "+player.listPotions();
 
 		String monsterStatus = "";
 

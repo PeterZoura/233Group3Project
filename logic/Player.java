@@ -227,7 +227,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Updates the Player's attributes, fills the Player's hand and resets the Player's energy.
+	 * Updates the Player's attributes, fills the Player's hand and resets the Player's energy. Uses Relics of type "iS".
 	 */
 	public void startTurn(int turnCount,Entity... target) {
 		super.startTurn();
@@ -237,7 +237,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Updates the Player's attributes, and empties the Player's hand into the discard pile.
+	 * Updates the Player's attributes, and empties the Player's hand into the discard pile. Uses Relics of type "iE".
 	 */
 	public void endTurn(int turnCount,Entity... target) {
 		super.endTurn();
@@ -271,7 +271,9 @@ public class Player extends Entity {
 
 
 	/**
-	* @param use a relics card ability if it has one
+	* @param type uses a relic. Used in relic type "iS","s","iE".
+	* @param iteration number of iterations the ame has passed
+	* @param target the target of the relic
 	*/
 	public void useRelics(String type ,int iteration, Entity... target){
 		for(Relic r: this.relics)
@@ -280,7 +282,7 @@ public class Player extends Entity {
 			}
 	}
 	/**
-	* @param
+	* @param type uses a relic.Used in relic type "p","e"
 	*/
 	public void useRelics(String type){
 		for(Relic r: this.relics)
