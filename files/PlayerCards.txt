@@ -22,7 +22,7 @@ skill,Metallicize,armour,0,4,0,-1,1,false
 basic,Reaper,8,12,0,2,true
 basic,Dash,0,10,10,2,false
 basic,Die Die Die,0,10,0,1,true
-skill,Bouncing Flask,poison,5,0,0,0,2,false
+skill,Bouncing Flask,poison,5,0,0,0,2,true
 skillAction,Leg Sweep,0,0,12,weak,2,0,0,0,2,true
 skill,Intimidate,weak,2,0,0,0,0,true
 skill,Terror,vulnerable,99,0,0,0,1,false
