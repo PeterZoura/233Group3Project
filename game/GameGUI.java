@@ -147,20 +147,22 @@ public class GameGUI extends Application{
 		}
 		
 		//Potions
-		try{
-			for(int j=0;j<player.getPotions().size();j++){
-				String potionName = player.getPotions().get(j).getName();
-				Image potionImage = new Image("RawCards/PotionSprites/" + potionName + ".png");
-				ImageView potionImageView = new ImageView(potionImage);
-				potionButtons.get(j).setText(potionName);
-				potionButtons.get(j).setGraphic(potionImageView);
-			}
-		}catch(Exception e){}
+		for(int i=0;i<3;i++){
+			potionButtons.get(i).setGraphic(null);
+		}
+		
+		for(int j=0;j<player.getPotions().size();j++){
+			String potionName = player.getPotions().get(j).getName();
+			Image potionImage = new Image("RawCards/PotionSprites/" + potionName + ".png");
+			ImageView potionImageView = new ImageView(potionImage);
+			potionButtons.get(j).setText("");
+			potionButtons.get(j).setGraphic(potionImageView);
+		}
 		
 		//Relics
 		for(int i=0;i<player.getRelics().size();i++){
 			String relicName = player.getRelics().get(i).getName();
-			relicButtons.get(i).setText(relicName);
+			relicButtons.get(i).setText("");
 			relicButtons.get(i).setVisible(true);
 			Image relicImage = new Image("RawCards/RelicSprites/" + relicName + ".png");
 			ImageView relicImageView = new ImageView(relicImage);
@@ -301,8 +303,8 @@ public class GameGUI extends Application{
 	*and it enables the buttons that represent the player's hand.
 	*/
 	public static void gameLoop(){
-		player.startCombat(turnCount,combatMonsters);
-		playerTurn();			
+		player.startCombat(combatMonsters);
+		playerTurn();
 	}
 	/**
 	*loadGame method. uses CardsUtil.load to construct all cards, creates the different kinds of encounters,
