@@ -43,9 +43,7 @@ public class RelicTest {
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(CardsUtil.getRelic("Vajra"));
-		for (int i = 1; i < 3; i ++) {
-			player.startCombat(0, m);
-		}
+		player.startCombat(m);
 		assertEquals("Testing strength relic at start of combat.", 1, player.getStrength().getCurrentVal());
 	}
 
@@ -60,7 +58,7 @@ public class RelicTest {
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.addRelic(new Relic("e", "noCardTest", null, 0, 5, 0));
 		for (int i = 1; i < 3; i ++) {
-			player.startCombat(0, m);
+			player.startCombat(m);
 			player.endCombat();
 		}
 		assertEquals("Testing healing relic without a card.", 70, player.getHealth());
@@ -76,7 +74,7 @@ public class RelicTest {
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iS", "energyTest", null, 1, 0, 1));
-		player.startCombat(0, m);
+		player.startCombat(m);
 		player.startTurn(1, m);
 		assertEquals("Testing energy relic at start of turn.", 4, player.getEnergy());
 	}
@@ -91,7 +89,7 @@ public class RelicTest {
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iS", "iterativeStartTest", new Card(0, 0, 5, 0, false, "blockTest"), 0, 0, 1));
-		player.startCombat(1, m);
+		player.startCombat(m);
 		player.startTurn(1, m);
 		assertEquals("Testing relic that applies its effect at the start of each turn.", 5, player.getArmour().getCurrentVal());
 	}
@@ -106,7 +104,7 @@ public class RelicTest {
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iS", "iterativeStartTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "threeTurnsTest"), 0, 0, 3));
-		player.startCombat(0, m);
+		player.startCombat(m);
 		for (int i = 1; i < 8; i ++) {
 			player.startTurn(i, m);
 			player.endTurn(i, m);
@@ -124,7 +122,7 @@ public class RelicTest {
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.damage(20);
 		player.addRelic(new Relic("iE", "iterativeEndTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "strengthTest"), 0, 0, 1));
-		player.startCombat(0, m);
+		player.startCombat(m);
 		for (int i = 1; i < 6; i ++) {
 			player.startTurn(i, m);
 			player.endTurn(i,m);
@@ -142,7 +140,7 @@ public class RelicTest {
 		player.damage(20);
 		Monster m = new Monster("testMonster", 20, new Card[] {CardsUtil.randomP()});
 		player.addRelic(new Relic("iE", "iterativeEndTest", new Skill(0, 0, 0, "strength", 1, 0, 0, 0, 0, false, "threeTurnsTest"), 0, 0, 3));
-		player.startCombat(0, m);
+		player.startCombat(m);
 		for (int i = 1; i < 9; i ++) {
 			player.startTurn(i, m);
 			player.endTurn(i, m);
