@@ -190,7 +190,9 @@ public class Relic {
 	public void use(int iteration, Entity user, Entity... target) {
 		switch (this.type) {
 		case "s":// uses the relic at the start of the combat
-			useRelic(user, target);
+			if (iteration == 0){
+			useRelic(user, target);	
+			}
 			break;
 		case "iS":// uses the relic in iterations during a battle in iteration at the start turn
 			if (this.iterations != 0 && (iteration % this.iterations) == 0) {
