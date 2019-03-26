@@ -45,7 +45,10 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.application.Platform;
-import java.lang.Thread;
+import javafx.scene.paint.Paint;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
 /**
 *GameGUI this will take care of most of the logic
@@ -72,6 +75,8 @@ public class GameGUI extends Application{
 	public static ArrayList<Button> rewardPotionRelicButtons = new ArrayList<Button>();
 	public static Card rewardPotion;
 	public static Relic rewardRelic;
+	//Background arraylist
+	static ArrayList<Background> backgroundsList = new ArrayList<Background>();
 	//Main method launches the gui.
 	public static void main(String[] args)
 	{
@@ -91,25 +96,32 @@ public class GameGUI extends Application{
 		combatMonsters = removeDead(combatMonsters);
 		
 		//Player Pane.
-		Image playerImage = new Image("RawCards/PlayerImage.gif");
+		Image playerImage = new Image("RawCards/PlayerImage.png");
 		ImageView playerImageView = new ImageView(playerImage);
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
+		playerEnergy.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerEnergy);
 		Button PlayerButton = new Button(player.getName(),playerImageView);
 		playerPane.getChildren().add(PlayerButton);
 		Label playerHP = new Label(player.getHealth()+"/"+player.getMaxHealth());
+		playerHP.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerHP);
 		Label playerAttributes = new Label(getPlayerAttributes());
+		playerAttributes.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerAttributes);
 		
 		//monsterPanes.
 		ArrayList<String> monsterAttributes = getMonsterAttributes();
 		try{
 			for (int j = 0; j < combatMonsters.length; j++){
+				Image monsterImage = new Image("RawCards/MonsterSprites/" + combatMonsters[j].getName() + ".png");
+				ImageView monsterImageView = new ImageView(monsterImage);
+				
 				Label monsterIntentions = new Label(combatMonsters[j].intentions());
 				monsterPanes.get(j).getChildren().add(monsterIntentions);
+				monsterIntentions.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 				
-				Button MonsterButton = new Button(combatMonsters[j].getName());
+				Button MonsterButton = new Button("",monsterImageView);
 				monsterPanes.get(j).getChildren().add(MonsterButton);
 				
 				MonsterTargetClick clickEvent = new MonsterTargetClick(j);
@@ -117,9 +129,11 @@ public class GameGUI extends Application{
 				
 				Label monsterHP = new Label(combatMonsters[j].getHealth()+"/"+combatMonsters[j].getMaxHealth());
 				monsterPanes.get(j).getChildren().add(monsterHP);
+				monsterHP.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 				
 				Label aMonsterAttributes = new Label(monsterAttributes.get(j));
 				monsterPanes.get(j).getChildren().add(aMonsterAttributes);
+				aMonsterAttributes.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 			}
 		}catch(Exception e){}
 		
@@ -136,10 +150,10 @@ public class GameGUI extends Application{
 		try{
 			for(int j=0;j<player.getPotions().size();j++){
 				String potionName = player.getPotions().get(j).getName();
-				//Image cardImage = new Image("RawCards/" + cardName + ".png");
-				//ImageView cardImageView = new ImageView(cardImage);
+				Image potionImage = new Image("RawCards/PotionSprites/" + potionName + ".png");
+				ImageView potionImageView = new ImageView(potionImage);
 				potionButtons.get(j).setText(potionName);
-				//cardButtons.get(i).setGraphic(cardImageView);
+				potionButtons.get(j).setGraphic(potionImageView);
 			}
 		}catch(Exception e){}
 		
@@ -148,6 +162,9 @@ public class GameGUI extends Application{
 			String relicName = player.getRelics().get(i).getName();
 			relicButtons.get(i).setText(relicName);
 			relicButtons.get(i).setVisible(true);
+			Image relicImage = new Image("RawCards/RelicSprites/" + relicName + ".png");
+			ImageView relicImageView = new ImageView(relicImage);
+			relicButtons.get(i).setGraphic(relicImageView);
 		}
 		
 	}
@@ -163,7 +180,9 @@ public class GameGUI extends Application{
 		refreshVisuals();
 		
 	//Top Pane elements
-		endTurnButton = new Button("End Turn");
+		Image endTurnImage = new Image("RawCards/endTurnButton.png");
+		ImageView endTurnImageView = new ImageView(endTurnImage);
+		endTurnButton = new Button("",endTurnImageView);
 		EndButtonClick endClick = new EndButtonClick();
 		endTurnButton.setOnAction(endClick);
 		
@@ -193,12 +212,53 @@ public class GameGUI extends Application{
 		
 		
 		
-	//Setting first background. We plan to have the background change after each battle.
-		Image back1Image = new Image("RawCards/background1.png"); //Load image
-		
+	//Setting backgrounds. 
+			//Background loading, these need to be instance variables so that background can be changed in endTurn() method when monsters are dead
+		Image backArctic = new Image("RawCards/BackgroundSprites/Arctic.png");
+		Image backBeach = new Image("RawCards/BackgroundSprites/Beach.png");
+		Image backCave = new Image("RawCards/BackgroundSprites/Cave.png");
+		Image backCity = new Image("RawCards/BackgroundSprites/City.png");
+		Image backDesert = new Image("RawCards/BackgroundSprites/Desert.png");
+		Image backFieldClouds = new Image("RawCards/BackgroundSprites/FieldClouds.png");
+		Image backForest = new Image("RawCards/BackgroundSprites/Forest.png");
+		Image backHell = new Image("RawCards/BackgroundSprites/Hell.png");
+		Image backMountains = new Image("RawCards/BackgroundSprites/Mountains.png");
+		Image backTundra = new Image("RawCards/BackgroundSprites/Tundra.png");
+	//BackgroundImage construction
+		BackgroundImage backArcticI = new BackgroundImage(backArctic,null,null,null,null);
+		BackgroundImage backBeachI = new BackgroundImage(backBeach,null,null,null,null);
+		BackgroundImage backCaveI = new BackgroundImage(backCave,null,null,null,null);
+		BackgroundImage backCityI = new BackgroundImage(backCity,null,null,null,null);
+		BackgroundImage backDesertI = new BackgroundImage(backDesert,null,null,null,null);
+		BackgroundImage backFieldCloudsI = new BackgroundImage(backFieldClouds,null,null,null,null);
+		BackgroundImage backForestI = new BackgroundImage(backForest,null,null,null,null);
+		BackgroundImage backHellI = new BackgroundImage(backHell,null,null,null,null);
+		BackgroundImage backMountainsI = new BackgroundImage(backMountains,null,null,null,null);
+		BackgroundImage backTundraI = new BackgroundImage(backTundra,null,null,null,null);
+	//Backgrounds construction
+		Background arcticBack = new Background(backArcticI);
+		Background beachBack = new Background(backBeachI);
+		Background caveBack = new Background(backCaveI);
+		Background cityBack = new Background(backCityI);
+		Background desertBack = new Background(backDesertI);
+		Background fieldCloudsBack = new Background(backFieldCloudsI);
+		Background forestBack = new Background(backForestI);
+		Background hellBack = new Background(backHellI);
+		Background mountainsBack = new Background(backMountainsI);
+		Background tundraBack = new Background(backTundraI);
+		backgroundsList.add(arcticBack);
+		backgroundsList.add(beachBack);
+		backgroundsList.add(caveBack);
+		backgroundsList.add(cityBack);
+		backgroundsList.add(desertBack);
+		backgroundsList.add(fieldCloudsBack);
+		backgroundsList.add(forestBack);
+		backgroundsList.add(hellBack);
+		backgroundsList.add(mountainsBack);
+		backgroundsList.add(tundraBack);		
 		//Construct BackgroundImage, needed to construct Background.
 		//The four nulls are parameters for repeating the image in x and y, changing image position, and size.
-		BackgroundImage background1Image = new BackgroundImage(back1Image, null, null, null, null);
+		BackgroundImage background1Image = new BackgroundImage(backCave, null, null, null, null);
 
 		Background firstBack = new Background(background1Image); //Construct background using 1 background image.
 		root.setBackground(firstBack); //add to root
@@ -220,6 +280,7 @@ public class GameGUI extends Application{
 			i++;
 		}
 		
+		descriptions.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		root.setTop(topPane);
 		root.setLeft(playerPane);
 		root.setRight(monsters);
@@ -420,7 +481,7 @@ public class GameGUI extends Application{
 	 * @param player
 	 * @param monster
 	 */
-	public static void endTurn() {
+	public static void endTurn(){
 		if (monstersAlive(combatMonsters) && player.alive()) {
 			player.endTurn(turnCount,combatMonsters);
 			
@@ -446,8 +507,14 @@ public class GameGUI extends Application{
 			System.out.println("You have died!NOOO! You were soo yooouung. *shakes fist into sky*.");
 			Platform.exit();
 		}else if (!monstersAlive(combatMonsters)){
+			int randomBackgroundNumber = (int) (Math.random() * 10);
+			root.setBackground(backgroundsList.get(randomBackgroundNumber));
 			player.endCombat();
 			tierCounter++;
+			if (tierCounter == 4){
+				System.out.println("Victory");
+				System.exit(0);
+			}
 			combatMonsters = getEncounter(tierCounter, monsterEncounters);
 			rewards();
 		}
