@@ -44,6 +44,7 @@ public class MonsterTargetClick extends GameGUI implements EventHandler<ActionEv
 			}
 			player.removePotion(potionToUse);
 			potionButtons.get(potionToUse).setText("");
+			potionButtons.get(potionToUse).setGraphic(null);
 			potionToUse = -1;
 		}
 		GameGUI.refreshVisuals();
