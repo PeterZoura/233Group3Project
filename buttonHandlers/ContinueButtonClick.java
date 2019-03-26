@@ -32,7 +32,7 @@ public class ContinueButtonClick extends GameGUI implements EventHandler<ActionE
 		for (Button card : cardButtons){
 			card.setVisible(true);
 		}
-		player.startCombat(turnCount, combatMonsters);
+		player.startCombat(combatMonsters);
 		playerTurn();
 		refreshVisuals();
 	}
