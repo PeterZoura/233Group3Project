@@ -234,6 +234,7 @@ public class Player extends Entity {
 		deck.startTurn();
 		setEnergy(getMaxEnergy());
 		useRelics("iS",turnCount, target);
+		useRelics("s",turnCount ,target);
 	}
 
 	/**
@@ -248,10 +249,10 @@ public class Player extends Entity {
 	/**
 	 * Resets the Player's attributes, and fills the Player's draw pile.
 	 */
-	public void startCombat(int iterations,Entity... target) {
+	public void startCombat(Entity... target) {
 		super.startCombat();
 		deck.startCombat();
-		useRelics("s",iterations ,target);
+
 	}
 
 	/**
