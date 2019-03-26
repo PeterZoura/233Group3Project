@@ -1,15 +1,33 @@
 basic,Iron Wave,0,5,5,1,false
-basic,Strike,0,5,0,1,false
+basic,Strike,0,6,0,1,false
 basic,Defend,0,0,5,1,false
 basic,Anger,0,6,0,0,false
-basic,Clothesline,0,8,0,2,false
+skillAction,Clothesline,0,8,0,weak,2,0,0,0,2,false
 basic,Headbutt,0,9,0,1,false
-basic,Heavy Blade,0,14,0,3,false
-basic,Wild Strike,-5,12,0,1,false
-basic,Combust,0,15,0,2,true
+skillAction,Heavy Blade,0,14,0,strength,1,0,0,0,2,false
+basic,Wild Strike,-3,12,0,1,false
+basic,Combust,0,15,0,1,true
 basic,Immolate,-7,32,0,2,true
 basic,kill,0,999,0,0,true
 skill,Flex,strength,2,0,-2,1,0,false
 skillAction,Bash,0,8,0,vulnerable,2,0,0,0,2,false
-
-
+basic,Bite,3,6,0,1,false
+basic,Bludgeon,0,32,0,3,false
+skill,Deadly Poison,poison,5,0,0,0,1,false
+skill,Noxious Fumes,poison,0,2,0,-1,1,true
+skillAction,Poisoned Stab,0,5,0,poison,3,0,0,0,1,false
+skill,Demon Form,strength,0,3,0,-1,3,false
+basic,Impervious,0,0,30,2,false
+skill,Metallicize,armour,0,4,0,-1,1,false
+basic,Reaper,8,12,0,2,true
+basic,Dash,0,10,10,2,false
+basic,Die Die Die,0,10,0,1,true
+skill,Bouncing Flask,poison,5,0,0,0,2,false
+skillAction,Leg Sweep,0,0,12,weak,2,0,0,0,2,true
+skill,Intimidate,weak,2,0,0,0,0,true
+skill,Terror,vulnerable,99,0,0,0,1,false
+skillAction,Neutralize,0,3,0,weak,1,0,0,0,0,false
+skillAction,Thunderclap,0,4,0,vulnerable,1,0,0,0,1,true
+skillAction,Uppercut,0,15,0,weak,2,0,0,0,2,false
+skill,Footwork,dexterity,1,0,0,0,1,false
+skillAction,Corpse Explosion,0,10,0,poison,3,0,0,0,2,true
