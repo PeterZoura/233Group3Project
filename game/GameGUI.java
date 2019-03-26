@@ -252,7 +252,7 @@ public class GameGUI extends Application{
 		monsterEncounters = getEncounters();
 		Scanner in = new Scanner(System.in);
 		combatMonsters = getEncounter(tierCounter,monsterEncounters);
-		player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Desperate Strike"),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
+		player = new Player(intro(in), 80, CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.get("Strike"), CardsUtil.randomP(),CardsUtil.randomP(), CardsUtil.randomP(), CardsUtil.randomP());
 		player.addPotion(CardsUtil.get("Explosive Potion"));
 		player.addRelic(CardsUtil.getRelic("Sunflower"));
 		for(int i = 0; i<5;i++){
@@ -460,7 +460,7 @@ public class GameGUI extends Application{
 	private static Card newCard() {
 		Card c;
 		c = CardsUtil.get("Strike");
-		while(c.getName().equals("Strike") || c.getName().equals("Desperate Strike")){
+		while(c.getName().equals("Strike")){
 			c = CardsUtil.randomP();
 		}
 		return c;
