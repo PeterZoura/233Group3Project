@@ -141,7 +141,7 @@ public class Game {
 			if (!player.alive())
 				break;
 			Monster[] combatMonsters = getEncounter(i, encounters);
-			player.startCombat(0, combatMonsters);
+			player.startCombat(combatMonsters);
 			int turnCount = 0;
 			while (monstersAlive(combatMonsters) && player.alive()) {
 				playerTurn(player,turnCount, combatMonsters);
