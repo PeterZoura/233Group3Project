@@ -44,6 +44,7 @@ public class RelicTest {
 		player.damage(20);
 		player.addRelic(CardsUtil.getRelic("Vajra"));
 		player.startCombat(m);
+		player.startTurn(0, m);
 		assertEquals("Testing strength relic at start of combat.", 1, player.getStrength().getCurrentVal());
 	}
 
