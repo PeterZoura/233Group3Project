@@ -28,6 +28,7 @@ import buttonHandlers.RewardButtonClick;
 import buttonHandlers.ContinueButtonClick;
 import buttonHandlers.PotionRewardButtonClick;
 import buttonHandlers.RelicRewardButtonClick;
+import buttonHandlers.PlayerTargetClick;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,6 +103,8 @@ public class GameGUI extends Application{
 		playerEnergy.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerEnergy);
 		Button PlayerButton = new Button(player.getName(),playerImageView);
+		PlayerTargetClick playerEvent = new PlayerTargetClick();
+		PlayerButton.setOnAction(playerEvent);
 		playerPane.getChildren().add(PlayerButton);
 		Label playerHP = new Label(player.getHealth()+"/"+player.getMaxHealth());
 		playerHP.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
