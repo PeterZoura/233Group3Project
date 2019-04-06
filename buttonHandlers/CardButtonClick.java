@@ -20,16 +20,16 @@ public class CardButtonClick extends GameGUI implements EventHandler<ActionEvent
 	public void handle(ActionEvent event)
 	{
 		
-		Card card = player.getDeck().getHand().get(cardIndex);
-		descriptions.setText(card.getDescription());
-		if (card.getCost()<=player.getEnergy()){
-			cardToUse = cardIndex;
+		Card card = getPlayer().getDeck().getHand().get(cardIndex);
+		getDescriptions().setText(card.getDescription());
+		if (card.getCost()<=getPlayer().getEnergy()){
+			setCardToUse(cardIndex);
 		}
 		else{
-			descriptions.setText("Not enough energy.");
-			cardToUse = -1;
+			getDescriptions().setText("Not enough energy.");
+			setCardToUse(-1);
 		}
-		potionToUse = -1;
+		setPotionToUse(-1);
 		//GameGUI.refreshVisuals();
     }
 }
