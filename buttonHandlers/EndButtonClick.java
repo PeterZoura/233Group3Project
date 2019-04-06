@@ -13,7 +13,7 @@ public class EndButtonClick extends GameGUI implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event){
 		for (int i=0; i<5; i++){//This for loop is here to re-show the cards after the buttons are hidden
-			cardButtons.get(i).setVisible(true);
+			getCardButtons().get(i).setVisible(true);
 		}
 		endTurn();
 		refreshVisuals();
