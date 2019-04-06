@@ -20,10 +20,10 @@ public class PotionButtonClick extends GameGUI implements EventHandler<ActionEve
 	public void handle(ActionEvent event)
 	{
 		try{
-			Card potion = player.getPotions().get(potionIndex);
-			descriptions.setText(potion.getDescription());
-			potionToUse = potionIndex;
-			cardToUse= -1;
+			Card potion = getPlayer().getPotions().get(potionIndex);
+			getDescriptions().setText(potion.getDescription());
+			setPotionToUse(potionIndex);
+			setCardToUse(-1);
 			
 		}
 		catch (IndexOutOfBoundsException e){}
