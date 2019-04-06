@@ -18,7 +18,7 @@ public class RelicButtonClick extends GameGUI implements EventHandler<ActionEven
 	@Override
 	public void handle(ActionEvent event)
 	{
-		descriptions.setText(player.getRelics().get(relicIndex).getStatDescription());
+		getDescriptions().setText(getPlayer().getRelics().get(relicIndex).getStatDescription());
 		GameGUI.refreshVisuals();
     }
 }
