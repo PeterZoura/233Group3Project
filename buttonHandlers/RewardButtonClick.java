@@ -23,16 +23,16 @@ public class RewardButtonClick extends GameGUI implements EventHandler<ActionEve
 	{
 		numberClicks++;
 		if (numberClicks==1){
-			descriptions.setText(rewardCards.get(cardIndex).getDescription() + " Click the card again to add it to your hand");
+			getDescriptions().setText(getRewardCards().get(cardIndex).getDescription() + " Click the card again to add it to your hand");
 		}
 		else{
-			player.addCard(rewardCards.get(cardIndex));
-			descriptions.setText(rewardCards.get(cardIndex).getName() + " added to your deck!");
+			getPlayer().addCard(getRewardCards().get(cardIndex));
+			getDescriptions().setText(getRewardCards().get(cardIndex).getName() + " added to your deck!");
 			for(int i = 0; i<3;i++){
-				rewardCardButtons.get(i).setVisible(false);
+				getRewardCardButtons().get(i).setVisible(false);
 			}	
-			rewardCardButtons.get(cardIndex).setVisible(true);
-			rewardCardButtons.get(cardIndex).setDisable(true);
+			getRewardCardButtons().get(cardIndex).setVisible(true);
+			getRewardCardButtons().get(cardIndex).setDisable(true);
 			numberClicks = 0;
 		}
     }
