@@ -17,22 +17,22 @@ public class ContinueButtonClick extends GameGUI implements EventHandler<ActionE
 	@Override
 	public void handle(ActionEvent event){
 		HBox monsters = new HBox();
-		for (VBox mPane : monsterPanes){
+		for (VBox mPane : getMonsterPanes()){
 			monsters.getChildren().add(mPane);
 		}  //Adds the array of VBoxes representing the monsters.
-		root.setRight(monsters);
+		getRoot().setRight(monsters);
 		for(int i = 0; i<3;i++){
-			rewardCardButtons.get(i).setVisible(true);
-			rewardCardButtons.get(i).setDisable(false);
+			getRewardCardButtons().get(i).setVisible(true);
+			getRewardCardButtons().get(i).setDisable(false);
 		}
-		endTurnButton.setDisable(false);
-		for (Button reward : rewardPotionRelicButtons){
+		getEndTurnButton().setDisable(false);
+		for (Button reward : getRewardPotionRelicButtons()){
 			reward.setDisable(false);
 		}
-		for (Button card : cardButtons){
+		for (Button card : getCardButtons()){
 			card.setVisible(true);
 		}
-		player.startCombat(combatMonsters);
+		getPlayer().startCombat(getCombatMonsters());
 		playerTurn();
 		refreshVisuals();
 	}
