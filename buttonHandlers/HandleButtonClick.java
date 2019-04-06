@@ -18,8 +18,8 @@ public class HandleButtonClick extends GameGUI implements EventHandler<ActionEve
 	@Override
 	public void handle(ActionEvent event)
 	{
-        if (player.getDeck().getHand().get(cardIndex).use(player, combatMonsters[0])) {
-			cardButtons.get(cardIndex).setDisable(true);
+        if (getPlayer().getDeck().getHand().get(cardIndex).use(getPlayer(), getCombatMonsters()[0])) {
+			getCardButtons().get(cardIndex).setDisable(true);
 		} else {
 			System.out.println("You don't have enough energy.");
 		}
