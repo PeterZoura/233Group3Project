@@ -23,12 +23,12 @@ public class RelicRewardButtonClick extends GameGUI implements EventHandler<Acti
 	{
 		numberClicks++;
 		if (numberClicks==1){
-			descriptions.setText(rewardRelic.getStatDescription() + " Click the relic again to add it to your hand.");
+			getDescriptions().setText(getRewardRelic().getStatDescription() + " Click the relic again to add it to your hand.");
 		}
 		else{
-			player.addRelic(rewardRelic);
-			descriptions.setText(rewardRelic.getName() + " added to your deck!");
-			rewardPotionRelicButtons.get(index).setDisable(true);
+			getPlayer().addRelic(getRewardRelic());
+			getDescriptions().setText(getRewardRelic().getName() + " added to your deck!");
+			getRewardPotionRelicButtons().get(index).setDisable(true);
 			numberClicks = 0;
 		}
 		refreshVisuals();
