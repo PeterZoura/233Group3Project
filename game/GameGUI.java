@@ -501,10 +501,13 @@ public class GameGUI extends Application{
 		//Player Pane.
 		Image playerImage = new Image("RawCards/PlayerImage.png");
 		ImageView playerImageView = new ImageView(playerImage);
+		Label playerNameLabel = new Label(player.getName());
+		playerPane.getChildren().add(playerNameLabel);
+		playerNameLabel.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
 		playerEnergy.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerEnergy);
-		Button PlayerButton = new Button(player.getName(),playerImageView);
+		Button PlayerButton = new Button("",playerImageView);
 		PlayerTargetClick playerEvent = new PlayerTargetClick();
 		PlayerButton.setOnAction(playerEvent);
 		playerPane.getChildren().add(PlayerButton);
