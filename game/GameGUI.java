@@ -845,7 +845,7 @@ public class GameGUI extends Application{
 		Monster[][] tier1 = new Monster[][] {{ new Monster(acidSlime), new Monster(acidSlime), new Monster(spikeSlime) }, { new Monster(cultist) }, { new Monster(louse), new Monster(louse) }, { new Monster(acidSlime), new Monster(spikeSlime) }, { new Monster(fungiBeast), new Monster(fungiBeast) }};
 		Monster[][] tier2 = new Monster[][] {{ new Monster(sphericGuardian)}, { new Monster(jawWorm), new Monster(jawWorm) }, { new Monster(cultist), new Monster(jawWorm) }, { new Monster(sphericGuardian), new Monster(jawWorm) }};
 		Monster[][] tier3 = new Monster[][] {{ new Monster(gremlinNob) }, { new Monster(orbWalker) }, { new Monster(shelledParasite) }, { new Monster(snakePlant) }};
-		Monster[][] tier4 = new Monster[][] {{ new Monster(cultist), new Monster(cultist), new Monster(awakenedOne) }, { new Monster(theChamp) }};
+		Monster[][] tier4 = new Monster[][] {{ new Monster(orbWalker), new Monster(awakenedOne) }, { new Monster(theChamp) }};
 
 		return new Monster[][][] {tier1, tier2, tier3, tier4};
 
