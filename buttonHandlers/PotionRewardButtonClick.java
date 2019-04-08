@@ -25,11 +25,13 @@ public class PotionRewardButtonClick extends GameGUI implements EventHandler<Act
 		if (numberClicks==1){
 			getDescriptions().setText(getRewardPotion().getDescription() + " Click the potion again to add it to your hand.");
 		}
-		else{
+		else if (getPlayer().getPotions().size()<3){
 			getPlayer().addPotion(getRewardPotion());
 			getDescriptions().setText(getRewardPotion().getName() + " added to your deck!");
 			getRewardPotionRelicButtons().get(cardIndex).setDisable(true);
 			numberClicks = 0;
+		}else{
+			getDescriptions().setText("No space, potion not added.");
 		}
 		refreshVisuals();
     }
