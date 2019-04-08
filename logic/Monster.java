@@ -77,9 +77,9 @@ public class Monster extends Entity {
 
 			Skill skill = (Skill)move;
 			if ("weak vulnerable poison frail".contains(skill.getAttribute()))
-				intentions += "Use a negative effect on you. ";
+				intentions += "Debuff you. ";
 			else
-				intentions += "Use a buff. ";
+				intentions += "Buff itself. ";
 
 		}
 
