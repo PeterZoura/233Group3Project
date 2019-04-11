@@ -51,6 +51,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+
 /**
 *GameGUI this will take care of most of the logic
 */
@@ -79,9 +86,6 @@ public class GameGUI extends Application{
 	//Background arraylist
 	private static ArrayList<Background> backgroundsList = new ArrayList<Background>();
 	//Main method launches the gui.
-
-
-
 
 	public static void main(String[] args)
 	{
@@ -503,19 +507,20 @@ public class GameGUI extends Application{
 		ImageView playerImageView = new ImageView(playerImage);
 		Label playerNameLabel = new Label(player.getName());
 		playerPane.getChildren().add(playerNameLabel);
-		playerNameLabel.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		playerNameLabel.setBackground(new Background(new BackgroundFill(Color.SKYBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 		Label playerEnergy = new Label(player.getEnergy()+"/"+player.getMaxEnergy());
-		playerEnergy.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		playerEnergy.setBackground(new Background(new BackgroundFill(Color.AQUA, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerEnergy);
 		Button PlayerButton = new Button("",playerImageView);
+		PlayerButton.setStyle("-fx-background-color: transparent;");
 		PlayerTargetClick playerEvent = new PlayerTargetClick();
 		PlayerButton.setOnAction(playerEvent);
 		playerPane.getChildren().add(PlayerButton);
 		Label playerHP = new Label(player.getHealth()+"/"+player.getMaxHealth());
-		playerHP.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		playerHP.setBackground(new Background(new BackgroundFill(Color.CHARTREUSE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerHP);
 		Label playerAttributes = new Label(getPlayerAttributes());
-		playerAttributes.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		playerAttributes.setBackground(new Background(new BackgroundFill(Color.CHARTREUSE, CornerRadii.EMPTY, Insets.EMPTY)));
 		playerPane.getChildren().add(playerAttributes);
 
 		//monsterPanes.
@@ -525,19 +530,20 @@ public class GameGUI extends Application{
 				Image monsterImage = new Image("RawCards/MonsterSprites/" + combatMonsters[j].getName() + ".png");
 				ImageView monsterImageView = new ImageView(monsterImage);
 
-				Label monsterIntentions = new Label(combatMonsters[j].intentions());
+				Label monsterIntentions = new Label(combatMonsters[j].intentions().replace("'s intentions: ",": "));
 				monsterPanes.get(j).getChildren().add(monsterIntentions);
-				monsterIntentions.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+				monsterIntentions.setBackground(new Background(new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY)));
 
 				Button MonsterButton = new Button("",monsterImageView);
 				monsterPanes.get(j).getChildren().add(MonsterButton);
 
 				MonsterTargetClick clickEvent = new MonsterTargetClick(j);
 				MonsterButton.setOnAction(clickEvent);
+				MonsterButton.setStyle("-fx-background-color: transparent;");
 
 				Label monsterHP = new Label(combatMonsters[j].getHealth()+"/"+combatMonsters[j].getMaxHealth());
 				monsterPanes.get(j).getChildren().add(monsterHP);
-				monsterHP.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+				monsterHP.setBackground(new Background(new BackgroundFill(Color.CRIMSON, CornerRadii.EMPTY, Insets.EMPTY)));
 
 				Label aMonsterAttributes = new Label(monsterAttributes.get(j));
 				monsterPanes.get(j).getChildren().add(aMonsterAttributes);
@@ -595,6 +601,7 @@ public class GameGUI extends Application{
 		endTurnButton = new Button("",endTurnImageView);
 		EndButtonClick endClick = new EndButtonClick();
 		endTurnButton.setOnAction(endClick);
+		endTurnButton.setStyle("-fx-background-color: transparent;");
 
 		HBox potionInv = new HBox();
 		int j = 0;
@@ -602,6 +609,7 @@ public class GameGUI extends Application{
 			potionInv.getChildren().add(potion);
 			PotionButtonClick clickEvent = new PotionButtonClick(j);
 			potion.setOnAction(clickEvent);
+			potion.setStyle("-fx-background-color: transparent;");
 			j++;
 		}
 
@@ -611,6 +619,7 @@ public class GameGUI extends Application{
 			relicInv.getChildren().add(relic);
 			RelicButtonClick clickEvent = new RelicButtonClick(h);
 			relic.setOnAction(clickEvent);
+			relic.setStyle("-fx-background-color: transparent;");
 			h++;
 		}
 
@@ -687,19 +696,21 @@ public class GameGUI extends Application{
 			hand.getChildren().add(card);
 			CardButtonClick clickEvent = new CardButtonClick(i);
 			card.setOnAction(clickEvent);
+			card.setStyle("-fx-background-color: transparent;");
 			i++;
 		}
 
-		descriptions.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		descriptions.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
 		root.setTop(topPane);
 		root.setLeft(playerPane);
 		root.setRight(monsters);
 		root.setBottom(hand);
 		root.setCenter(descriptions);
 
-		Scene scene = new Scene(root,1000,500);
+		Scene scene = new Scene(root,1000,485);
 		stage.setTitle("Slay the Spire");
 		stage.setScene(scene);
+		stage.setResizable(false);
 		stage.show();
 
 		gameLoop();
@@ -845,7 +856,7 @@ public class GameGUI extends Application{
 		Monster[][] tier1 = new Monster[][] {{ new Monster(acidSlime), new Monster(acidSlime), new Monster(spikeSlime) }, { new Monster(cultist) }, { new Monster(louse), new Monster(louse) }, { new Monster(acidSlime), new Monster(spikeSlime) }, { new Monster(fungiBeast), new Monster(fungiBeast) }};
 		Monster[][] tier2 = new Monster[][] {{ new Monster(sphericGuardian)}, { new Monster(jawWorm), new Monster(jawWorm) }, { new Monster(cultist), new Monster(jawWorm) }, { new Monster(sphericGuardian), new Monster(jawWorm) }};
 		Monster[][] tier3 = new Monster[][] {{ new Monster(gremlinNob) }, { new Monster(orbWalker) }, { new Monster(shelledParasite) }, { new Monster(snakePlant) }};
-		Monster[][] tier4 = new Monster[][] {{ new Monster(orbWalker), new Monster(awakenedOne) }, { new Monster(theChamp) }};
+		Monster[][] tier4 = new Monster[][] {{ new Monster(sphericGuardian), new Monster(awakenedOne) }, { new Monster(theChamp) }};
 
 		return new Monster[][][] {tier1, tier2, tier3, tier4};
 
@@ -919,7 +930,7 @@ public class GameGUI extends Application{
 			int randomBackgroundNumber = (int) (Math.random() * 10);
 			root.setBackground(backgroundsList.get(randomBackgroundNumber));
 			player.endCombat();
-			turnCount = 0;
+			turnCount=0;
 			tierCounter++;
 			if (tierCounter == 4){
 				System.out.println("Victory");
