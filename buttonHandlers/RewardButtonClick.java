@@ -22,17 +22,17 @@ public class RewardButtonClick extends GameGUI implements EventHandler<ActionEve
 	public void handle(ActionEvent event)
 	{
 		numberClicks++;
-		if (numberClicks==1){
+		if (numberClicks==1){//if the player clicked on a reward card then tell them what it does
 			getDescriptions().setText(getRewardCards().get(cardIndex).getDescription() + " Click the card again to add it to your hand");
 		}
-		else{
-			getPlayer().addCard(getRewardCards().get(cardIndex));
+		else{//otherwise they clicked it twice
+			getPlayer().addCard(getRewardCards().get(cardIndex));//add the card to their deck and tell them it was added
 			getDescriptions().setText(getRewardCards().get(cardIndex).getName() + " added to your deck!");
-			for(int i = 0; i<3;i++){
+			for(int i = 0; i<3;i++){//set all 3 reward card buttons to invisible because the player may only take one card
 				getRewardCardButtons().get(i).setVisible(false);
 			}	
-			getRewardCardButtons().get(cardIndex).setVisible(true);
-			getRewardCardButtons().get(cardIndex).setDisable(true);
+			getRewardCardButtons().get(cardIndex).setVisible(true);//sets the button for the selected card to be visible but disabled
+			getRewardCardButtons().get(cardIndex).setDisable(true);//this is to help the player see which card they chose
 			numberClicks = 0;
 		}
     }

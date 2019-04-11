@@ -22,13 +22,13 @@ public class RelicRewardButtonClick extends GameGUI implements EventHandler<Acti
 	public void handle(ActionEvent event)
 	{
 		numberClicks++;
-		if (numberClicks==1){
+		if (numberClicks==1){//If the player clicked on a relic then tell them what it does
 			getDescriptions().setText(getRewardRelic().getStatDescription() + " Click the relic again to add it to your hand.");
 		}
-		else{
-			getPlayer().addRelic(getRewardRelic());
-			getDescriptions().setText(getRewardRelic().getName() + " added to your deck!");
-			getRewardPotionRelicButtons().get(index).setDisable(true);
+		else{//if they clicked twice
+			getPlayer().addRelic(getRewardRelic());//give them the relic
+			getDescriptions().setText(getRewardRelic().getName() + " added to your inventory!");//tell them they have it
+			getRewardPotionRelicButtons().get(index).setDisable(true);//disable the reward button
 			numberClicks = 0;
 		}
 		refreshVisuals();
