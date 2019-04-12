@@ -102,7 +102,7 @@ public class Map
 		{
 			System.out.println( move + "! You shout as you head into battle.");
 			nextFloor();
-			System.out.println( "Congratualtions on your victory, on to the next floor!");
+			System.out.println( "Good luck on your battle, may you move on to the next floor!");
 			
 		}
 		else if ( move.equals("DOWN") || move.equals("D") )
