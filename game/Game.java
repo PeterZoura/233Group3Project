@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import logic.Attribute;
 import logic.Card;
+import logic.Map;
 import logic.CardsUtil;
 import logic.Monster;
 import logic.Player;
@@ -38,6 +39,18 @@ public class Game {
 	private static void printMonstersIntentions(Monster[] monsters) {
 		for (Monster m : monsters)
 			System.out.println(m.intentions() + "\n");
+	}
+	
+	/**
+	 * Prints the map 
+	 * @param monsters
+	 */
+	private static void mapWorks(int level)
+	{
+		if (level == 0)
+			Map.mapStart();
+		else
+			Map.drawMap();
 	}
 
 	/**
@@ -140,6 +153,8 @@ public class Game {
 		for (int i = 0; i < 4; i ++) {
 			if (!player.alive())
 				break;
+
+			mapWorks(i);
 			Monster[] combatMonsters = getEncounter(i, encounters);
 			player.startCombat(combatMonsters);
 			int turnCount = 0;
