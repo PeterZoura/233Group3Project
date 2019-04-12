@@ -17,22 +17,22 @@ public class Map
 	public static void mapStart()
 	{
 		System.out.println("Select your perfered sprite by typing the associated "
-				+ "\n" + "number (ie. '1'). 1 (ง'̀-'́)ง ; 2 ಠ╭╮ಠ ; 3 ( ͡° ͜ʖ ͡°)");
+				+ "\n" + "number (ie. '1'). 1 O.o ; 2 ._. ; 3 :-)");
 		s2 = new Scanner(System.in);
 		if (s2.hasNextInt())
 		{
 		int face = s2.nextInt();
 		if ( face == 1)
 		{
-			characterSprite = "(ง'̀-'́)ง";
+			characterSprite = "O.o";
 		}
 		else if ( face == 2 )
 		{
-			characterSprite = "ಠ╭╮ಠ";
+			characterSprite = "._.";
 		}
 		else if ( face == 3 )
 		{
-			characterSprite = "( ͡° ͜ʖ ͡°)";
+			characterSprite = ":-)";
 		}
 		else 
 		{
@@ -77,14 +77,14 @@ public class Map
 				System.out.print(" ");
 				if (y == yMonster && x == xMonster )
 				{
-					System.out.print("ლ(ಠ益ಠლ)");
+					System.out.print(">.<");
 				}
 			}
 			System.out.println("");
 		}
 		//Bottom of the map (esthetic add on)
 		System.out.println("----------------------------------------------------");
-		System.out.println("Legend: " + characterSprite + " You ; ლ(ಠ益ಠლ) Enemy  "
+		System.out.println("Legend: " + characterSprite + " You ; >.< Enemy  "
 				+ "\nRIGHT move to the right ; DOWN to move downwards"
 				+ "\nLEFT move to the left   ; UP move upwards."
 				+ "\nOnce the enemy is in front, charge and shout your battlecry!");
