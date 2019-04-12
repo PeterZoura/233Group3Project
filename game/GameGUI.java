@@ -1051,6 +1051,7 @@ public class GameGUI extends Application{
 		endTurnButton.setDisable(true);
 		for (Button card : cardButtons){
 			card.setVisible(false);
+			
 		}
 		for (int i = 0;i<3;i++){
 			rewardCards.add(newCard());
@@ -1061,6 +1062,7 @@ public class GameGUI extends Application{
 				Image cardImage = new Image("RawCards/" + rewardCards.get(i).getName() + ".png");
 				ImageView cardImageView = new ImageView(cardImage);
 				rewardCardButtons.get(i).setGraphic(cardImageView);
+				rewardCardButtons.get(i).setStyle("-fx-background-color: transparent;");
 				RewardButtonClick clickEvent = new RewardButtonClick(i);
 				rewardCardButtons.get(i).setOnAction(clickEvent);
 			}
@@ -1079,6 +1081,7 @@ public class GameGUI extends Application{
 		for(int i=0;i<2;i++){
 			if (i==0){
 				rewardPotionRelicButtons.get(i).setText(rewardPotion.getName());
+				rewardPotionRelicButtons.get(i).setStyle("-fx-background-color: transparent;");
 				PotionRewardButtonClick clickEvent = new PotionRewardButtonClick(i);
 				rewardPotionRelicButtons.get(i).setOnAction(clickEvent);
 			}
