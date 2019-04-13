@@ -1,6 +1,5 @@
 package logic;
 import java.util.Scanner;
-import java.math;
 
 public class Map 
 {
