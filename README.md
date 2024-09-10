@@ -1,14 +1,14 @@
 # 233Group3Project
 CPSC 233 2019 Winter Group 3 L01
 
-instll java jdk 21. on Ubuntu you can use sudo apt-get install openjdk-21-jdk
+instll java jdk 21. on Ubuntu you can use `sudo apt-get install openjdk-21-jdk`\
 add the path where it was installed to the environment variables list
-the path should look like this: JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+the path should look like this: `JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64`
 
 install the javafx 11 SDK. on Ubuntu you can download the SDK file from the url, unzip it, then look in the folder 
 for the /lib directory and add it's path to the environment variables list as described below
 https://gluonhq.com/products/javafx/
-add this: PATH_TO_FX=path/to/javafx-sdk-22.0.1/lib
+add this: `PATH_TO_FX=path/to/javafx-sdk-22.0.1/lib`
 to the environment variables list
 
 
